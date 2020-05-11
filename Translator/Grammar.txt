@@ -1,0 +1,26 @@
+﻿Grammar.
+
+lang -> expr+
+expr -> assign_expr|condition_expr|while_expr
+
+assign_expr -> VAR	ASSIGN_OP	value_expr EOL
+condition_expr -> IF_KW LB logic_expr RB LSB expr* RSB (ELSE_KW LSB expr* RSB)?
+while_expr -> WHILE_KW LB logic_expr RB LSB expr* RSB
+
+value_expr -> value (OP value)* 
+value -> VAR|DIGIT|bracket_expr
+bracket_expr -> LB value_expr RB
+logic_expr -> value_expr COMP_OP value_expr
+
+
+VAR	-> ^([a-zA-Z]+)$
+DIGIT -> ^(0|[1-9][0-9]*)$
+ASSIGN_OP -> ^=$
+OP -> ^(\+|-|\*|\/)$
+LB -> ^\($
+RB -> ^\)$
+IF_KW -> ^if$
+LSB -> ^\{$
+RSB -> ^\}$
+COMP_OP -> ^(>=|<=|>|<|!=|==)$
+EOL -> ^;$
