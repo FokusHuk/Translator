@@ -1,0 +1,11 @@
+﻿first = 0;
+second = 1;
+n = 7;
+i = 2;
+
+while (i < n)
+{
+second = first + second;
+first = second - first;
+i = i + 1;
+}
