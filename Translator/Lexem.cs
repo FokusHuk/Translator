@@ -28,18 +28,20 @@ namespace Translator
         public static readonly Lexem COMP_OP = new Lexem("COMP_OP", @"^(>=|<=|>|<|!=|==)$");
         public static readonly Lexem WHILE_KW = new Lexem("WHILE_KW", @"^while$");
         public static readonly Lexem EOL = new Lexem("EOL", @"^;$");
+        public static readonly Lexem OUT_KW = new Lexem("OUT_KW", @"^out$");
 
         public static readonly Lexem END = new Lexem("END", "");
         public static readonly Lexem F_TRANS = new Lexem("F_TRANS", "");
         public static readonly Lexem T_TRANS = new Lexem("T_TRANS", "");
         public static readonly Lexem UNC_TRANS = new Lexem("UNC_TRANS", "");
         public static readonly Lexem TRANS_LBL = new Lexem("TRANS_LBL", "");
+        public static readonly Lexem FUNC = new Lexem("FUNC", "");
 
         public static List<Lexem> getList()
         {
             return new List<Lexem>
             {
-                VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, EOL
+                VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, EOL, OUT_KW
             };
         }
     }

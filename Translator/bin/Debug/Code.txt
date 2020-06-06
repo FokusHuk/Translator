@@ -9,3 +9,5 @@ second = first + second;
 first = second - first;
 i = i + 1;
 }
+
+out(152);

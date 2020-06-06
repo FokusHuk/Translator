@@ -74,6 +74,15 @@ namespace Translator
                     pointer = label;
                     continue;
                 }
+                else if (currentLexem == Lexem.FUNC)
+                {
+                    pointer++;
+                    
+                    if (POLIS[pointer].lexem == Lexem.OUT_KW)
+                    {
+                        Console.WriteLine(getStackParam());
+                    }
+                }
 
                 pointer++;
             }

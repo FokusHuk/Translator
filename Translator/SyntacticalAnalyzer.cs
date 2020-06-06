@@ -83,6 +83,14 @@ namespace Translator
             {
                 whileExpression();
             }
+            else if (currentLexem == Lexem.OUT_KW)
+            {
+                pointer += 2;
+                POLIS.Add(tokens[pointer]);
+                POLIS.Add(new Token("&", Lexem.FUNC));
+                POLIS.Add(new Token("out", Lexem.OUT_KW));
+                pointer += 3;
+            }
             else if (currentLexem == Lexem.EOL)
             {
                 freeStack();

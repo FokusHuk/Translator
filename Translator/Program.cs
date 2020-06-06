@@ -104,6 +104,7 @@ namespace Translator
                 Console.ReadKey();
                 Environment.Exit(-1);
             }
+            Console.WriteLine("\nVariables:");
             foreach (KeyValuePair<string, object> var in stackMachine.Variables)
             {
                 Console.WriteLine("{0}: {1}", var.Key, var.Value);

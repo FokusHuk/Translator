@@ -41,7 +41,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (assignExpr() || condition_expr() || whileExpr())
+            if (assignExpr() || condition_expr() || whileExpr() || function())
             {
                 return true;
             }
@@ -113,6 +113,32 @@ namespace Translator
             while (expr()) { }
 
             if (!rsb())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool function()
+        {
+            int currentIteration = iteration;
+
+            if (!out_func())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool out_func()
+        {
+            int currentIteration = iteration;
+
+            if (!out_kw() || !lb() || (!var() && !digit() || var() && digit()) || !rb() || !eol())
             {
                 reset(currentIteration);
                 return false;
@@ -245,6 +271,11 @@ namespace Translator
         private bool while_kw()
         {
             return match(Lexem.WHILE_KW);
+        }
+
+        private bool out_kw()
+        {
+            return match(Lexem.OUT_KW);
         }
 
         // проверка токенов
