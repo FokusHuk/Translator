@@ -28,7 +28,19 @@ namespace Translator
         public static readonly Lexem COMP_OP = new Lexem("COMP_OP", @"^(>=|<=|>|<|!=|==)$");
         public static readonly Lexem WHILE_KW = new Lexem("WHILE_KW", @"^while$");
         public static readonly Lexem EOL = new Lexem("EOL", @"^;$");
+        public static readonly Lexem SPC = new Lexem("SPC", @"^ $");
         public static readonly Lexem OUT_KW = new Lexem("OUT_KW", @"^out$");
+
+        public static readonly Lexem LIST_KW = new Lexem("LIST_KW", @"^list$");
+        public static readonly Lexem POINT = new Lexem("POINT", @"^\.$");
+        public static readonly Lexem COMMA = new Lexem("COMMA", @"^,$");
+        public static readonly Lexem INSERT_KW = new Lexem("INSERT_KW", @"^insert$");
+        public static readonly Lexem GET_VALUE_KW = new Lexem("GET_VALUE_KW", @"^getValue$");
+        public static readonly Lexem GET_INDEX_KW = new Lexem("GET_INDEX_KW", @"^getIndex$");
+        public static readonly Lexem DELETE_KW = new Lexem("DELETE_KW", @"^delete$");
+        public static readonly Lexem CLEAR_KW = new Lexem("CLEAR_KW", @"^clear$");
+        public static readonly Lexem DISPLAY_KW = new Lexem("DISPLAY_KW", @"^display$");
+        public static readonly Lexem SIZE_KW = new Lexem("SIZE_KW", @"^size$");
 
         public static readonly Lexem END = new Lexem("END", "");
         public static readonly Lexem F_TRANS = new Lexem("F_TRANS", "");
@@ -41,7 +53,9 @@ namespace Translator
         {
             return new List<Lexem>
             {
-                VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, EOL, OUT_KW
+                VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, EOL, SPC,
+                OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
+                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW
             };
         }
     }

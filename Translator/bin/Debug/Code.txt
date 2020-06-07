@@ -1,13 +1,30 @@
-﻿first = 0;
-second = 1;
-n = 7;
-i = 2;
+﻿list newList;
+a = 5;
+b = 0;
+c = 2;
 
-while (i < n)
+newList.insert(a, 0);
+newList.insert(b, 1);
+newList.insert(c - 1, 2);
+newList.insert(3, 0);
+
+newList.display();
+out(newList.getValue(0));
+out(newList.getIndex(5));
+
+i = 0;
+sum = 0;
+while (i < newList.size())
 {
-second = first + second;
-first = second - first;
+sum = sum + newList.getValue(i);
 i = i + 1;
 }
+out(sum);
 
-out(152);
+newList.delete(2);
+newList.delete(10 * (5 + 2) - 70);
+newList.display();
+out(newList.size());
+
+a = (a * newList.getValue(0) - (c / newList.getValue(1)) + 1) / newList.size();
+out(a);

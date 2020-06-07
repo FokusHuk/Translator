@@ -11,6 +11,8 @@ namespace Translator
         private int pointer;
         private Stack<Token> stack;
 
+        private int bracketIndex;
+
         public SyntacticalAnalyzer()
         {
             POLIS = new List<Token>();
@@ -57,11 +59,14 @@ namespace Translator
             }
             else if (currentLexem == Lexem.LB)
             {
+                bracketIndex++;
                 stack.Push(tokens[pointer]);
                 pointer++;
             }
             else if (currentLexem == Lexem.RB)
             {
+                bracketIndex--;
+
                 while (stack.Count != 0 && stack.Peek().lexem != Lexem.LB)
                 {
                     POLIS.Add(stack.Pop());
@@ -85,19 +90,84 @@ namespace Translator
             }
             else if (currentLexem == Lexem.OUT_KW)
             {
-                pointer += 2;
-                POLIS.Add(tokens[pointer]);
+                pointer ++;
+                stack.Push(tokens[pointer]);
+                pointer++;
+                while (tokens[pointer].lexem != Lexem.EOL)
+                {
+                    simpleExpression();
+                }
                 POLIS.Add(new Token("&", Lexem.FUNC));
                 POLIS.Add(new Token("out", Lexem.OUT_KW));
-                pointer += 3;
+                pointer++;
             }
             else if (currentLexem == Lexem.EOL)
             {
                 freeStack();
                 pointer++;
             }
+            else if (currentLexem == Lexem.POINT)
+            {
+                functionExpression();
+            }
+            else if (currentLexem == Lexem.LIST_KW)
+            {
+                POLIS.Add(tokens[pointer]);
+                while (tokens[pointer].lexem != Lexem.VAR)
+                {
+                    pointer++;
+                }
+                POLIS.Add(tokens[pointer]);
+                pointer++;                
+            }
+            else if (currentLexem == Lexem.SPC || currentLexem == Lexem.LSB)
+            {
+                pointer++;
+            }
 
             return true;
+        }
+
+        private void functionExpression()
+        {
+            Token var = tokens[pointer - 1];
+            Token func = tokens[pointer + 1];
+            POLIS.RemoveAt(POLIS.Count - 1);
+            pointer += 2;
+            stack.Push(tokens[pointer]);
+            pointer++;
+
+            if (func.lexem == Lexem.INSERT_KW)
+            {
+                while (tokens[pointer].lexem != Lexem.COMMA)
+                {
+                    simpleExpression();
+                }
+                while (stack.Peek().lexem != Lexem.LB)
+                {
+                    POLIS.Add(stack.Pop());
+                }
+                pointer++;
+
+                while (tokens[pointer].lexem != Lexem.EOL)
+                {
+                    simpleExpression();
+                }
+                pointer++;
+            }
+            else
+            {
+                bracketIndex = 1;
+
+                while (bracketIndex != 0)
+                {
+                    simpleExpression();
+                }
+            }
+
+            POLIS.Add(var);
+            POLIS.Add(new Token("&", Lexem.FUNC));
+            POLIS.Add(func);
         }
 
         private void freeStack()
@@ -117,6 +187,11 @@ namespace Translator
             POLIS.Add(new Token("!F", Lexem.F_TRANS));
 
             innerExpression();
+
+            while (tokens[pointer].lexem == Lexem.SPC)
+            {
+                pointer++;
+            }
 
             if (tokens[pointer].lexem == Lexem.ELSE_KW)
             {

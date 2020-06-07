@@ -1,18 +1,34 @@
 ﻿Grammar.
 
 lang -> expr+
-expr -> assign_expr|condition_expr|while_expr|function
+expr -> assign_expr|condition_expr|while_expr|function|list_expr
 
-assign_expr -> VAR	ASSIGN_OP	value_expr EOL
-condition_expr -> IF_KW LB logic_expr RB LSB expr* RSB (ELSE_KW LSB expr* RSB)?
-while_expr -> WHILE_KW LB logic_expr RB LSB expr* RSB
+assign_expr -> VAR SPC* ASSIGN_OP SPC* value_expr SPC* EOL SPC*
+condition_expr -> IF_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC* (ELSE_KW SPC* LSB SPC* expr* SPC* RSB)? SPC*
+while_expr -> WHILE_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
+
 function -> out_func
+out_func -> PRINT_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
 
-value_expr -> value (OP value)* 
-value -> VAR|DIGIT|bracket_expr
-bracket_expr -> LB value_expr RB
-logic_expr -> value_expr COMP_OP value_expr
-out_func -> PRINT_KW LB [VAR | DIGIT] RB EOL
+
+list_expr -> list_init|list_insert|list_get|list_delete|list_simple_func
+list_init -> LIST_KW SPC+ VAR SPC* EOL SPC*
+list_insert -> VAR POINT INSERT_KW LB SPC* value_expr SPC* COMMA SPC* value_expr SPC* RB SPC* EOL SPC*
+
+list_get -> list_get_value|list_get_index|list_size
+list_get_value -> VAR POINT GET_VALUE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+list_get_index -> VAR POINT GET_INDEX_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+list_delete -> VAR POINT DELETE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+list_size -> VAR POINT func_name LB SPC* RB SPC*
+
+list_simple_func -> VAR POINT func_name LB SPC* RB SPC* EOL SPC*
+func_name -> CLEAR_KW|DISPLAY_KW
+
+
+value_expr -> value SPC* (OP SPC* value)*
+value -> VAR|DIGIT|bracket_expr|list_get
+bracket_expr -> LB SPC* value_expr SPC* RB SPC*
+logic_expr -> value_expr SPC* COMP_OP SPC* value_expr SPC*
 
 
 VAR	-> ^([a-zA-Z]+)$
@@ -27,5 +43,16 @@ LSB -> ^\{$
 RSB -> ^\}$
 COMP_OP -> ^(>=|<=|>|<|!=|==)$
 WHILE_KW -> ^while$
+SPC -> ^ $
 EOL -> ^;$
 OUT_KW -> ^out$
+LIST_KW -> ^list$
+POINT -> ^.$
+COMMA -> ^,$
+INSERT_KW -> ^insert$
+GET_VALUE_KW -> ^getValue$
+GET_INDEX_KW -> ^getIndex$
+DELETE_KW -> ^delete$
+CLEAR_KW -> ^clear$
+DISPLAY_KW -> ^display$
+SIZE_KW -> ^size$

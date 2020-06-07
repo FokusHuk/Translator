@@ -7,12 +7,14 @@ namespace Translator
     class StackMachine
     {
         public Dictionary<string, object> Variables { get; set; }
+        public Dictionary<string, DoublyLinkedList> Lists { get; set; }
         private Stack<object> stack;
 
         public StackMachine()
         {
             stack = new Stack<object>();
             Variables = new Dictionary<string, object>();
+            Lists = new Dictionary<string, DoublyLinkedList>();
         }
 
         public void calculate(List<Token> POLIS)
@@ -82,6 +84,54 @@ namespace Translator
                     {
                         Console.WriteLine(getStackParam());
                     }
+                    else if (POLIS[pointer].lexem == Lexem.INSERT_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        int index = (int)getStackParam();
+                        double value = getStackParam();
+                        Lists[objectName].insertAt(value, index);
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.DISPLAY_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        Lists[objectName].display();
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.CLEAR_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        Lists[objectName].clear();
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.DELETE_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        int index = (int)getStackParam();
+                        Lists[objectName].deleteAt(index);
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.GET_VALUE_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        int index = (int)getStackParam();
+                        double value = Lists[objectName].getValue(index);
+                        stack.Push(value);
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.GET_INDEX_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        double value = getStackParam();
+                        int index = Lists[objectName].getIndex(value);
+                        stack.Push(index);
+                    }
+                    else if (POLIS[pointer].lexem == Lexem.SIZE_KW)
+                    {
+                        string objectName = Convert.ToString(stack.Pop());
+                        int size = Lists[objectName].Size;
+                        stack.Push(size);
+                    }
+                }
+                else if (currentLexem == Lexem.LIST_KW)
+                {
+                    Lists.Add(POLIS[pointer + 1].value, new DoublyLinkedList());
+                    pointer++;
                 }
 
                 pointer++;
@@ -90,9 +140,9 @@ namespace Translator
 
         private double getStackParam()
         {
-            if (stack.Peek() is double)
+            if (stack.Peek() is double || stack.Peek() is int)
             {
-                return (double)stack.Pop();
+                return Convert.ToDouble(stack.Pop());
             }
             else if (stack.Peek() is string)
             {

@@ -41,7 +41,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (assignExpr() || condition_expr() || whileExpr() || function())
+            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr())
             {
                 return true;
             }
@@ -54,7 +54,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!var() || !assignOp() || !valueExpr() || !eol())
+            if (!var() || !spc() || !assignOp() || !spc() || !valueExpr() || !spc() || !eol() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -67,7 +67,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!if_kw() || !lb() || !logicExpr() || !rb() || !lsb())
+            if (!if_kw() || !spc() || !lb() || !spc() || !logicExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -75,7 +75,7 @@ namespace Translator
 
             while (expr()) { }
 
-            if (!rsb())
+            if (!spc() || !rsb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -83,8 +83,8 @@ namespace Translator
 
             while (true)
             {
-                if (!else_kw()) return true;
-                if (!lsb())
+                if (!else_kw() || !spc()) return true;
+                if (!lsb() || !spc())
                 {
                     reset(currentIteration);
                     return false;
@@ -92,7 +92,7 @@ namespace Translator
 
                 while (expr()) { }
 
-                if (!rsb())
+                if (!spc() || !rsb() || !spc())
                 {
                     reset(currentIteration);
                     return false;
@@ -104,7 +104,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!while_kw() || !lb() || !logicExpr() || !rb() || !lsb())
+            if (!while_kw() || !spc() || !lb() || !spc() || !logicExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -112,7 +112,7 @@ namespace Translator
 
             while (expr()) { }
 
-            if (!rsb())
+            if (!spc() || !rsb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -134,11 +134,145 @@ namespace Translator
             return true;
         }
 
+        // Двусвязный список
+
+        private bool listExpr()
+        {
+            int currentIteration = iteration;
+
+            if (listInit() || listInsert() || listGet() || listDelete() || listSimpleFunc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listInit()
+        {
+            int currentIteration = iteration;
+
+            if (list_kw() && space_kw() && spc() && var() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listInsert()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && insert_kw() && lb() && spc() && valueExpr() && spc() && comma() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listGet()
+        {
+            int currentIteration = iteration;
+
+            if (listGetValue() || listGetIndex() || listSize())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listGetValue()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && get_value_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listGetIndex()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && get_index_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listDelete()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && delete_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listSize()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && size_kw() && lb() && spc() && rb() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool listSimpleFunc()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && funcName() && lb() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool funcName()
+        {
+            int currentIteration = iteration;
+
+            if (clear_kw() || display_kw())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        // Базовые грамматики
+
         private bool out_func()
         {
             int currentIteration = iteration;
 
-            if (!out_kw() || !lb() || (!var() && !digit() || var() && digit()) || !rb() || !eol())
+            if (!out_kw() || !lb() || !spc() || !valueExpr() || !spc() || !rb() || !spc() || !eol() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -151,15 +285,15 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!value())
+            if (!value() || !spc())
             {
                 return false;
             }
 
             while (true)
             {
-                if (!op()) return true;
-                if (!value())
+                if (!op() || !spc()) return true;
+                if (!value() || !spc())
                 {
                     reset(currentIteration);
                     return false;
@@ -171,7 +305,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (var() || digit() || bracketExpr())
+            if (listGet() || var() || digit() || bracketExpr())
             {
                 return true;
             }
@@ -184,7 +318,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!lb() || !valueExpr() || !rb())
+            if (!lb() || !spc() || !valueExpr() || !spc() || !rb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -197,10 +331,20 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (!valueExpr() || !comp_op() || !valueExpr())
+            if (!valueExpr() || !spc() || !comp_op() || !spc() || !valueExpr() || !spc())
             {
                 reset(currentIteration);
                 return false;
+            }
+
+            return true;
+        }
+
+        private bool spc()
+        {
+            while (space_kw())
+            {
+
             }
 
             return true;
@@ -276,6 +420,61 @@ namespace Translator
         private bool out_kw()
         {
             return match(Lexem.OUT_KW);
+        }
+
+        private bool list_kw()
+        {
+            return match(Lexem.LIST_KW);
+        }
+
+        private bool point()
+        {
+            return match(Lexem.POINT);
+        }
+
+        private bool comma()
+        {
+            return match(Lexem.COMMA);
+        }
+
+        private bool insert_kw()
+        {
+            return match(Lexem.INSERT_KW);
+        }
+
+        private bool get_value_kw()
+        {
+            return match(Lexem.GET_VALUE_KW);
+        }
+
+        private bool get_index_kw()
+        {
+            return match(Lexem.GET_INDEX_KW);
+        }
+
+        private bool delete_kw()
+        {
+            return match(Lexem.DELETE_KW);
+        }
+
+        private bool clear_kw()
+        {
+            return match(Lexem.CLEAR_KW);
+        }
+
+        private bool display_kw()
+        {
+            return match(Lexem.DISPLAY_KW);
+        }
+
+        private bool size_kw()
+        {
+            return match(Lexem.SIZE_KW);
+        }
+
+        private bool space_kw()
+        {
+            return match(Lexem.SPC);
         }
 
         // проверка токенов

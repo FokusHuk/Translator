@@ -9,7 +9,7 @@ namespace Translator
         private DLLNode First;
         private DLLNode Current;
         private DLLNode Last;
-        private int Size;
+        public int Size;
 
         public DoublyLinkedList()
         {

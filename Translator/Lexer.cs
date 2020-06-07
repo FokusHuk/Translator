@@ -13,8 +13,6 @@ namespace Translator
 
         public List<Token> execute(string expression)
         {
-            expression = expression.Replace(" ", "");
-
             List<Token> tokens = new List<Token>();
             Stack<Token> matches = new Stack<Token>();
             List<Lexem> lexems = Lexem.getList();

@@ -108,3 +108,72 @@ i = i + 1;
 
 RESULT: first = 5, second = 8, n = 7, i = 7
 ================================
+
+================================
+list newList;
+
+newList.insert(5, 0);
+newList.insert(10, 0);
+newList.insert(15, 0);
+
+newList.display();
+newList.clear();
+
+RESULT:
+Element 1: 15
+Element 2: 10
+Element 3: 5
+================================
+
+================================
+list newList;
+a = 5;
+b = 0;
+c = 2;
+
+newList.insert(a, 0);
+newList.insert(b, 1);
+newList.insert(c - 1, 2);
+newList.insert(3, 0);
+
+newList.display();
+out(newList.getValue(0));
+out(newList.getIndex(5));
+
+i = 0;
+sum = 0;
+while (i < newList.size())
+{
+sum = sum + newList.getValue(i);
+i = i + 1;
+}
+out(sum);
+
+newList.delete(2);
+newList.delete(10 * (5 + 2) - 70);
+newList.display();
+out(newList.size());
+
+a = (a * newList.getValue(0) - (c / newList.getValue(1)) + 1) / newList.size();
+out(a);
+
+RESULT:
+Element 1: 3
+Element 2: 5
+Element 3: 0
+Element 4: 1
+3
+1
+9
+Element 1: 5
+Element 2: 1
+2
+12
+
+Variables:
+a: 12
+b: 0
+c: 2
+i: 4
+sum: 9
+================================
