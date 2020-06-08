@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Translator</RootNamespace>
     <AssemblyName>Translator</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="DoublyLinkedList.cs" />
     <Compile Include="GrammarMistake.cs" />
+    <Compile Include="HashTable.cs" />
+    <Compile Include="HTElement.cs" />
     <Compile Include="Lexem.cs" />
     <Compile Include="LexemNotFoundException.cs" />
     <Compile Include="Lexer.cs" />
