@@ -88,6 +88,10 @@ namespace Translator
             {
                 whileExpression();
             }
+            else if (currentLexem == Lexem.FOR_KW)
+            {
+                forExpression();
+            }
             else if (currentLexem == Lexem.OUT_KW)
             {
                 pointer ++;
@@ -228,6 +232,70 @@ namespace Translator
             POLIS.Add(new Token("!", Lexem.UNC_TRANS));
 
             POLIS[endPosition].value = POLIS.Count.ToString();
+        }
+
+        private void forExpression()
+        {
+            int startPosition;
+            int conditionTransition;
+            int bodyTransition;
+            int iterationPosition;
+
+            while(tokens[pointer].lexem != Lexem.LB)
+            {
+                pointer++;
+            }
+            pointer++;
+
+            // for (i = 0;
+            while (tokens[pointer].lexem != Lexem.EOL)
+            {
+                simpleExpression();
+            }
+            freeStack();
+            pointer++;
+
+            startPosition = POLIS.Count;
+
+            // i < n;
+            while (tokens[pointer].lexem != Lexem.EOL)
+            {
+                simpleExpression();
+            }
+            freeStack();
+            pointer++;
+
+            conditionTransition = POLIS.Count;
+            POLIS.Add(new Token("", Lexem.TRANS_LBL));
+            POLIS.Add(new Token("!F", Lexem.F_TRANS));
+
+            bodyTransition = POLIS.Count;
+            POLIS.Add(new Token("", Lexem.TRANS_LBL));
+            POLIS.Add(new Token("!", Lexem.UNC_TRANS));
+
+            // i = i + 1)
+            iterationPosition = POLIS.Count;
+            stack.Push(new Token("(", Lexem.LB));
+            bracketIndex = 1;
+            while (bracketIndex != 0)
+            {
+                simpleExpression();
+            }
+
+            POLIS.Add(new Token(startPosition.ToString(), Lexem.TRANS_LBL));
+            POLIS.Add(new Token("!", Lexem.UNC_TRANS));
+            POLIS[bodyTransition].value = POLIS.Count.ToString();
+
+            // { body }
+            while (tokens[pointer].lexem != Lexem.RSB)
+            {
+                simpleExpression();
+            }
+            pointer++;
+
+            POLIS.Add(new Token(iterationPosition.ToString(), Lexem.TRANS_LBL));
+            POLIS.Add(new Token("!", Lexem.UNC_TRANS));
+            POLIS[conditionTransition].value = POLIS.Count.ToString();
         }
 
         private void conditionalExpression()

@@ -190,4 +190,64 @@ ht.delete(7);
 a = 5 * ht.search(5);
 out(a);
 ht.display();
+
+RESULT:
+15
+[hash]  key:value       ...
+[5]     5:3
+[6]     6:4
+================================
+
+================================
+list a;
+htable b;
+
+v = 10;
+x = 50;
+c = 2;
+
+a.insert(v, 0);
+a.insert(x + v, 0);
+a.insert(c, c);
+
+b.insert(c, 0);
+b.insert(16, a.getValue(0));
+b.insert(v, c);
+
+a.display();
+b.display();
+
+RESULT:
+Element 1: 60
+Element 2: 10
+Element 3: 2
+[hash]  key:value       ...
+[2]     2:0
+[16]    16:60
+[10]    10:2
+
+Variables:
+v: 10
+x: 50
+c: 2
+================================
+
+================================
+a = 5;
+
+for (i = 0; i < 5; i = i + 1)
+{
+out(a);
+a = a + 1;
+}
+
+out(a);
+
+RESULT:
+5
+6
+7
+8
+9
+10
 ================================

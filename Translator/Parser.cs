@@ -43,7 +43,7 @@ namespace Translator
 
             spc();
 
-            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr() || htExpr())
+            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr() || htExpr() || forExpr())
             {
                 return true;
             }
@@ -107,6 +107,27 @@ namespace Translator
             int currentIteration = iteration;
 
             if (!while_kw() || !spc() || !lb() || !spc() || !logicExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            while (expr()) { }
+
+            if (!spc() || !rsb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool forExpr()
+        {
+            int currentIteration = iteration;
+
+            if (!for_kw() || !spc() || !lb() || !spc() || !assignExpr() || !logicExpr() || !eol() || !spc() || !var() || !spc() || !assignOp() || !spc() || !valueExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -497,6 +518,11 @@ namespace Translator
         private bool while_kw()
         {
             return match(Lexem.WHILE_KW);
+        }
+
+        private bool for_kw()
+        {
+            return match(Lexem.FOR_KW);
         }
 
         private bool out_kw()

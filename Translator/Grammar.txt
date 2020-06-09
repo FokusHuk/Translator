@@ -1,11 +1,12 @@
 ﻿Grammar.
 
 lang -> expr+
-expr -> assign_expr|condition_expr|while_expr|function|list_expr|ht_expr
+expr -> assign_expr|condition_expr|while_expr|function|list_expr|ht_expr|for_expr
 
 assign_expr -> VAR SPC* ASSIGN_OP SPC* value_expr SPC* EOL SPC*
 condition_expr -> IF_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC* (ELSE_KW SPC* LSB SPC* expr* SPC* RSB)? SPC*
 while_expr -> WHILE_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
+for_expr -> FOR_KW SPC* LB SPC* assign_expr logic_expr EOL SPC* VAR SPC* ASSIGN_OP SPC* value_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
 
 function -> out_func
 out_func -> PRINT_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
@@ -51,6 +52,7 @@ LSB -> ^\{$
 RSB -> ^\}$
 COMP_OP -> ^(>=|<=|>|<|!=|==)$
 WHILE_KW -> ^while$
+FOR_KW -> ^for$
 SPC -> ^ $
 EOL -> ^;$
 OUT_KW -> ^out$
@@ -66,3 +68,35 @@ DISPLAY_KW -> ^display$
 SIZE_KW -> ^size$
 HT_KW -> ^htable$
 SEARCH_KW -> ^search$
+
+
+
+
+
+
+
+
+
+Оптимизация грамматики для слияния распознавания списков и хеш-таблиц
+########################
+
+function -> out_func|collect_func
+out_func -> PRINT_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+collect_func -> init_func|insert_func|delete_func|display_func|clear_func
+
+init_func -> var_type SPC+ VAR SPC* EOL SPC*
+var_type -> HT_KW|LIST_KW
+
+insert_func -> VAR POINT INSERT_KW LB SPC* value_expr SPC* COMMA SPC* value_expr SPC* RB SPC* EOL SPC*
+delete_func -> VAR POINT DELETE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+display_func -> VAR POINT DISPLAY_KW LB SPC* RB SPC* EOL SPC*
+clear_func -> VAR POINT CLEAR_KW LB SPC* RB SPC* EOL SPC*
+
+get_func -> search_func|get_value_func|get_index_func|size_func
+
+search_func -> VAR POINT SEARCH_VALUE_KW LB SPC* value_expr SPC* RB SPC*
+get_value_func -> VAR POINT GET_VALUE_KW LB SPC* value_expr SPC* RB SPC*
+get_index_func -> VAR POINT GET_INDEX_KW LB SPC* value_expr SPC* RB SPC*
+size_func -> VAR POINT func_name LB SPC* RB SPC*
+
+########################
