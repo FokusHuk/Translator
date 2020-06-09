@@ -41,6 +41,8 @@ namespace Translator
         public static readonly Lexem CLEAR_KW = new Lexem("CLEAR_KW", @"^clear$");
         public static readonly Lexem DISPLAY_KW = new Lexem("DISPLAY_KW", @"^display$");
         public static readonly Lexem SIZE_KW = new Lexem("SIZE_KW", @"^size$");
+        public static readonly Lexem HT_KW = new Lexem("HT_KW", @"^htable$");
+        public static readonly Lexem SEARCH_KW = new Lexem("SEARCH_KW", @"^search$");
 
         public static readonly Lexem END = new Lexem("END", "");
         public static readonly Lexem F_TRANS = new Lexem("F_TRANS", "");
@@ -55,7 +57,7 @@ namespace Translator
             {
                 VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, EOL, SPC,
                 OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
-                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW
+                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW
             };
         }
     }

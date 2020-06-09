@@ -22,7 +22,7 @@ namespace Translator
         {
             HTElement newItem = new HTElement(key, value);
 
-            int hash = GetHash(newItem.Key);
+            int hash = getHash(newItem.Key);
 
             List<HTElement> hashTableItem = null;
 
@@ -49,7 +49,7 @@ namespace Translator
 
         public void delete(int key)
         {
-            int hash = GetHash(key);
+            int hash = getHash(key);
 
             if (!_items.ContainsKey(hash))
             {
@@ -71,7 +71,7 @@ namespace Translator
 
         public double search(int key)
         {
-            int hash = GetHash(key);
+            int hash = getHash(key);
 
             if (!_items.ContainsKey(hash))
             {
@@ -93,7 +93,23 @@ namespace Translator
             throw new ArgumentException($"Хеш-таблица не содержит элемент с ключом {key}.", nameof(key));
         }
 
-        private int GetHash(int key)
+        public void display()
+        {
+            Console.WriteLine("[hash]\tkey:value\t...");
+            foreach (var item in Items)
+            {
+                Console.Write("[{0}]\t", item.Key);
+
+                foreach (var value in item.Value)
+                {
+                    Console.Write("{0}:{1}\t", value.Key, value.Value);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+        private int getHash(int key)
         {
             return key % tableSize;
         }

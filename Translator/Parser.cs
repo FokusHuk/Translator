@@ -41,7 +41,9 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr())
+            spc();
+
+            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr() || htExpr())
             {
                 return true;
             }
@@ -134,13 +136,93 @@ namespace Translator
             return true;
         }
 
+        // Хеш-таблица
+
+        private bool htExpr()
+        {
+            int currentIteration = iteration;
+
+            if (htInit() || htInsert() || htDelete() || htDisplay())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool htInit()
+        {
+            int currentIteration = iteration;
+
+            if (ht_kw() && space_kw() && spc() && var() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool htInsert()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && insert_kw() && lb() && spc() && valueExpr() && spc() && comma() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool htDelete()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && delete_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool htSearch()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && search_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
+        private bool htDisplay()
+        {
+            int currentIteration = iteration;
+
+            if (var() && point() && display_kw() && lb() && spc() && rb() && spc() && eol() && spc())
+            {
+                return true;
+            }
+
+            reset(currentIteration);
+            return false;
+        }
+
         // Двусвязный список
 
         private bool listExpr()
         {
             int currentIteration = iteration;
 
-            if (listInit() || listInsert() || listGet() || listDelete() || listSimpleFunc())
+            if (listInit() || listInsert() || listDelete() || listSimpleFunc())
             {
                 return true;
             }
@@ -305,7 +387,7 @@ namespace Translator
         {
             int currentIteration = iteration;
 
-            if (listGet() || var() || digit() || bracketExpr())
+            if (htSearch() || listGet() || var() || digit() || bracketExpr())
             {
                 return true;
             }
@@ -475,6 +557,16 @@ namespace Translator
         private bool space_kw()
         {
             return match(Lexem.SPC);
+        }
+
+        private bool ht_kw()
+        {
+            return match(Lexem.HT_KW);
+        }
+
+        private bool search_kw()
+        {
+            return match(Lexem.SEARCH_KW);
         }
 
         // проверка токенов

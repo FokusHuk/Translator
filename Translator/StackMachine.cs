@@ -6,24 +6,29 @@ namespace Translator
 {
     class StackMachine
     {
+        public List<Token> POLIS { get; set; }
         public Dictionary<string, object> Variables { get; set; }
         public Dictionary<string, DoublyLinkedList> Lists { get; set; }
+        public Dictionary<string, HashTable> HTables { get; set; }
         private Stack<object> stack;
+        private int pointer;
 
         public StackMachine()
         {
             stack = new Stack<object>();
             Variables = new Dictionary<string, object>();
             Lists = new Dictionary<string, DoublyLinkedList>();
+            HTables = new Dictionary<string, HashTable>();
         }
 
         public void calculate(List<Token> POLIS)
         {
+            this.POLIS = POLIS;
             stack.Clear();
             Variables.Clear();
 
             POLIS.Add(new Token("$", Lexem.END));
-            int pointer = 0;
+            pointer = 0;
 
             while (POLIS[pointer].lexem != Lexem.END)
             {
@@ -84,57 +89,101 @@ namespace Translator
                     {
                         Console.WriteLine(getStackParam());
                     }
-                    else if (POLIS[pointer].lexem == Lexem.INSERT_KW)
+                    else
                     {
-                        string objectName = Convert.ToString(stack.Pop());
-                        int index = (int)getStackParam();
-                        double value = getStackParam();
-                        Lists[objectName].insertAt(value, index);
+                        collectionFunction();
                     }
-                    else if (POLIS[pointer].lexem == Lexem.DISPLAY_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        Lists[objectName].display();
-                    }
-                    else if (POLIS[pointer].lexem == Lexem.CLEAR_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        Lists[objectName].clear();
-                    }
-                    else if (POLIS[pointer].lexem == Lexem.DELETE_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        int index = (int)getStackParam();
-                        Lists[objectName].deleteAt(index);
-                    }
-                    else if (POLIS[pointer].lexem == Lexem.GET_VALUE_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        int index = (int)getStackParam();
-                        double value = Lists[objectName].getValue(index);
-                        stack.Push(value);
-                    }
-                    else if (POLIS[pointer].lexem == Lexem.GET_INDEX_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        double value = getStackParam();
-                        int index = Lists[objectName].getIndex(value);
-                        stack.Push(index);
-                    }
-                    else if (POLIS[pointer].lexem == Lexem.SIZE_KW)
-                    {
-                        string objectName = Convert.ToString(stack.Pop());
-                        int size = Lists[objectName].Size;
-                        stack.Push(size);
-                    }
+                    
                 }
                 else if (currentLexem == Lexem.LIST_KW)
                 {
                     Lists.Add(POLIS[pointer + 1].value, new DoublyLinkedList());
                     pointer++;
                 }
+                else if (currentLexem == Lexem.HT_KW)
+                {
+                    HTables.Add(POLIS[pointer + 1].value, new HashTable());
+                    pointer++;
+                }
 
                 pointer++;
+            }
+        }
+
+        private void collectionFunction()
+        {
+            if (POLIS[pointer].lexem == Lexem.INSERT_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());               
+                if (Lists.ContainsKey(objectName))
+                {
+                    int index = (int)getStackParam();
+                    double value = getStackParam();
+                    Lists[objectName].insertAt(value, index);
+                }
+                else if (HTables.ContainsKey(objectName))
+                {
+                    double value = getStackParam();
+                    int key = (int)getStackParam();
+                    HTables[objectName].insert(key, value);
+                }
+            }
+            else if (POLIS[pointer].lexem == Lexem.DISPLAY_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                if (Lists.ContainsKey(objectName))
+                {
+                    Lists[objectName].display();
+                }
+                else if (HTables.ContainsKey(objectName))
+                {
+                    HTables[objectName].display();
+                }
+            }
+            else if (POLIS[pointer].lexem == Lexem.CLEAR_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                Lists[objectName].clear();
+            }
+            else if (POLIS[pointer].lexem == Lexem.DELETE_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                int param = (int)getStackParam();
+                if (Lists.ContainsKey(objectName))
+                {
+                    Lists[objectName].deleteAt(param);
+                }
+                else if (HTables.ContainsKey(objectName))
+                {
+                    HTables[objectName].delete(param);
+                }
+            }
+            else if (POLIS[pointer].lexem == Lexem.GET_VALUE_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                int index = (int)getStackParam();
+                double value = Lists[objectName].getValue(index);
+                stack.Push(value);
+            }
+            else if (POLIS[pointer].lexem == Lexem.GET_INDEX_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                double value = getStackParam();
+                int index = Lists[objectName].getIndex(value);
+                stack.Push(index);
+            }
+            else if (POLIS[pointer].lexem == Lexem.SIZE_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                int size = Lists[objectName].Size;
+                stack.Push(size);
+            }
+            else if (POLIS[pointer].lexem == Lexem.SEARCH_KW)
+            {
+                string objectName = Convert.ToString(stack.Pop());
+                int key = (int)getStackParam();
+                double value = HTables[objectName].search(key);
+                stack.Push(value);
             }
         }
 

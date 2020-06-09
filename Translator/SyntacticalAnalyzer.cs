@@ -110,7 +110,7 @@ namespace Translator
             {
                 functionExpression();
             }
-            else if (currentLexem == Lexem.LIST_KW)
+            else if (currentLexem == Lexem.LIST_KW || currentLexem == Lexem.HT_KW)
             {
                 POLIS.Add(tokens[pointer]);
                 while (tokens[pointer].lexem != Lexem.VAR)

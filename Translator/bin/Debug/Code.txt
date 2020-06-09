@@ -1,30 +1,17 @@
-﻿list newList;
-a = 5;
-b = 0;
+﻿list a;
+htable b;
+
+v = 10;
+x = 50;
 c = 2;
 
-newList.insert(a, 0);
-newList.insert(b, 1);
-newList.insert(c - 1, 2);
-newList.insert(3, 0);
+a.insert(v, 0);
+a.insert(x + v, 0);
+a.insert(c, c);
 
-newList.display();
-out(newList.getValue(0));
-out(newList.getIndex(5));
+b.insert(c, 0);
+b.insert(16, a.getValue(0));
+b.insert(v, c);
 
-i = 0;
-sum = 0;
-while (i < newList.size())
-{
-sum = sum + newList.getValue(i);
-i = i + 1;
-}
-out(sum);
-
-newList.delete(2);
-newList.delete(10 * (5 + 2) - 70);
-newList.display();
-out(newList.size());
-
-a = (a * newList.getValue(0) - (c / newList.getValue(1)) + 1) / newList.size();
-out(a);
+a.display();
+b.display();

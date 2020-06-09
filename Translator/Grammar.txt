@@ -1,7 +1,7 @@
 ﻿Grammar.
 
 lang -> expr+
-expr -> assign_expr|condition_expr|while_expr|function|list_expr
+expr -> assign_expr|condition_expr|while_expr|function|list_expr|ht_expr
 
 assign_expr -> VAR SPC* ASSIGN_OP SPC* value_expr SPC* EOL SPC*
 condition_expr -> IF_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC* (ELSE_KW SPC* LSB SPC* expr* SPC* RSB)? SPC*
@@ -11,14 +11,22 @@ function -> out_func
 out_func -> PRINT_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
 
 
-list_expr -> list_init|list_insert|list_get|list_delete|list_simple_func
+ht_expr -> ht_init|ht_insert|ht_delete|ht_display
+ht_init -> HT_KW SPC+ VAR SPC* EOL SPC*
+ht_insert -> VAR POINT INSERT_KW LB SPC* value_expr SPC* COMMA SPC* value_expr SPC* RB SPC* EOL SPC*
+ht_delete -> VAR POINT DELETE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+ht_search -> VAR POINT SEARCH_VALUE_KW LB SPC* value_expr SPC* RB SPC*
+ht_display -> VAR POINT DISPLAY_KW LB SPC* RB SPC* EOL SPC*
+
+
+list_expr -> list_init|list_insert|list_delete|list_simple_func
 list_init -> LIST_KW SPC+ VAR SPC* EOL SPC*
 list_insert -> VAR POINT INSERT_KW LB SPC* value_expr SPC* COMMA SPC* value_expr SPC* RB SPC* EOL SPC*
+list_delete -> VAR POINT DELETE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
 
 list_get -> list_get_value|list_get_index|list_size
-list_get_value -> VAR POINT GET_VALUE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
-list_get_index -> VAR POINT GET_INDEX_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
-list_delete -> VAR POINT DELETE_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
+list_get_value -> VAR POINT GET_VALUE_KW LB SPC* value_expr SPC* RB SPC*
+list_get_index -> VAR POINT GET_INDEX_KW LB SPC* value_expr SPC* RB SPC*
 list_size -> VAR POINT func_name LB SPC* RB SPC*
 
 list_simple_func -> VAR POINT func_name LB SPC* RB SPC* EOL SPC*
@@ -56,3 +64,5 @@ DELETE_KW -> ^delete$
 CLEAR_KW -> ^clear$
 DISPLAY_KW -> ^display$
 SIZE_KW -> ^size$
+HT_KW -> ^htable$
+SEARCH_KW -> ^search$
