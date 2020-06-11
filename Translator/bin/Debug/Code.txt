@@ -1,17 +1,19 @@
-﻿list a;
-htable b;
+﻿htable ht;
 
-v = 10;
-x = 50;
-c = 2;
+ht.insert(5, 3);
+ht.insert(6, 4);
+ht.insert((7 + 3)/2 + 2, 5);
+ht.insert(ht.search(6) * 2, 5);
 
-a.insert(v, 0);
-a.insert(x + v, 0);
-a.insert(c, c);
+mult = 1;
 
-b.insert(c, 0);
-b.insert(16, a.getValue(0));
-b.insert(v, c);
+for (i = 5; i <= 8; i = i + 1)
+{
+mult = mult * ht.search(i);
+}
 
-a.display();
-b.display();
+out(mult);
+
+ht.delete(7);
+
+ht.display();

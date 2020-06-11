@@ -10,15 +10,18 @@ namespace Translator
         static void Main(string[] args)
         {
             string input = "";
+            Console.WriteLine("Program source:");
             using (StreamReader reader = new StreamReader(Environment.CurrentDirectory + "\\Code.txt"))
             {
                 while (!reader.EndOfStream)
                 {
-                    input += reader.ReadLine() + " ";
+                    string currentLine = reader.ReadLine();
+                    input += currentLine + " ";
+                    Console.WriteLine(currentLine);
                 }
             }
-
-            Console.WriteLine("Input string: {0}\n", input);
+            Console.WriteLine("\n");
+            
             List<Token> tokens = null;
 
             Lexer lexer = new Lexer();
@@ -62,23 +65,36 @@ namespace Translator
             Console.WriteLine("\nSyntactical analyzer results:");
             tokens.Add(new Token("$", Lexem.END));
             List<Token> POLIS = syntAnalyzer.convert(tokens);
-            Console.Write("POLIS: ");
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            for (int i = 0; i < POLIS.Count; i++)
+            Console.WriteLine("POLIS: ");
+            int i = 0;
+            int delta = 25;
+            while (i < POLIS.Count)
             {
-                Console.Write("{0}", i);
-                for (int j = 0; j < POLIS[i].value.Length + 3 - i.ToString().Length; j++)
+                int i_pos = i + delta;
+                if (i_pos > POLIS.Count)
                 {
-                    Console.Write(" ");
+                    delta -= i_pos - POLIS.Count;
+                    i_pos = POLIS.Count;                   
                 }
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                for (; i < i_pos; i++)
+                {
+                    Console.Write("{0}", i);
+                    for (int j = 0; j < POLIS[i].value.Length + 3 - i.ToString().Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.Write("\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                i -= delta;
+                for (; i < i_pos; i++)
+                {
+                    Console.Write("{0}   ", POLIS[i].value);
+                }
+                Console.WriteLine();
+                Console.WriteLine();
             }
-            Console.Write("\n       ");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            for (int i = 0; i < POLIS.Count; i++)
-            {
-                Console.Write("{0}   ", POLIS[i].value);
-            }
-            Console.WriteLine();
 
             // Вычисление выражения в польской нотации
             Console.WriteLine("\nStack machine results:");

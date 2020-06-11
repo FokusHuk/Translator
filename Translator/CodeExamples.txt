@@ -124,7 +124,7 @@ Element 1: 15
 Element 2: 10
 Element 3: 5
 ================================
-
+Пример работы списков.
 ================================
 list newList;
 a = 5;
@@ -176,6 +176,40 @@ b: 0
 c: 2
 i: 4
 sum: 9
+================================
+Пример работы хеш-таблицы.
+================================
+htable ht;
+
+ht.insert(5, 3);
+ht.insert(6, 4);
+ht.insert((7 + 3)/2 + 2, 5);
+ht.insert(ht.search(6) * 2, 5);
+
+mult = 1;
+
+for (i = 5; i <= 8; i = i + 1)
+{
+mult = mult * ht.search(i);
+}
+
+out(mult);
+
+ht.delete(7);
+
+ht.display();
+
+RESULT:
+Stack machine results:
+300
+[hash]  key:value       ...
+[5]     5:3
+[6]     6:4
+[8]     8:5
+
+Variables:
+mult: 300
+i: 9
 ================================
 
 ================================
