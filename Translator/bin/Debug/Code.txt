@@ -15,5 +15,7 @@ mult = mult * ht.search(i);
 out(mult);
 
 ht.delete(7);
+ht.insert(7, 4);
+ht.insert(262, 5);
 
 ht.display();

@@ -44,7 +44,7 @@ namespace Translator
                     throw new ArgumentException($"Хеш-таблица уже содержит элемент с ключом {key}. Ключ должен быть уникален.", nameof(key));
                 }
 
-                hashTableItem.insertAt(newItem, hashTableItem.Size - 1);
+                hashTableItem.insertAt(newItem, hashTableItem.Size);
             }
             else
             {
