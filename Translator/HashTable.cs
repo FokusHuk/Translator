@@ -6,13 +6,16 @@ namespace Translator
     {
         private readonly byte tableSize = 255;
 
-        private DoublyLinkedList<int> Hashes;
         private DoublyLinkedList<DoublyLinkedList<HTElement>> Values;
 
         public HashTable()
         {
-            Hashes = new DoublyLinkedList<int>();
             Values = new DoublyLinkedList<DoublyLinkedList<HTElement>>();
+
+            for (int i = 0; i < tableSize; i++)
+            {
+                Values.insertAt(null, 0);
+            }
         }
         
         public void insert(int key, double value)
@@ -21,12 +24,10 @@ namespace Translator
 
             int hash = getHash(newItem.Key);
 
-            DoublyLinkedList<HTElement> hashTableItem = null;
+            DoublyLinkedList<HTElement> hashTableItem = Values.getValue(hash);
 
-            if (Hashes.contains(hash))
+            if (hashTableItem != null)
             {
-                hashTableItem = Values.getValue(Hashes.getIndex(hash));
-
                 bool isContkey = false;
 
                 for (int i = 0; i < hashTableItem.Size; i++)
@@ -49,9 +50,7 @@ namespace Translator
             {
                 hashTableItem = new DoublyLinkedList<HTElement>();
                 hashTableItem.insertAt(newItem, 0);
-
-                Hashes.insertAt(hash, Hashes.Size);
-                Values.insertAt(hashTableItem, Values.Size);
+                Values.insertAt(hashTableItem, hash);
             }
         }
 
@@ -59,24 +58,16 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!Hashes.contains(hash))
-            {
-                return;
-            }
+            var hashTableItem = Values.getValue(hash);
 
-            var hashTableItem = Values.getValue(Hashes.getIndex(hash));
+            if (hashTableItem == null)
+                return;
 
             for (int i = 0; i < hashTableItem.Size; i++)
             {
                 if (hashTableItem.getValue(i).Key == key)
                 {
                     hashTableItem.deleteAt(i);
-
-                    if (hashTableItem.isEmpty())
-                    {
-                        Values.deleteAt(Values.getIndex(hashTableItem));
-                        Hashes.deleteAt(Hashes.getIndex(hash));
-                    }
                     break;
                 }
             }
@@ -86,12 +77,7 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!Hashes.contains(hash))
-            {
-                throw new ArgumentException($"Хеш-таблица не содержит элемент с ключом {key}.", nameof(key));
-            }
-
-            var hashTableItem = Values.getValue(Hashes.getIndex(hash));
+            var hashTableItem = Values.getValue(hash);
 
             if (hashTableItem != null)
             {
@@ -110,15 +96,16 @@ namespace Translator
         public void display()
         {
             Console.WriteLine("[hash]\tkey:value\t...");
-            for (int i = 0; i < Hashes.Size; i++)
+            for (int i = 0; i < Values.Size; i++)
             {
-                Console.Write("[{0}]\t", Hashes.getValue(i));
+                var value = Values.getValue(i);
+                if (value == null || value.Size == 0) continue;
 
-                for (int j = 0; j < Values.getValue(i).Size; j++)
+                Console.Write("[{0}]\t", i);
+                for (int j = 0; j < value.Size; j++)
                 {
-                    Console.Write("{0}:{1}\t", Values.getValue(i).getValue(j).Key, Values.getValue(i).getValue(j).Value);
+                    Console.Write("{0}:{1}\t", value.getValue(j).Key, value.getValue(j).Value);
                 }
-
                 Console.WriteLine();
             }
         }
