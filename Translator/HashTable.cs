@@ -9,13 +9,13 @@ namespace Translator
     {
         private readonly byte tableSize = 255;
 
-        private Dictionary<int, List<HTElement>> _items = null;
-
-        public ReadOnlyCollection<KeyValuePair<int, List<HTElement>>> Items => _items?.ToList()?.AsReadOnly();
+        private List<int> Hashes;
+        private List<List<HTElement>> Values;
 
         public HashTable()
         {
-            _items = new Dictionary<int, List<HTElement>>(tableSize);
+            Hashes = new List<int>();
+            Values = new List<List<HTElement>>();
         }
         
         public void insert(int key, double value)
@@ -26,9 +26,9 @@ namespace Translator
 
             List<HTElement> hashTableItem = null;
 
-            if (_items.ContainsKey(hash))
+            if (Hashes.Contains(hash))
             {
-                hashTableItem = _items[hash];
+                hashTableItem = Values[Hashes.IndexOf(hash)];
 
                 HTElement oldElementWithKey = hashTableItem.SingleOrDefault(i => i.Key == newItem.Key);
 
@@ -37,13 +37,14 @@ namespace Translator
                     throw new ArgumentException($"Хеш-таблица уже содержит элемент с ключом {key}. Ключ должен быть уникален.", nameof(key));
                 }
 
-                _items[hash].Add(newItem);
+                hashTableItem.Add(newItem);
             }
             else
             {
                 hashTableItem = new List<HTElement> { newItem };
 
-                _items.Add(hash, hashTableItem);
+                Hashes.Add(hash);
+                Values.Add(hashTableItem);
             }
         }
 
@@ -51,12 +52,12 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!_items.ContainsKey(hash))
+            if (!Hashes.Contains(hash))
             {
                 return;
             }
 
-            var hashTableItem = _items[hash];
+            var hashTableItem = Values[Hashes.IndexOf(hash)];
 
             HTElement item = hashTableItem.SingleOrDefault(i => i.Key == key);
 
@@ -65,7 +66,10 @@ namespace Translator
                 hashTableItem.Remove(item);
 
                 if (hashTableItem.Count == 0)
-                    _items.Remove(hash);
+                {
+                    Values.Remove(hashTableItem);
+                    Hashes.Remove(hash);
+                }
             }
         }
 
@@ -73,12 +77,12 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!_items.ContainsKey(hash))
+            if (!Hashes.Contains(hash))
             {
                 throw new ArgumentException($"Хеш-таблица не содержит элемент с ключом {key}.", nameof(key));
             }
 
-            var hashTableItem = _items[hash];
+            var hashTableItem = Values[Hashes.IndexOf(hash)];
 
             if (hashTableItem != null)
             {
@@ -96,13 +100,13 @@ namespace Translator
         public void display()
         {
             Console.WriteLine("[hash]\tkey:value\t...");
-            foreach (var item in Items)
+            for (int i = 0; i < Hashes.Count; i++)
             {
-                Console.Write("[{0}]\t", item.Key);
+                Console.Write("[{0}]\t", Hashes[i]);
 
-                foreach (var value in item.Value)
+                for (int j = 0; j < Values[i].Count; j++)
                 {
-                    Console.Write("{0}:{1}\t", value.Key, value.Value);
+                    Console.Write("{0}:{1}\t", Values[i][j].Key, Values[i][j].Value);
                 }
 
                 Console.WriteLine();
