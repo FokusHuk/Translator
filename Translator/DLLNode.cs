@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Translator
 {
-    class DLLNode
+    class DLLNode<T>
     {
-        public double Value { get; set; }
-        public DLLNode Next { get; set; }
-        public DLLNode Previous { get; set; }
+        public T Value { get; set; }
+        public DLLNode<T> Next { get; set; }
+        public DLLNode<T> Previous { get; set; }
         
-        public DLLNode(double value)
+        public DLLNode(T value)
         {
             Value = value;
         }

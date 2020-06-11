@@ -9,13 +9,13 @@ namespace Translator
     {
         private readonly byte tableSize = 255;
 
-        private List<int> Hashes;
-        private List<List<HTElement>> Values;
+        private DoublyLinkedList<int> Hashes;
+        private DoublyLinkedList<DoublyLinkedList<HTElement>> Values;
 
         public HashTable()
         {
-            Hashes = new List<int>();
-            Values = new List<List<HTElement>>();
+            Hashes = new DoublyLinkedList<int>();
+            Values = new DoublyLinkedList<DoublyLinkedList<HTElement>>();
         }
         
         public void insert(int key, double value)
@@ -24,27 +24,37 @@ namespace Translator
 
             int hash = getHash(newItem.Key);
 
-            List<HTElement> hashTableItem = null;
+            DoublyLinkedList<HTElement> hashTableItem = null;
 
-            if (Hashes.Contains(hash))
+            if (Hashes.contains(hash))
             {
-                hashTableItem = Values[Hashes.IndexOf(hash)];
+                hashTableItem = Values.getValue(Hashes.getIndex(hash));
 
-                HTElement oldElementWithKey = hashTableItem.SingleOrDefault(i => i.Key == newItem.Key);
+                bool isContkey = false;
 
-                if (oldElementWithKey != null)
+                for (int i = 0; i < hashTableItem.Size; i++)
+                {
+                    if (hashTableItem.getValue(i).Key == key)
+                    {
+                        isContkey = true;
+                        break;
+                    }
+                }
+
+                if (isContkey)
                 {
                     throw new ArgumentException($"Хеш-таблица уже содержит элемент с ключом {key}. Ключ должен быть уникален.", nameof(key));
                 }
 
-                hashTableItem.Add(newItem);
+                hashTableItem.insertAt(newItem, hashTableItem.Size - 1);
             }
             else
             {
-                hashTableItem = new List<HTElement> { newItem };
+                hashTableItem = new DoublyLinkedList<HTElement>();
+                hashTableItem.insertAt(newItem, 0);
 
-                Hashes.Add(hash);
-                Values.Add(hashTableItem);
+                Hashes.insertAt(hash, Hashes.Size);
+                Values.insertAt(hashTableItem, Values.Size);
             }
         }
 
@@ -52,23 +62,25 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!Hashes.Contains(hash))
+            if (!Hashes.contains(hash))
             {
                 return;
             }
 
-            var hashTableItem = Values[Hashes.IndexOf(hash)];
+            var hashTableItem = Values.getValue(Hashes.getIndex(hash));
 
-            HTElement item = hashTableItem.SingleOrDefault(i => i.Key == key);
-
-            if (item != null)
+            for (int i = 0; i < hashTableItem.Size; i++)
             {
-                hashTableItem.Remove(item);
-
-                if (hashTableItem.Count == 0)
+                if (hashTableItem.getValue(i).Key == key)
                 {
-                    Values.Remove(hashTableItem);
-                    Hashes.Remove(hash);
+                    hashTableItem.deleteAt(i);
+
+                    if (hashTableItem.isEmpty())
+                    {
+                        Values.deleteAt(Values.getIndex(hashTableItem));
+                        Hashes.deleteAt(Hashes.getIndex(hash));
+                    }
+                    break;
                 }
             }
         }
@@ -77,20 +89,21 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            if (!Hashes.Contains(hash))
+            if (!Hashes.contains(hash))
             {
                 throw new ArgumentException($"Хеш-таблица не содержит элемент с ключом {key}.", nameof(key));
             }
 
-            var hashTableItem = Values[Hashes.IndexOf(hash)];
+            var hashTableItem = Values.getValue(Hashes.getIndex(hash));
 
             if (hashTableItem != null)
             {
-                HTElement item = hashTableItem.SingleOrDefault(i => i.Key == key);
-
-                if (item != null)
+                for (int i = 0; i < hashTableItem.Size; i++)
                 {
-                    return item.Value;
+                    if (hashTableItem.getValue(i).Key == key)
+                    {
+                        return hashTableItem.getValue(i).Value;
+                    }
                 }
             }
 
@@ -100,13 +113,13 @@ namespace Translator
         public void display()
         {
             Console.WriteLine("[hash]\tkey:value\t...");
-            for (int i = 0; i < Hashes.Count; i++)
+            for (int i = 0; i < Hashes.Size; i++)
             {
-                Console.Write("[{0}]\t", Hashes[i]);
+                Console.Write("[{0}]\t", Hashes.getValue(i));
 
-                for (int j = 0; j < Values[i].Count; j++)
+                for (int j = 0; j < Values.getValue(i).Size; j++)
                 {
-                    Console.Write("{0}:{1}\t", Values[i][j].Key, Values[i][j].Value);
+                    Console.Write("{0}:{1}\t", Values.getValue(i).getValue(j).Key, Values.getValue(i).getValue(j).Value);
                 }
 
                 Console.WriteLine();

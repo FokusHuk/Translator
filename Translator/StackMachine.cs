@@ -8,7 +8,7 @@ namespace Translator
     {
         public List<Token> POLIS { get; set; }
         public Dictionary<string, object> Variables { get; set; }
-        public Dictionary<string, DoublyLinkedList> Lists { get; set; }
+        public Dictionary<string, DoublyLinkedList<double>> Lists { get; set; }
         public Dictionary<string, HashTable> HTables { get; set; }
         private Stack<object> stack;
         private int pointer;
@@ -17,7 +17,7 @@ namespace Translator
         {
             stack = new Stack<object>();
             Variables = new Dictionary<string, object>();
-            Lists = new Dictionary<string, DoublyLinkedList>();
+            Lists = new Dictionary<string, DoublyLinkedList<double>>();
             HTables = new Dictionary<string, HashTable>();
         }
 
@@ -97,7 +97,7 @@ namespace Translator
                 }
                 else if (currentLexem == Lexem.LIST_KW)
                 {
-                    Lists.Add(POLIS[pointer + 1].value, new DoublyLinkedList());
+                    Lists.Add(POLIS[pointer + 1].value, new DoublyLinkedList<double>());
                     pointer++;
                 }
                 else if (currentLexem == Lexem.HT_KW)

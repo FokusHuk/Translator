@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Translator
 {
-    class DoublyLinkedList
+    class DoublyLinkedList<T>
     {
-        private DLLNode First;
-        private DLLNode Current;
-        private DLLNode Last;
+        private DLLNode<T> First;
+        private DLLNode<T> Current;
+        private DLLNode<T> Last;
         public int Size;
 
         public DoublyLinkedList()
@@ -19,7 +19,7 @@ namespace Translator
 
         public bool isEmpty() => Size == 0;
 
-        public void insertAt(double newElement, int index)
+        public void insertAt(T newElement, int index)
         {
             if (index < 0 || index > Size && Size != 0)
             {
@@ -27,7 +27,7 @@ namespace Translator
             }
             else if (index == 0)
             {
-                DLLNode newNode = new DLLNode(newElement);
+                DLLNode<T> newNode = new DLLNode<T>(newElement);
 
                 if (First == null)
                 {
@@ -43,7 +43,7 @@ namespace Translator
             }
             else if (index == Size)
             {
-                DLLNode newNode = new DLLNode(newElement);
+                DLLNode<T> newNode = new DLLNode<T>(newElement);
 
                 if (First == null)
                 {
@@ -66,7 +66,7 @@ namespace Translator
                     Current = Current.Next;
                     count++;
                 }
-                DLLNode newNode = new DLLNode(newElement);
+                DLLNode<T> newNode = new DLLNode<T>(newElement);
                 Current.Previous.Next = newNode;
                 newNode.Previous = Current.Previous;
                 Current.Previous = newNode;
@@ -79,7 +79,7 @@ namespace Translator
         {
             while (!isEmpty())
             {
-                DLLNode temp = First;
+                DLLNode<T> temp = First;
                 if (First.Next != null)
                 {
                     First.Next.Previous = null;
@@ -121,7 +121,7 @@ namespace Translator
                 }
                 else
                 {
-                    DLLNode temp = First;
+                    DLLNode<T> temp = First;
                     if (First.Next != null)
                     {
                         First.Next.Previous = null;
@@ -139,7 +139,7 @@ namespace Translator
                 }
                 else
                 {
-                    DLLNode temp = Last;
+                    DLLNode<T> temp = Last;
                     if (Last.Previous != null)
                     {
                         Last.Previous.Next = null;
@@ -164,7 +164,7 @@ namespace Translator
             }
         }
 
-        public double getValue(int index)
+        public T getValue(int index)
         {
             Current = First;
             int count = 0;
@@ -180,15 +180,15 @@ namespace Translator
             }
             else
             {
-                return 0;
+                return default(T);
             }
         }
 
-        public int getIndex(double value)
+        public int getIndex(T value)
         {
             Current = First;
             int index = 0;
-            while (Current != null && Current.Value != value)
+            while (Current != null && !Current.Value.Equals(value))
             {
                 Current = Current.Next;
                 index++;
@@ -201,6 +201,26 @@ namespace Translator
             else
             {
                 return 0;
+            }
+        }
+
+        public bool contains(T value)
+        {
+            Current = First;
+            int index = 0;
+            while (Current != null && !Current.Value.Equals(value))
+            {
+                Current = Current.Next;
+                index++;
+            }
+
+            if (index != Size)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
