@@ -6,16 +6,11 @@ namespace Translator
     {
         private readonly byte tableSize = 255;
 
-        private DoublyLinkedList<DoublyLinkedList<HTElement>> Values;
+        private DoublyLinkedList<HTElement>[] Values;
 
         public HashTable()
         {
-            Values = new DoublyLinkedList<DoublyLinkedList<HTElement>>();
-
-            for (int i = 0; i < tableSize; i++)
-            {
-                Values.insertAt(null, 0);
-            }
+            Values = new DoublyLinkedList<HTElement>[tableSize];
         }
         
         public void insert(int key, double value)
@@ -24,15 +19,13 @@ namespace Translator
 
             int hash = getHash(newItem.Key);
 
-            DoublyLinkedList<HTElement> hashTableItem = Values.getValue(hash);
-
-            if (hashTableItem != null)
+            if (Values[hash] != null)
             {
                 bool isContkey = false;
 
-                for (int i = 0; i < hashTableItem.Size; i++)
+                for (int i = 0; i < Values[hash].Size; i++)
                 {
-                    if (hashTableItem.getValue(i).Key == key)
+                    if (Values[hash].getValue(i).Key == key)
                     {
                         isContkey = true;
                         break;
@@ -44,13 +37,12 @@ namespace Translator
                     throw new ArgumentException($"Хеш-таблица уже содержит элемент с ключом {key}. Ключ должен быть уникален.", nameof(key));
                 }
 
-                hashTableItem.insertAt(newItem, hashTableItem.Size);
+                Values[hash].insertAt(newItem, Values[hash].Size);
             }
             else
             {
-                hashTableItem = new DoublyLinkedList<HTElement>();
-                hashTableItem.insertAt(newItem, 0);
-                Values.insertAt(hashTableItem, hash);
+                Values[hash] = new DoublyLinkedList<HTElement>();
+                Values[hash].insertAt(newItem, 0);
             }
         }
 
@@ -58,16 +50,14 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            var hashTableItem = Values.getValue(hash);
-
-            if (hashTableItem == null)
+            if (Values[hash] == null)
                 return;
 
-            for (int i = 0; i < hashTableItem.Size; i++)
+            for (int i = 0; i < Values[hash].Size; i++)
             {
-                if (hashTableItem.getValue(i).Key == key)
+                if (Values[hash].getValue(i).Key == key)
                 {
-                    hashTableItem.deleteAt(i);
+                    Values[hash].deleteAt(i);
                     break;
                 }
             }
@@ -77,15 +67,13 @@ namespace Translator
         {
             int hash = getHash(key);
 
-            var hashTableItem = Values.getValue(hash);
-
-            if (hashTableItem != null)
+            if (Values[hash] != null)
             {
-                for (int i = 0; i < hashTableItem.Size; i++)
+                for (int i = 0; i < Values[hash].Size; i++)
                 {
-                    if (hashTableItem.getValue(i).Key == key)
+                    if (Values[hash].getValue(i).Key == key)
                     {
-                        return hashTableItem.getValue(i).Value;
+                        return Values[hash].getValue(i).Value;
                     }
                 }
             }
@@ -96,15 +84,14 @@ namespace Translator
         public void display()
         {
             Console.WriteLine("[hash]\tkey:value\t...");
-            for (int i = 0; i < Values.Size; i++)
+            for (int i = 0; i < Values.Length; i++)
             {
-                var value = Values.getValue(i);
-                if (value == null || value.Size == 0) continue;
+                if (Values[i] == null || Values[i].Size == 0) continue;
 
                 Console.Write("[{0}]\t", i);
-                for (int j = 0; j < value.Size; j++)
+                for (int j = 0; j < Values[i].Size; j++)
                 {
-                    Console.Write("{0}:{1}\t", value.getValue(j).Key, value.getValue(j).Value);
+                    Console.Write("{0}:{1}\t", Values[i].getValue(j).Key, Values[i].getValue(j).Value);
                 }
                 Console.WriteLine();
             }
