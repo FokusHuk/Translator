@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Translator
+namespace Translator.Core.Stack_Machine
 {
     class StackMachine
     {
