@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Translator.Core;
 using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
 using Translator.Core.Stack_Machine;
 using Translator.Exceptions;
+using Translator.Infrastructure;
 
 namespace Translator
 {
@@ -14,44 +14,19 @@ namespace Translator
     {
         static void Main(string[] args)
         {
-            string input = "";
-            Console.WriteLine("Program source:");
-            using (StreamReader reader = new StreamReader(Environment.CurrentDirectory + "\\Code.txt"))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string currentLine = reader.ReadLine();
-                    input += currentLine + " ";
-                    Console.WriteLine(currentLine);
-                }
-            }
-            Console.WriteLine("\n");
-            
-            List<Token> tokens = null;
+            var programCode = FileManager.ReadAllFile(Environment.CurrentDirectory + "\\Templates\\Code.txt");
 
-            Lexer lexer = new Lexer();
+            DisplayManager.DisplayProgramCode(programCode);
+            
             Parser parser = new Parser();
             SyntacticalAnalyzer syntAnalyzer = new SyntacticalAnalyzer();
             StackMachine stackMachine = new StackMachine();
 
             // Получение списка токенов лексером
-            try
-            {
-                tokens = lexer.execute(input);
-            }
-            catch (LexemNotFoundException excp)
-            {
-                Console.WriteLine("Лексема \"{0}\" не была распознана.", excp.Value);
-                Console.ReadKey();
-                Environment.Exit(-1);
-            }
+            var tokens = Lexer.GetTokensFromExpression(programCode);
 
             // Вывод списка токенов
-            Console.WriteLine("Lexer results:");
-            foreach (Token token in tokens)
-            {
-                Console.WriteLine("{0}\t<==>\t{1}", token.value , token.lexem.name);
-            }
+            DisplayManager.DisplayLexerResults(tokens);
 
             // Проверка корректности выражения парсером
             Console.WriteLine("\nParser results:");

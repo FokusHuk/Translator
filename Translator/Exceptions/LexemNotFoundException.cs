@@ -4,11 +4,9 @@ namespace Translator.Exceptions
 {
     class LexemNotFoundException: Exception
     {
-        public string Value { get; set; }
-
         public LexemNotFoundException(string value)
+        :base($"Lexem \"{value}\" not recognized")
         {
-            Value = value;
         }
     }
 }

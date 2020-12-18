@@ -4,33 +4,28 @@ using Translator.Exceptions;
 
 namespace Translator.Core.Lexer
 {
-    class Lexer
+    public static class Lexer
     {
-        public Lexer()
+        public static List<Token> GetTokensFromExpression(string expression)
         {
-            
-        }
-
-        public List<Token> execute(string expression)
-        {
-            List<Token> tokens = new List<Token>();
-            Stack<Token> matches = new Stack<Token>();
-            List<Lexem> lexems = Lexem.getList();
-            string substring = "";
-            bool endOfLexem;
-            int maxSearchRange = 2;
-            int searchIndex = 0;
+            var tokens = new List<Token>();
+            var matches = new Stack<Token>();
+            var lexems = Lexem.GetAll();
+            var subexpression = "";
+            var endOfLexem = true;
+            var maxSearchRange = 2;
+            var searchIndex = 0;
 
             for (int i = 0; i < expression.Length; i++)
             {
-                substring += expression[i];
                 endOfLexem = true;
+                subexpression += expression[i];
 
                 foreach (Lexem lexem in lexems)
                 {
-                    if (Regex.IsMatch(substring, lexem.value))
+                    if (Regex.IsMatch(subexpression, lexem.Value))
                     {
-                        matches.Push(new Token(substring, lexem));
+                        matches.Push(new Token(subexpression, lexem));
                         endOfLexem = false;
                     }
                 }
@@ -40,7 +35,7 @@ namespace Translator.Core.Lexer
                     if (matches.Count != 0)
                     {
                         tokens.Add(matches.Peek());
-                        substring = "";
+                        subexpression = "";
                         matches.Clear();
                         searchIndex = 0;
                     }
@@ -49,21 +44,18 @@ namespace Translator.Core.Lexer
                         searchIndex++;
                         if (searchIndex == maxSearchRange)
                         {
-                            throw new LexemNotFoundException(substring);
+                            throw new LexemNotFoundException(subexpression);
                         }
-                        else
-                        {
-                            continue;
-                        }
+
+                        continue;
                     }
 
                     if (endOfLexem)
                     {
                         i--;
                     }
-                }              
+                }
             }
-            
 
             return tokens;
         }

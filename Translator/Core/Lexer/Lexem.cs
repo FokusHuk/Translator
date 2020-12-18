@@ -2,15 +2,15 @@
 
 namespace Translator.Core.Lexer
 {
-    class Lexem
+    public class Lexem
     {
-        public string name { get; set; }
-        public string value { get; set; }
+        public string Name { get; }
+        public string Value { get; }
 
         public Lexem(string name, string value)
         {
-            this.name = name;
-            this.value = value;
+            Name = name;
+            Value = value;
         }
 
         public static readonly Lexem VAR = new Lexem("VAR", @"^([a-zA-Z]+)$");
@@ -50,7 +50,7 @@ namespace Translator.Core.Lexer
         public static readonly Lexem TRANS_LBL = new Lexem("TRANS_LBL", "");
         public static readonly Lexem FUNC = new Lexem("FUNC", "");
 
-        public static List<Lexem> getList()
+        public static List<Lexem> GetAll()
         {
             return new List<Lexem>
             {

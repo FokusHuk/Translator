@@ -3,7 +3,7 @@ using Translator.Core.Lexer;
 
 namespace Translator.Core
 {
-    class Token
+    public class Token
     {
         public string value { get; set; }
         public Lexem lexem { get; set; }       
@@ -16,7 +16,7 @@ namespace Translator.Core
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", value, lexem.name);
+            return String.Format("{0} - {1}", value, lexem.Name);
         }
     }
 }

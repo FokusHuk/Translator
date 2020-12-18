@@ -54,6 +54,8 @@
     <Compile Include="Exceptions\LexemNotFoundException.cs" />
     <Compile Include="Exceptions\TypeNotRecognizedException.cs" />
     <Compile Include="Exceptions\VariableNotFoundException.cs" />
+    <Compile Include="Infrastructure\DisplayManager.cs" />
+    <Compile Include="Infrastructure\FileManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

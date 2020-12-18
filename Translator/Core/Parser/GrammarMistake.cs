@@ -18,7 +18,7 @@ namespace Translator.Core.Parser
 
         public override string ToString()
         {
-            return String.Format("Mistake: in position {0} ({1}). Lexem {2} expected, but {3} founded", Position, FixedToken.value, RequiredLexem.name, FixedToken.lexem.name);
+            return String.Format("Mistake: in position {0} ({1}). Lexem {2} expected, but {3} founded", Position, FixedToken.value, RequiredLexem.Name, FixedToken.lexem.Name);
         }
     }
 }
