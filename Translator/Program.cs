@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Newtonsoft.Json;
 using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
@@ -11,7 +13,10 @@ namespace Translator
     {
         static void Main(string[] args)
         {
-            var programCode = FileManager.ReadAllFile(Environment.CurrentDirectory + "\\Templates\\Code.txt");
+            var settingInJson = File.ReadAllText("appsettings.json");
+            var settings =  JsonConvert.DeserializeObject<TranslatorSettings>(settingInJson);
+            
+            var programCode = FileManager.ReadAllFile(settings.SourceFilePath);
             
             var parser = new Parser();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
