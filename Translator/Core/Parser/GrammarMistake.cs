@@ -3,11 +3,11 @@ using Translator.Core.Lexer;
 
 namespace Translator.Core.Parser
 {
-    struct GrammarMistake
+    public struct GrammarMistake
     {
-        public int Position { get; set; }
-        public Token FixedToken { get; set; }
-        public Lexem RequiredLexem { get; set; }
+        public int Position { get; }
+        public Token FixedToken { get; }
+        public Lexem RequiredLexem { get; }
 
         public GrammarMistake(int position, Token fixedToken, Lexem requiredLexem)
         {
@@ -18,7 +18,7 @@ namespace Translator.Core.Parser
 
         public override string ToString()
         {
-            return String.Format("Mistake: in position {0} ({1}). Lexem {2} expected, but {3} founded", Position, FixedToken.value, RequiredLexem.Name, FixedToken.lexem.Name);
+            return String.Format("Mistake: in position {0} ({1}). Lexem {2} expected, but {3} founded", Position, FixedToken.Value, RequiredLexem.Name, FixedToken.Lexem.Name);
         }
     }
 }

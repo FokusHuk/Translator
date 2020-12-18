@@ -45,6 +45,7 @@
     <Compile Include="Core\Lexer\Lexer.cs" />
     <Compile Include="Core\Parser\GrammarMistake.cs" />
     <Compile Include="Core\Parser\Parser.cs" />
+    <Compile Include="Core\Parser\ParserResults.cs" />
     <Compile Include="Core\Stack Machine\StackMachine.cs" />
     <Compile Include="Core\Token.cs" />
     <Compile Include="DataStructures\DLLNode.cs" />

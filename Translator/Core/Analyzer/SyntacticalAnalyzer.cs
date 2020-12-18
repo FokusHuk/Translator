@@ -39,7 +39,7 @@ namespace Translator.Core.Analyzer
 
         private bool simpleExpression()
         {
-            Lexem currentLexem = tokens[pointer].lexem;
+            Lexem currentLexem = tokens[pointer].Lexem;
 
             if (currentLexem == Lexem.DIGIT || currentLexem == Lexem.VAR)
             {
@@ -66,7 +66,7 @@ namespace Translator.Core.Analyzer
             {
                 bracketIndex--;
 
-                while (stack.Count != 0 && stack.Peek().lexem != Lexem.LB)
+                while (stack.Count != 0 && stack.Peek().Lexem != Lexem.LB)
                 {
                     POLIS.Add(stack.Pop());
                 }
@@ -96,7 +96,7 @@ namespace Translator.Core.Analyzer
                 pointer ++;
                 stack.Push(tokens[pointer]);
                 pointer++;
-                while (tokens[pointer].lexem != Lexem.EOL)
+                while (tokens[pointer].Lexem != Lexem.EOL)
                 {
                     simpleExpression();
                 }
@@ -116,7 +116,7 @@ namespace Translator.Core.Analyzer
             else if (currentLexem == Lexem.LIST_KW || currentLexem == Lexem.HT_KW)
             {
                 POLIS.Add(tokens[pointer]);
-                while (tokens[pointer].lexem != Lexem.VAR)
+                while (tokens[pointer].Lexem != Lexem.VAR)
                 {
                     pointer++;
                 }
@@ -140,19 +140,19 @@ namespace Translator.Core.Analyzer
             stack.Push(tokens[pointer]);
             pointer++;
 
-            if (func.lexem == Lexem.INSERT_KW)
+            if (func.Lexem == Lexem.INSERT_KW)
             {
-                while (tokens[pointer].lexem != Lexem.COMMA)
+                while (tokens[pointer].Lexem != Lexem.COMMA)
                 {
                     simpleExpression();
                 }
-                while (stack.Peek().lexem != Lexem.LB)
+                while (stack.Peek().Lexem != Lexem.LB)
                 {
                     POLIS.Add(stack.Pop());
                 }
                 pointer++;
 
-                while (tokens[pointer].lexem != Lexem.EOL)
+                while (tokens[pointer].Lexem != Lexem.EOL)
                 {
                     simpleExpression();
                 }
@@ -191,27 +191,27 @@ namespace Translator.Core.Analyzer
 
             innerExpression();
 
-            while (tokens[pointer].lexem == Lexem.SPC)
+            while (tokens[pointer].Lexem == Lexem.SPC)
             {
                 pointer++;
             }
 
-            if (tokens[pointer].lexem == Lexem.ELSE_KW)
+            if (tokens[pointer].Lexem == Lexem.ELSE_KW)
             {
                 pointer++;
                 int elseStartPosition = POLIS.Count;
                 POLIS.Add(new Token("", Lexem.TRANS_LBL));
                 POLIS.Add(new Token("!", Lexem.UNC_TRANS));
 
-                POLIS[ifStartPosition].value = POLIS.Count.ToString();
+                POLIS[ifStartPosition].Value = POLIS.Count.ToString();
 
                 innerExpression();
 
-                POLIS[elseStartPosition].value = POLIS.Count.ToString();
+                POLIS[elseStartPosition].Value = POLIS.Count.ToString();
             }
             else
             {
-                POLIS[ifStartPosition].value = POLIS.Count.ToString();
+                POLIS[ifStartPosition].Value = POLIS.Count.ToString();
             }
         }
 
@@ -230,7 +230,7 @@ namespace Translator.Core.Analyzer
             POLIS.Add(new Token(startingPosition.ToString(), Lexem.TRANS_LBL));
             POLIS.Add(new Token("!", Lexem.UNC_TRANS));
 
-            POLIS[endPosition].value = POLIS.Count.ToString();
+            POLIS[endPosition].Value = POLIS.Count.ToString();
         }
 
         private void forExpression()
@@ -240,14 +240,14 @@ namespace Translator.Core.Analyzer
             int bodyTransition;
             int iterationPosition;
 
-            while(tokens[pointer].lexem != Lexem.LB)
+            while(tokens[pointer].Lexem != Lexem.LB)
             {
                 pointer++;
             }
             pointer++;
 
             // for (i = 0;
-            while (tokens[pointer].lexem != Lexem.EOL)
+            while (tokens[pointer].Lexem != Lexem.EOL)
             {
                 simpleExpression();
             }
@@ -257,7 +257,7 @@ namespace Translator.Core.Analyzer
             startPosition = POLIS.Count;
 
             // i < n;
-            while (tokens[pointer].lexem != Lexem.EOL)
+            while (tokens[pointer].Lexem != Lexem.EOL)
             {
                 simpleExpression();
             }
@@ -283,10 +283,10 @@ namespace Translator.Core.Analyzer
 
             POLIS.Add(new Token(startPosition.ToString(), Lexem.TRANS_LBL));
             POLIS.Add(new Token("!", Lexem.UNC_TRANS));
-            POLIS[bodyTransition].value = POLIS.Count.ToString();
+            POLIS[bodyTransition].Value = POLIS.Count.ToString();
 
             // { body }
-            while (tokens[pointer].lexem != Lexem.RSB)
+            while (tokens[pointer].Lexem != Lexem.RSB)
             {
                 simpleExpression();
             }
@@ -294,13 +294,13 @@ namespace Translator.Core.Analyzer
 
             POLIS.Add(new Token(iterationPosition.ToString(), Lexem.TRANS_LBL));
             POLIS.Add(new Token("!", Lexem.UNC_TRANS));
-            POLIS[conditionTransition].value = POLIS.Count.ToString();
+            POLIS[conditionTransition].Value = POLIS.Count.ToString();
         }
 
         private void conditionalExpression()
         {
             pointer++;
-            while (tokens[pointer].lexem != Lexem.LSB)
+            while (tokens[pointer].Lexem != Lexem.LSB)
             {
                 simpleExpression();
             }
@@ -309,7 +309,7 @@ namespace Translator.Core.Analyzer
         private void innerExpression()
         {
             pointer++;
-            while (tokens[pointer].lexem != Lexem.RSB)
+            while (tokens[pointer].Lexem != Lexem.RSB)
             {
                 simpleExpression();
             }
@@ -322,7 +322,7 @@ namespace Translator.Core.Analyzer
             int op1Weight = 0;
             int op2Weight = 0;
 
-            switch (op1.value)
+            switch (op1.Value)
             {
                 case "=": op1Weight = 1; break;
                 case ">": op1Weight = 1; break;
@@ -337,7 +337,7 @@ namespace Translator.Core.Analyzer
                 case "/": op1Weight = 4; break;
             }
 
-            switch (op2.value)
+            switch (op2.Value)
             {
                 case "=": op2Weight = 1; break;
                 case ">": op1Weight = 1; break;

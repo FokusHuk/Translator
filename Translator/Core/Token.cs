@@ -1,22 +1,21 @@
-﻿using System;
-using Translator.Core.Lexer;
+﻿using Translator.Core.Lexer;
 
 namespace Translator.Core
 {
     public class Token
     {
-        public string value { get; set; }
-        public Lexem lexem { get; set; }       
+        public string Value { get; set; }
+        public Lexem Lexem { get; }       
 
         public Token(string value, Lexem lexem)
         {
-            this.lexem = lexem;
-            this.value = value;
+            Lexem = lexem;
+            Value = value;
         }
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", value, lexem.Name);
+            return $"{Value} - {Lexem.Name}";
         }
     }
 }

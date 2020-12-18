@@ -24,20 +24,16 @@ namespace Translator
 
             // Получение списка токенов лексером
             var tokens = Lexer.GetTokensFromExpression(programCode);
-
-            // Вывод списка токенов
+            
             DisplayManager.DisplayLexerResults(tokens);
 
             // Проверка корректности выражения парсером
-            Console.WriteLine("\nParser results:");
-            bool parserResult = parser.check(tokens);
-            Console.WriteLine(parserResult);
-            if (!parserResult)
+            var parserResults = parser.Check(tokens);
+            
+            DisplayManager.DisplayParserResults(parserResults);
+            
+            if (!parserResults.IsValid)
             {
-                Console.WriteLine("\nСтек ошибок");
-                while (parser.Mistakes.Count != 0)
-                    Console.WriteLine(parser.Mistakes.Pop());
-                Console.ReadKey();
                 Environment.Exit(-1);
             }
 
@@ -60,7 +56,7 @@ namespace Translator
                 for (; i < i_pos; i++)
                 {
                     Console.Write("{0}", i);
-                    for (int j = 0; j < POLIS[i].value.Length + 3 - i.ToString().Length; j++)
+                    for (int j = 0; j < POLIS[i].Value.Length + 3 - i.ToString().Length; j++)
                     {
                         Console.Write(" ");
                     }
@@ -70,7 +66,7 @@ namespace Translator
                 i -= delta;
                 for (; i < i_pos; i++)
                 {
-                    Console.Write("{0}   ", POLIS[i].value);
+                    Console.Write("{0}   ", POLIS[i].Value);
                 }
                 Console.WriteLine();
                 Console.WriteLine();

@@ -32,23 +32,23 @@ namespace Translator.Core.Stack_Machine
             POLIS.Add(new Token("$", Lexem.END));
             pointer = 0;
 
-            while (POLIS[pointer].lexem != Lexem.END)
+            while (POLIS[pointer].Lexem != Lexem.END)
             {
-                Lexem currentLexem = POLIS[pointer].lexem;
+                Lexem currentLexem = POLIS[pointer].Lexem;
 
                 if (currentLexem == Lexem.VAR)
                 {
-                    stack.Push(POLIS[pointer].value);
+                    stack.Push(POLIS[pointer].Value);
                 }
                 else if (currentLexem == Lexem.DIGIT)
                 {
-                    stack.Push(Convert.ToDouble(POLIS[pointer].value));
+                    stack.Push(Convert.ToDouble(POLIS[pointer].Value));
                 }
                 else if (currentLexem == Lexem.OP)
                 {
                     double param2 = getStackParam();
                     double param1 = getStackParam();
-                    stack.Push(executeArithmeticOperation(param1, param2, POLIS[pointer].value));
+                    stack.Push(executeArithmeticOperation(param1, param2, POLIS[pointer].Value));
                 }
                 else if (currentLexem == Lexem.ASSIGN_OP)
                 {
@@ -59,11 +59,11 @@ namespace Translator.Core.Stack_Machine
                 {
                     double param2 = getStackParam();
                     double param1 = getStackParam();
-                    stack.Push(executeLogicOperation(param1, param2, POLIS[pointer].value));
+                    stack.Push(executeLogicOperation(param1, param2, POLIS[pointer].Value));
                 }
                 else if (currentLexem == Lexem.TRANS_LBL)
                 {
-                    stack.Push(Convert.ToInt32(POLIS[pointer].value));
+                    stack.Push(Convert.ToInt32(POLIS[pointer].Value));
                 }
                 else if (currentLexem == Lexem.F_TRANS)
                 {
@@ -87,7 +87,7 @@ namespace Translator.Core.Stack_Machine
                 {
                     pointer++;
                     
-                    if (POLIS[pointer].lexem == Lexem.OUT_KW)
+                    if (POLIS[pointer].Lexem == Lexem.OUT_KW)
                     {
                         Console.WriteLine(getStackParam());
                     }
@@ -99,12 +99,12 @@ namespace Translator.Core.Stack_Machine
                 }
                 else if (currentLexem == Lexem.LIST_KW)
                 {
-                    Lists.Add(POLIS[pointer + 1].value, new DoublyLinkedList<double>());
+                    Lists.Add(POLIS[pointer + 1].Value, new DoublyLinkedList<double>());
                     pointer++;
                 }
                 else if (currentLexem == Lexem.HT_KW)
                 {
-                    HTables.Add(POLIS[pointer + 1].value, new HashTable());
+                    HTables.Add(POLIS[pointer + 1].Value, new HashTable());
                     pointer++;
                 }
 
@@ -114,7 +114,7 @@ namespace Translator.Core.Stack_Machine
 
         private void collectionFunction()
         {
-            if (POLIS[pointer].lexem == Lexem.INSERT_KW)
+            if (POLIS[pointer].Lexem == Lexem.INSERT_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());               
                 if (Lists.ContainsKey(objectName))
@@ -130,7 +130,7 @@ namespace Translator.Core.Stack_Machine
                     HTables[objectName].insert(key, value);
                 }
             }
-            else if (POLIS[pointer].lexem == Lexem.DISPLAY_KW)
+            else if (POLIS[pointer].Lexem == Lexem.DISPLAY_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 if (Lists.ContainsKey(objectName))
@@ -142,12 +142,12 @@ namespace Translator.Core.Stack_Machine
                     HTables[objectName].display();
                 }
             }
-            else if (POLIS[pointer].lexem == Lexem.CLEAR_KW)
+            else if (POLIS[pointer].Lexem == Lexem.CLEAR_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 Lists[objectName].clear();
             }
-            else if (POLIS[pointer].lexem == Lexem.DELETE_KW)
+            else if (POLIS[pointer].Lexem == Lexem.DELETE_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 int param = (int)getStackParam();
@@ -160,27 +160,27 @@ namespace Translator.Core.Stack_Machine
                     HTables[objectName].delete(param);
                 }
             }
-            else if (POLIS[pointer].lexem == Lexem.GET_VALUE_KW)
+            else if (POLIS[pointer].Lexem == Lexem.GET_VALUE_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 int index = (int)getStackParam();
                 double value = Lists[objectName].getValue(index);
                 stack.Push(value);
             }
-            else if (POLIS[pointer].lexem == Lexem.GET_INDEX_KW)
+            else if (POLIS[pointer].Lexem == Lexem.GET_INDEX_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 double value = getStackParam();
                 int index = Lists[objectName].getIndex(value);
                 stack.Push(index);
             }
-            else if (POLIS[pointer].lexem == Lexem.SIZE_KW)
+            else if (POLIS[pointer].Lexem == Lexem.SIZE_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 int size = Lists[objectName].Size;
                 stack.Push(size);
             }
-            else if (POLIS[pointer].lexem == Lexem.SEARCH_KW)
+            else if (POLIS[pointer].Lexem == Lexem.SEARCH_KW)
             {
                 string objectName = Convert.ToString(stack.Pop());
                 int key = (int)getStackParam();
