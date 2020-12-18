@@ -7,13 +7,6 @@ namespace Translator.Infrastructure
 {
     public static class DisplayManager
     {
-        public static void DisplayProgramCode(string programCode)
-        {
-            Console.WriteLine("Program code:");
-            Console.WriteLine(programCode);
-            Console.WriteLine("\n");
-        }
-        
         public static void DisplayLexerResults(IEnumerable<Token> tokens)
         {
             Console.WriteLine("Lexer results:");
