@@ -9,7 +9,6 @@ namespace Translator.Core.Analyzer
         private List<Token> tokens;
         private int pointer;
         private Stack<Token> stack;
-
         private int bracketIndex;
 
         public SyntacticalAnalyzer()
@@ -18,8 +17,9 @@ namespace Translator.Core.Analyzer
             stack = new Stack<Token>();
         }
 
-        public List<Token> convert(List<Token> tokens)
+        public List<Token> Convert(List<Token> tokens)
         {
+            tokens.Add(new Token("$", Lexem.END));
             this.tokens = tokens;
 
             POLIS.Clear();

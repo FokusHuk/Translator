@@ -34,5 +34,49 @@ namespace Translator.Infrastructure
                     Console.WriteLine(results.Mistakes.Pop());
             }
         }
+
+        public static void DisplayExpressionInPolishNotation(List<Token> POLIS)
+        {
+            Console.WriteLine("\nSyntactical analyzer results:");
+            Console.WriteLine("POLIS: ");
+            int i = 0;
+            int widthOfDisplayingText = 25;
+            while (i < POLIS.Count)
+            {
+                int i_pos = i + widthOfDisplayingText;
+                if (i_pos > POLIS.Count)
+                {
+                    widthOfDisplayingText -= i_pos - POLIS.Count;
+                    i_pos = POLIS.Count;                   
+                }
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                for (; i < i_pos; i++)
+                {
+                    Console.Write("{0}", i);
+                    for (int j = 0; j < POLIS[i].Value.Length + 3 - i.ToString().Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.Write("\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                i -= widthOfDisplayingText;
+                for (; i < i_pos; i++)
+                {
+                    Console.Write("{0}   ", POLIS[i].Value);
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+            }
+        }
+
+        public static void DisplayVariablesAfterCalculations(Dictionary<string, object> variables)
+        {
+            Console.WriteLine("\nVariables:");
+            foreach (var variable in variables)
+            {
+                Console.WriteLine($"{variable.Key}: {variable.Value}");
+            }
+        }
     }
 }

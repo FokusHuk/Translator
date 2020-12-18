@@ -4,11 +4,9 @@ namespace Translator.Exceptions
 {
     class TypeNotRecognizedException: Exception
     {
-        public object Value { get; set; }
-
         public TypeNotRecognizedException(object value)
+        : base($"Тип переменной \"{value}\" не был распознан ({value.GetType()}).")
         {
-            Value = value;
         }
     }
 }

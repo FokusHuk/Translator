@@ -4,11 +4,9 @@ namespace Translator.Exceptions
 {
     class VariableNotFoundException: Exception
     {
-        public string Value { get; set; }
-
         public VariableNotFoundException(string value)
+        : base($"Отсутствует объявление переменной \"{value}\"")
         {
-            Value = value;
         }
     }
 }
