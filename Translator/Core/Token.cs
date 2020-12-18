@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Translator.Core.Lexer;
 
-namespace Translator
+namespace Translator.Core
 {
     class Token
     {

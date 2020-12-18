@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using Translator.Core;
+using Translator.Core.Analyzer;
+using Translator.Core.Lexer;
+using Translator.Core.Parser;
 using Translator.Core.Stack_Machine;
+using Translator.Exceptions;
 
 namespace Translator
 {

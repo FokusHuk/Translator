@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Translator
+namespace Translator.DataStructures
 {
     class HashTable
     {

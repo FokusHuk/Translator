@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Translator
+namespace Translator.Exceptions
 {
     class LexemNotFoundException: Exception
     {

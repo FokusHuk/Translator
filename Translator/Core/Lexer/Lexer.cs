@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Translator.Exceptions;
 
-namespace Translator
+namespace Translator.Core.Lexer
 {
     class Lexer
     {
