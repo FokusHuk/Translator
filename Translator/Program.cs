@@ -5,6 +5,7 @@ using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
 using Translator.Core.Stack_Machine;
+using Translator.Core.Triads_Representation;
 using Translator.Infrastructure;
 
 namespace Translator
@@ -38,6 +39,15 @@ namespace Translator
             
             stackMachine.calculate(POLIS);
             DisplayManager.DisplayVariablesAfterCalculations(stackMachine.Variables);
+            
+            var triadsHandler = new TriadsHandler();
+            var triads = triadsHandler.GetTriadsFromPolis(POLIS);
+            Console.WriteLine("\nTriads:");
+            var i = 0;
+            foreach (var triad in triads)
+            {
+                Console.WriteLine(i++ + " " + triad);
+            }
         }
     }
 }

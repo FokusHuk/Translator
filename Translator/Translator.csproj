@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Translator</RootNamespace>
     <AssemblyName>Translator</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -52,6 +52,10 @@
     <Compile Include="Core\Parser\ParserResults.cs" />
     <Compile Include="Core\Stack Machine\StackMachine.cs" />
     <Compile Include="Core\Token.cs" />
+    <Compile Include="Core\Triads Representation\Triad.cs" />
+    <Compile Include="Core\Triads Representation\TriadOperand.cs" />
+    <Compile Include="Core\Triads Representation\TriadsHandler.cs" />
+    <Compile Include="Core\Triads Representation\TriadType.cs" />
     <Compile Include="DataStructures\DLLNode.cs" />
     <Compile Include="DataStructures\DoublyLinkedList.cs" />
     <Compile Include="DataStructures\HashTable.cs" />
