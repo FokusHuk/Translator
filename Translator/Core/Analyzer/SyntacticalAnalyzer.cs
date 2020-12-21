@@ -34,7 +34,6 @@ namespace Translator.Core.Analyzer
         private void expression()
         {
             while (simpleExpression()) { }
-            POLIS.Add(new Token("$", Lexem.END));
         }
 
         private bool simpleExpression()
