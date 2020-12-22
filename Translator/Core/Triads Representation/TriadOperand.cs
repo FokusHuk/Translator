@@ -3,12 +3,12 @@
     public class TriadOperand
     {
         public string Value { get; set; }
-        public bool IsLink { get; }
+        public bool IsLinkToAnotherTriad { get; }
 
-        public TriadOperand(string value, bool isLink)
+        public TriadOperand(string value, bool isLinkToAnotherTriad)
         {
             Value = value;
-            IsLink = isLink;
+            IsLinkToAnotherTriad = isLinkToAnotherTriad;
         }
     }
 }

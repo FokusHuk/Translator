@@ -1,37 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Translator.Core.Lexer;
 
 namespace Translator.Core.Triads_Representation
 {
     public class TriadsHandler
     {
-        private struct Label
+        private readonly struct TriadWithUnprocessedLabel
         {
-            public string PolisIndex { get; set; }
-            public int TriadIndex { get; set; }
+            public int TriadIndex { get; }
+            public bool IsLeftOperandWithLabel { get; }
+            public bool IsRightOperandWithLabel { get; }
 
-            public Label(string polisIndex, int triadIndex)
+            public TriadWithUnprocessedLabel(int triadIndex, bool isLeftOperandWithLabel, bool isRightOperandWithLabel)
             {
-                PolisIndex = polisIndex;
                 TriadIndex = triadIndex;
+                IsLeftOperandWithLabel = isLeftOperandWithLabel;
+                IsRightOperandWithLabel = isRightOperandWithLabel;
+            }
+        }
+
+        private readonly struct TriadWithPolisIndex
+        {
+            public int TriadIndex { get; }
+            public int PolisIndex { get; }
+
+            public TriadWithPolisIndex(int triadIndex, int polisIndex)
+            {
+                TriadIndex = triadIndex;
+                PolisIndex = polisIndex;
             }
         }
 
         private List<Triad> Triads;
-        private Dictionary<string, string> Labels;
-        private List<int> TriadIndexesInPolis;
-        private Dictionary<string, bool> TriadOperandsWithLabel;
+        private List<TriadWithPolisIndex> TriadsIndexesInPolis;
+        private List<TriadWithUnprocessedLabel> TriadsWithUnprocessedLabel;
         private List<Token> Polis;
         private Stack<TriadOperand> Stack;
-        private string LastTriadIndex => (Triads.Count - 1).ToString();
+        private int LastTriadIndex => Triads.Count - 1;
 
         public TriadsHandler()
         {
             Triads = new List<Triad>();
-            Labels = new Dictionary<string, string>();
-            TriadIndexesInPolis = new List<int>();
-            TriadOperandsWithLabel = new Dictionary<string, bool>();
+            TriadsIndexesInPolis = new List<TriadWithPolisIndex>();
+            TriadsWithUnprocessedLabel = new List<TriadWithUnprocessedLabel>();
             Stack = new Stack<TriadOperand>();
         }
         
@@ -40,27 +52,12 @@ namespace Translator.Core.Triads_Representation
             Initialize();
             this.Polis = Polis;
 
-            for (int i = 0; i < Polis.Count; i++)
+            foreach (var token in Polis)
             {
-                ProcessPolisSymbol(i);
+                ProcessPolisToken(token);
             }
-// 1 5 9 16
-// 14
-            foreach (var key in TriadOperandsWithLabel.Keys)
-            {
-                if (TriadOperandsWithLabel[key])
-                {
-                    foreach (var triadIndexInPolis in TriadIndexesInPolis)
-                    {
-                        if (triadIndexInPolis >= Convert.ToInt32(Triads[Convert.ToInt32(key)].RightOperand.Value))
-                        {
-                            Triads[Convert.ToInt32(key)].RightOperand.Value =
-                                TriadIndexesInPolis.IndexOf(triadIndexInPolis).ToString();
-                            break;
-                        }
-                    }
-                }
-            }
+
+            PatchUnprocessedLabels();
 
             return Triads;
         }
@@ -68,75 +65,101 @@ namespace Translator.Core.Triads_Representation
         private void Initialize()
         {
             Triads.Clear();
-            Labels.Clear();
+            TriadsIndexesInPolis.Clear();
+            TriadsWithUnprocessedLabel.Clear();
             Stack.Clear();
         }
 
-        private void ProcessPolisSymbol(int index)
+        private void PatchUnprocessedLabels()
         {
-            var currentToken = Polis[index];
+            foreach (var triadWithUnpatchedLabel in TriadsWithUnprocessedLabel)
+            {
+                if (triadWithUnpatchedLabel.IsLeftOperandWithLabel)
+                {
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value);
+                    var labelIndexInTriads = TriadsIndexesInPolis
+                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
+                        .TriadIndex;
+                    Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value = labelIndexInTriads.ToString();
+                }
 
-            if (currentToken.Lexem == Lexem.VAR || currentToken.Lexem == Lexem.DIGIT || currentToken.Lexem == Lexem.TRANS_LBL)
-            {
-                Stack.Push(new TriadOperand(currentToken.Value, false));
-            }
-            else if (currentToken.Lexem == Lexem.OP || currentToken.Lexem == Lexem.COMP_OP)
-            {
-                TriadIndexesInPolis.Add(index);
-                Triads.Add(CreateTriad(2, index, currentToken));
-                Stack.Push(new TriadOperand(LastTriadIndex, true));
-            }
-            else if (currentToken.Lexem == Lexem.ASSIGN_OP)
-            {
-                TriadIndexesInPolis.Add(index);
-                Triads.Add(CreateTriad(2, index, currentToken));
-            }
-            else if (currentToken.Lexem == Lexem.F_TRANS)
-            {
-                TriadIndexesInPolis.Add(index);
-                var rightOperand = Stack.Pop();
-                var leftOperand = Stack.Pop();
-                var triad = new Triad(leftOperand, rightOperand, currentToken, GetTriadType(index));
-                Triads.Add(triad);
-                TriadOperandsWithLabel[LastTriadIndex] = true;
-            }
-            else if (currentToken.Lexem == Lexem.UNC_TRANS)
-            {
-                TriadIndexesInPolis.Add(index);
-                var operand = Stack.Pop();
-                var triad = new Triad(null, operand, currentToken, GetTriadType(index));
-                Triads.Add(triad);
-                TriadOperandsWithLabel[LastTriadIndex] = true;
-            }
-            else if (currentToken.Lexem == Lexem.END)
-            {
-                TriadIndexesInPolis.Add(index);
-                var triad = new Triad(null, null, currentToken, GetTriadType(index));
-                Triads.Add(triad);
+                
+                if (triadWithUnpatchedLabel.IsRightOperandWithLabel)
+                {
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value);
+                    var labelIndexInTriads = TriadsIndexesInPolis
+                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
+                        .TriadIndex;
+                    Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value = labelIndexInTriads.ToString();
+                }
             }
         }
 
-        private TriadType GetTriadType(int tokenIndex)
+        private void ProcessPolisToken(Token token)
         {
-            if (tokenIndex == 0)
+            if (token.Lexem == Lexem.VAR || token.Lexem == Lexem.DIGIT || token.Lexem == Lexem.TRANS_LBL)
+            {
+                Stack.Push(new TriadOperand(token.Value, false));
+            }
+            else if (token.Lexem == Lexem.OP || token.Lexem == Lexem.COMP_OP)
+            {
+                CreateTriadAndSaveIndex(2, token);
+                Stack.Push(new TriadOperand(LastTriadIndex.ToString(), true));
+            }
+            else if (token.Lexem == Lexem.ASSIGN_OP)
+            {
+                CreateTriadAndSaveIndex(2, token);
+            }
+            else if (token.Lexem == Lexem.F_TRANS)
+            {
+                CreateTriadAndSaveIndex(2, token);
+                TriadsWithUnprocessedLabel.Add(new TriadWithUnprocessedLabel(LastTriadIndex, false, true));
+            }
+            else if (token.Lexem == Lexem.UNC_TRANS)
+            {
+                CreateTriadAndSaveIndex(1, token);
+                TriadsWithUnprocessedLabel.Add(new TriadWithUnprocessedLabel(LastTriadIndex, false, true));
+            }
+            else if (token.Lexem == Lexem.END)
+            {
+                CreateTriadAndSaveIndex(0, token);
+            }
+        }
+
+        private void CreateTriadAndSaveIndex(int operandsCount, Token token)
+        {
+            var newTriad = CreateTriadByOperandsCount(operandsCount, token);
+            Triads.Add(newTriad);
+            TriadsIndexesInPolis.Add(new TriadWithPolisIndex(LastTriadIndex, GetPolisIndexByToken(token)));
+        }
+
+        private Triad CreateTriadByOperandsCount(int operandsCount, Token token)
+        {
+            var polisIndex = GetPolisIndexByToken(token);
+            switch (operandsCount)
+            {
+                case 2:
+                    var rightOperand = Stack.Pop();
+                    var leftOperand = Stack.Pop();
+                    return new Triad(leftOperand, rightOperand, token, GetTriadType(polisIndex));
+                case 1:
+                    var operand = Stack.Pop();
+                    return new Triad(null, operand, token, GetTriadType(polisIndex));
+                default:
+                    return new Triad(null, null, token, GetTriadType(polisIndex));
+            }
+        }
+
+        private int GetPolisIndexByToken(Token token) => Polis.IndexOf(token);
+
+        private TriadType GetTriadType(int polisIndex)
+        {
+            if (polisIndex == 0)
                 return TriadType.Start;
-            if (tokenIndex == Polis.Count - 1)
+            if (polisIndex == Polis.Count - 1)
                 return TriadType.End;
             
             return TriadType.Process;
-        }
-
-        private Triad CreateTriad(int operandsCount, int index, Token currentToken)
-        {
-            if (operandsCount == 2)
-            {
-                var rightOperand = Stack.Pop();
-                var leftOperand = Stack.Pop();
-                return new Triad(leftOperand, rightOperand, currentToken, GetTriadType(index));
-            }
-
-            var operand = Stack.Pop();
-            return new Triad(null, operand, currentToken, GetTriadType(index));
         }
     }
 }
