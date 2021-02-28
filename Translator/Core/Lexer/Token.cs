@@ -1,6 +1,4 @@
-﻿using Translator.Core.Lexer;
-
-namespace Translator.Core
+﻿namespace Translator.Core.Lexer
 {
     public class Token
     {

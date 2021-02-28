@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Translator.Core.Lexer;
+using Translator.Core.TriadsRepresentation.Entities;
 
-namespace Translator.Core.Triads_Representation
+namespace Translator.Core.TriadsRepresentation
 {
     public class TriadsHandler
     {

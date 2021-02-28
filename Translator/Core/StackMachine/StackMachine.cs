@@ -4,7 +4,7 @@ using Translator.Core.Lexer;
 using Translator.DataStructures;
 using Translator.Exceptions;
 
-namespace Translator.Core.Stack_Machine
+namespace Translator.Core.StackMachine
 {
     class StackMachine
     {

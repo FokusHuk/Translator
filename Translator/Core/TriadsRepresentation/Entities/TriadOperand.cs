@@ -1,4 +1,4 @@
-﻿namespace Translator.Core.Triads_Representation
+﻿namespace Translator.Core.TriadsRepresentation.Entities
 {
     public class TriadOperand
     {

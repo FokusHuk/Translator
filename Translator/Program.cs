@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
-using Translator.Core.Stack_Machine;
-using Translator.Core.Triads_Representation;
+using Translator.Core.StackMachine;
+using Translator.Core.TriadsRepresentation;
 using Translator.Infrastructure;
 
 namespace Translator

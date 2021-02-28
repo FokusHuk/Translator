@@ -1,4 +1,6 @@
-﻿namespace Translator.Core.Triads_Representation
+﻿using Translator.Core.Lexer;
+
+namespace Translator.Core.TriadsRepresentation.Entities
 {
     public class Triad
     {
