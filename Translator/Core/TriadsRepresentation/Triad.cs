@@ -29,7 +29,9 @@
 
         public override string ToString()
         {
-            return $"({LeftOperand?.Value}, {RightOperand?.Value}, {Operation.Value})";
+            var left = LeftOperand != null && LeftOperand.IsLinkToAnotherTriad ? "." + LeftOperand?.Value : LeftOperand?.Value;
+            var right = RightOperand != null && RightOperand.IsLinkToAnotherTriad ? "." + RightOperand?.Value : RightOperand?.Value;
+            return $"({left}, {right}, {Operation.Value})";
         }
     }
 }

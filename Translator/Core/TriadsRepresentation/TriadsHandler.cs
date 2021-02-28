@@ -70,31 +70,6 @@ namespace Translator.Core.Triads_Representation
             Stack.Clear();
         }
 
-        private void PatchUnprocessedLabels()
-        {
-            foreach (var triadWithUnpatchedLabel in TriadsWithUnprocessedLabel)
-            {
-                if (triadWithUnpatchedLabel.IsLeftOperandWithLabel)
-                {
-                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value);
-                    var labelIndexInTriads = TriadsIndexesInPolis
-                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
-                        .TriadIndex;
-                    Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value = labelIndexInTriads.ToString();
-                }
-
-                
-                if (triadWithUnpatchedLabel.IsRightOperandWithLabel)
-                {
-                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value);
-                    var labelIndexInTriads = TriadsIndexesInPolis
-                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
-                        .TriadIndex;
-                    Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value = labelIndexInTriads.ToString();
-                }
-            }
-        }
-
         private void ProcessPolisToken(Token token)
         {
             if (token.Lexem == Lexem.VAR || token.Lexem == Lexem.DIGIT || token.Lexem == Lexem.TRANS_LBL)
@@ -160,6 +135,31 @@ namespace Translator.Core.Triads_Representation
                 return TriadType.End;
             
             return TriadType.Process;
+        }
+
+        private void PatchUnprocessedLabels()
+        {
+            foreach (var triadWithUnpatchedLabel in TriadsWithUnprocessedLabel)
+            {
+                if (triadWithUnpatchedLabel.IsLeftOperandWithLabel)
+                {
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value);
+                    var labelIndexInTriads = TriadsIndexesInPolis
+                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
+                        .TriadIndex;
+                    Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value = labelIndexInTriads.ToString();
+                }
+
+                
+                if (triadWithUnpatchedLabel.IsRightOperandWithLabel)
+                {
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value);
+                    var labelIndexInTriads = TriadsIndexesInPolis
+                        .First(triad => triad.PolisIndex >= labelIndexInPolis)
+                        .TriadIndex;
+                    Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value = labelIndexInTriads.ToString();
+                }
+            }
         }
     }
 }
