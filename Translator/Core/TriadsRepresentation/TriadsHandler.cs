@@ -75,12 +75,12 @@ namespace Translator.Core.TriadsRepresentation
         {
             if (token.Lexem == Lexem.VAR || token.Lexem == Lexem.DIGIT || token.Lexem == Lexem.TRANS_LBL)
             {
-                Stack.Push(new TriadOperand(token.Value, false));
+                Stack.Push(new TriadOperand(token, false));
             }
             else if (token.Lexem == Lexem.OP || token.Lexem == Lexem.COMP_OP)
             {
                 CreateTriadAndSaveIndex(2, token);
-                Stack.Push(new TriadOperand(LastTriadIndex.ToString(), true));
+                Stack.Push(new TriadOperand(new Token(LastTriadIndex.ToString(), Lexem.DIGIT), true));
             }
             else if (token.Lexem == Lexem.ASSIGN_OP)
             {
@@ -144,21 +144,21 @@ namespace Translator.Core.TriadsRepresentation
             {
                 if (triadWithUnpatchedLabel.IsLeftOperandWithLabel)
                 {
-                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value);
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Token.Value);
                     var labelIndexInTriads = TriadsIndexesInPolis
                         .First(triad => triad.PolisIndex >= labelIndexInPolis)
                         .TriadIndex;
-                    Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Value = labelIndexInTriads.ToString();
+                    Triads[triadWithUnpatchedLabel.TriadIndex].LeftOperand.Token.Value = labelIndexInTriads.ToString();
                 }
 
                 
                 if (triadWithUnpatchedLabel.IsRightOperandWithLabel)
                 {
-                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value);
+                    var labelIndexInPolis = int.Parse(Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Token.Value);
                     var labelIndexInTriads = TriadsIndexesInPolis
                         .First(triad => triad.PolisIndex >= labelIndexInPolis)
                         .TriadIndex;
-                    Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Value = labelIndexInTriads.ToString();
+                    Triads[triadWithUnpatchedLabel.TriadIndex].RightOperand.Token.Value = labelIndexInTriads.ToString();
                 }
             }
         }

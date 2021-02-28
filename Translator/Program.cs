@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
@@ -22,6 +23,7 @@ namespace Translator
             var parser = new Parser();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var stackMachine = new StackMachine();
+            var triadStackMachine = new TriadsStackMachine();
             
             var tokens = Lexer.GetTokensFromExpression(programCode);
             var parserResults = parser.Check(tokens);
@@ -40,6 +42,7 @@ namespace Translator
             stackMachine.calculate(POLIS);
             DisplayManager.DisplayVariablesAfterCalculations(stackMachine.Variables);
             
+            
             var triadsHandler = new TriadsHandler();
             var triads = triadsHandler.GetTriadsFromPolis(POLIS);
             Console.WriteLine("\nTriads:");
@@ -47,6 +50,14 @@ namespace Translator
             foreach (var triad in triads)
             {
                 Console.WriteLine(i++ + " " + triad);
+            }
+
+            Console.WriteLine();
+            
+            triadStackMachine.Calculate(triads.ToList());
+            foreach (var variable in triadStackMachine.Variables)
+            {
+                Console.WriteLine(variable.Name + " " + variable.Value);
             }
         }
     }

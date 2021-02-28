@@ -1,13 +1,15 @@
-﻿namespace Translator.Core.TriadsRepresentation.Entities
+﻿using Translator.Core.Lexer;
+
+namespace Translator.Core.TriadsRepresentation.Entities
 {
     public class TriadOperand
     {
-        public string Value { get; set; }
+        public Token Token { get; set; }
         public bool IsLinkToAnotherTriad { get; }
 
-        public TriadOperand(string value, bool isLinkToAnotherTriad)
+        public TriadOperand(Token token, bool isLinkToAnotherTriad)
         {
-            Value = value;
+            Token = token;
             IsLinkToAnotherTriad = isLinkToAnotherTriad;
         }
     }

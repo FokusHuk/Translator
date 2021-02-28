@@ -31,8 +31,8 @@ namespace Translator.Core.TriadsRepresentation.Entities
 
         public override string ToString()
         {
-            var left = LeftOperand != null && LeftOperand.IsLinkToAnotherTriad ? "." + LeftOperand?.Value : LeftOperand?.Value;
-            var right = RightOperand != null && RightOperand.IsLinkToAnotherTriad ? "." + RightOperand?.Value : RightOperand?.Value;
+            var left = LeftOperand != null && LeftOperand.IsLinkToAnotherTriad ? "." + LeftOperand?.Token.Value : LeftOperand?.Token.Value;
+            var right = RightOperand != null && RightOperand.IsLinkToAnotherTriad ? "." + RightOperand?.Token.Value : RightOperand?.Token.Value;
             return $"({left}, {right}, {Operation.Value})";
         }
     }
