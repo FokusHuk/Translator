@@ -5,7 +5,7 @@ namespace Translator.Core.TriadsRepresentation.Entities
     public class TriadOperand
     {
         public Token Token { get; set; }
-        public bool IsLinkToAnotherTriad { get; }
+        public bool IsLinkToAnotherTriad { get; set; }
 
         public TriadOperand(Token token, bool isLinkToAnotherTriad)
         {

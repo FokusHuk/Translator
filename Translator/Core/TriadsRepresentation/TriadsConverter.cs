@@ -5,7 +5,7 @@ using Translator.Core.TriadsRepresentation.Entities;
 
 namespace Translator.Core.TriadsRepresentation
 {
-    public class TriadsHandler
+    public class TriadsConverter
     {
         private readonly struct TriadWithUnprocessedLabel
         {
@@ -40,18 +40,23 @@ namespace Translator.Core.TriadsRepresentation
         private Stack<TriadOperand> Stack;
         private int LastTriadIndex => Triads.Count - 1;
 
-        public TriadsHandler()
+        private List<bool> PolisConditionIndexes;
+        public List<bool> TriadsConditionIndexes;
+
+        public TriadsConverter()
         {
             Triads = new List<Triad>();
             TriadsIndexesInPolis = new List<TriadWithPolisIndex>();
             TriadsWithUnprocessedLabel = new List<TriadWithUnprocessedLabel>();
             Stack = new Stack<TriadOperand>();
+            TriadsConditionIndexes = new List<bool>();
         }
         
-        public IEnumerable<Triad> GetTriadsFromPolis(List<Token> Polis)
+        public IEnumerable<Triad> GetTriadsFromPolis(List<Token> Polis, List<bool> PolisConditionIndexes)
         {
-            Initialize();
             this.Polis = Polis;
+            this.PolisConditionIndexes = PolisConditionIndexes;
+            Initialize();
 
             foreach (var token in Polis)
             {
@@ -69,6 +74,12 @@ namespace Translator.Core.TriadsRepresentation
             TriadsIndexesInPolis.Clear();
             TriadsWithUnprocessedLabel.Clear();
             Stack.Clear();
+
+            TriadsConditionIndexes = new List<bool>();
+            for (int i = 0; i < PolisConditionIndexes.Count; i++)
+            {
+                TriadsConditionIndexes.Add(false);
+            }
         }
 
         private void ProcessPolisToken(Token token)
@@ -102,11 +113,18 @@ namespace Translator.Core.TriadsRepresentation
             }
         }
 
+        private void CheckCurrentTokenIndexForConditionIndexes(int tokenIndex)
+        {
+            if (PolisConditionIndexes[tokenIndex])
+                TriadsConditionIndexes[Triads.Count - 1] = true;
+        }
+
         private void CreateTriadAndSaveIndex(int operandsCount, Token token)
         {
             var newTriad = CreateTriadByOperandsCount(operandsCount, token);
             Triads.Add(newTriad);
             TriadsIndexesInPolis.Add(new TriadWithPolisIndex(LastTriadIndex, GetPolisIndexByToken(token)));
+            CheckCurrentTokenIndexForConditionIndexes(GetPolisIndexByToken(token));
         }
 
         private Triad CreateTriadByOperandsCount(int operandsCount, Token token)

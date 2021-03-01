@@ -3,7 +3,7 @@
     public class Token
     {
         public string Value { get; set; }
-        public Lexem Lexem { get; }       
+        public Lexem Lexem { get; set; }
 
         public Token(string value, Lexem lexem)
         {

@@ -24,6 +24,8 @@ namespace Translator
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var stackMachine = new StackMachine();
             var triadStackMachine = new TriadsStackMachine();
+            var triadsConverter = new TriadsConverter();
+            var triadsOptimizer = new TriadsOptimizer();
             
             var tokens = Lexer.GetTokensFromExpression(programCode);
             var parserResults = parser.Check(tokens);
@@ -34,6 +36,12 @@ namespace Translator
             }
             
             var POLIS = syntacticalAnalyzer.Convert(tokens);
+            
+            var triads = triadsConverter
+                .GetTriadsFromPolis(POLIS, syntacticalAnalyzer.PolisConditionsIndexes)
+                .ToList();
+            
+            var optimizedTriads = triadsOptimizer.Optimize(triads, triadsConverter.TriadsConditionIndexes);
 
             DisplayManager.DisplayLexerResults(tokens);
             DisplayManager.DisplayParserResults(parserResults);
@@ -41,20 +49,11 @@ namespace Translator
             
             stackMachine.calculate(POLIS);
             DisplayManager.DisplayVariablesAfterCalculations(stackMachine.Variables);
+            DisplayManager.DisplayTriads(triads, "Triads");
+            DisplayManager.DisplayTriads(triads, "Optimized triads");
             
-            
-            var triadsHandler = new TriadsHandler();
-            var triads = triadsHandler.GetTriadsFromPolis(POLIS);
-            Console.WriteLine("\nTriads:");
-            var i = 0;
-            foreach (var triad in triads)
-            {
-                Console.WriteLine(i++ + " " + triad);
-            }
-
-            Console.WriteLine();
-            
-            triadStackMachine.Calculate(triads.ToList());
+            triadStackMachine.Calculate(optimizedTriads);
+            Console.WriteLine("Result:");
             foreach (var variable in triadStackMachine.Variables)
             {
                 Console.WriteLine(variable.Name + " " + variable.Value);

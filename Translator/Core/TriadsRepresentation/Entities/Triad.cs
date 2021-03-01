@@ -29,11 +29,20 @@ namespace Translator.Core.TriadsRepresentation.Entities
             Type = type;
         }
 
+
+        public static Triad Empty => EmptyTriad;
+
         public override string ToString()
         {
             var left = LeftOperand != null && LeftOperand.IsLinkToAnotherTriad ? "." + LeftOperand?.Token.Value : LeftOperand?.Token.Value;
             var right = RightOperand != null && RightOperand.IsLinkToAnotherTriad ? "." + RightOperand?.Token.Value : RightOperand?.Token.Value;
             return $"({left}, {right}, {Operation.Value})";
         }
+
+        private static readonly Triad EmptyTriad = new Triad(
+            new TriadOperand(new Token("", Lexem.VAR), false),
+            new TriadOperand(new Token("", Lexem.VAR), false),
+            new Token("", Lexem.OP),
+            TriadType.Process);
     }
 }

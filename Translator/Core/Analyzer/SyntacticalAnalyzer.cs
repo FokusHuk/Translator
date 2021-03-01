@@ -11,10 +11,13 @@ namespace Translator.Core.Analyzer
         private Stack<Token> stack;
         private int bracketIndex;
 
+        public List<bool> PolisConditionsIndexes;
+
         public SyntacticalAnalyzer()
         {
             POLIS = new List<Token>();
             stack = new Stack<Token>();
+            PolisConditionsIndexes = new List<bool>();
         }
 
         public List<Token> Convert(List<Token> tokens)
@@ -22,8 +25,10 @@ namespace Translator.Core.Analyzer
             tokens.Add(new Token("$", Lexem.END));
             this.tokens = tokens;
 
+            Initialize();
+
             POLIS.Clear();
-            stack.Clear();        
+            stack.Clear();
             pointer = 0;
 
             expression();
@@ -80,15 +85,21 @@ namespace Translator.Core.Analyzer
             }
             else if (currentLexem == Lexem.IF_KW)
             {
+                var pointerBeforeCondition = POLIS.Count;
                 ifExpression();
+                MarkConditionIndexes(pointerBeforeCondition, POLIS.Count - 1);
             }
             else if (currentLexem == Lexem.WHILE_KW)
             {
+                var pointerBeforeCondition = POLIS.Count;
                 whileExpression();
+                MarkConditionIndexes(pointerBeforeCondition, POLIS.Count - 1);
             }
             else if (currentLexem == Lexem.FOR_KW)
             {
+                var pointerBeforeCondition = POLIS.Count;
                 forExpression();
+                MarkConditionIndexes(pointerBeforeCondition, POLIS.Count - 1);
             }
             else if (currentLexem == Lexem.OUT_KW)
             {
@@ -352,6 +363,24 @@ namespace Translator.Core.Analyzer
             }
 
             return op1Weight <= op2Weight;
+        }
+
+        private void Initialize()
+        {
+            PolisConditionsIndexes = new List<bool>();
+            
+            for (int i = 0; i < tokens.Count * 2; i++)
+            {
+                PolisConditionsIndexes.Add(false);
+            }
+        }
+
+        private void MarkConditionIndexes(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                PolisConditionsIndexes[i] = true;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Translator.Core;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
+using Translator.Core.TriadsRepresentation.Entities;
 
 namespace Translator.Infrastructure
 {
@@ -71,6 +72,17 @@ namespace Translator.Infrastructure
             {
                 Console.WriteLine($"{variable.Key}: {variable.Value}");
             }
+        }
+
+        public static void DisplayTriads(List<Triad> triads, string header)
+        {
+            Console.WriteLine($"\n{header}:");
+            var i = 0;
+            foreach (var triad in triads)
+            {
+                Console.WriteLine($"[{i++}]" + " " + triad);
+            }
+            Console.WriteLine();
         }
     }
 }
