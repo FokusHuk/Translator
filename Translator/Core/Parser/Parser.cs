@@ -92,7 +92,7 @@ namespace Translator.Core.Parser
 
             spc();
 
-            if (assignExpr() || condition_expr() || whileExpr() || lang_func() || listExpr() || htExpr() || forExpr() || return_expr())
+            if (assignExpr() || condition_expr() || whileExpr() || lang_func() || listExpr() || htExpr() || forExpr() || return_expr() || inl_ext_func())
             {
                 return true;
             }
@@ -205,7 +205,7 @@ namespace Translator.Core.Parser
 
             return true;
         }
-// return_expr -> RETURN_KW SPC* value_expr? SPC* EOL SPC*
+        
         private bool return_expr()
         {
             int currentIteration = _iteration;
@@ -231,6 +231,19 @@ namespace Translator.Core.Parser
                 return false;
             }
             
+            return true;
+        }
+        
+        private bool inl_ext_func()
+        {
+            int currentIteration = _iteration;
+            
+            if (!ext_func() || !spc() || !eol() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
             return true;
         }
         
@@ -491,7 +504,7 @@ namespace Translator.Core.Parser
         {
             int currentIteration = _iteration;
 
-            if (htSearch() || listGet() || var() || digit() || bracketExpr())
+            if (ext_func() || htSearch() || listGet() || var() || digit() || bracketExpr())
             {
                 return true;
             }
@@ -534,6 +547,33 @@ namespace Translator.Core.Parser
             }
 
             return true;
+        }
+        
+        private bool ext_func()
+        {
+            int currentIteration = _iteration;
+
+            if (!var() || !spc() || !lb() || !spc() || !ext_func_args() || !spc() || !rb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+        
+        private bool ext_func_args()
+        {
+            if (!valueExpr() || !spc())
+                return true;
+
+            while (true)
+            {
+                if (!comma())
+                    return true;
+                if (!spc() || !valueExpr() || !spc())
+                    return false;
+            }
         }
         
         #endregion

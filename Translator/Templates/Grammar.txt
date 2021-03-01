@@ -2,15 +2,17 @@
 
 lang -> function+
 
-function -> func_type SPC* VAR SPC* LB SPC* (VAR SPC* (COMMA SPC* VAR SPC*)*)? SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
+function -> func_type SPC* VAR SPC* LB SPC* function_args SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
+function_args -> (VAR SPC* (COMMA SPC* VAR SPC*)*)?
 func_type -> VOID_T|FUNC_T
-expr -> assign_expr|condition_expr|while_expr|lang_func|list_expr|ht_expr|for_expr|return_expr
+expr -> assign_expr|condition_expr|while_expr|lang_func|list_expr|ht_expr|for_expr|return_expr|inl_ext_func
 
 assign_expr -> VAR SPC* ASSIGN_OP SPC* value_expr SPC* EOL SPC*
 condition_expr -> IF_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC* (ELSE_KW SPC* LSB SPC* expr* SPC* RSB)? SPC*
 while_expr -> WHILE_KW SPC* LB SPC* logic_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
 for_expr -> FOR_KW SPC* LB SPC* assign_expr logic_expr EOL SPC* VAR SPC* ASSIGN_OP SPC* value_expr SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
 return_expr -> RETURN_KW SPC* value_expr? SPC* EOL SPC*
+inl_ext_func -> ext_func SPC* EOL SPC*
 
 lang_func -> out_func
 out_func -> PRINT_KW LB SPC* value_expr SPC* RB SPC* EOL SPC*
@@ -39,9 +41,11 @@ func_name -> CLEAR_KW|DISPLAY_KW
 
 
 value_expr -> value SPC* (OP SPC* value)*
-value -> VAR|DIGIT|bracket_expr|list_get
+value -> ext_func|VAR|DIGIT|bracket_expr|list_get
 bracket_expr -> LB SPC* value_expr SPC* RB SPC*
 logic_expr -> value_expr SPC* COMP_OP SPC* value_expr SPC*
+ext_func -> VAR SPC* LB SPC* function_args SPC* RB SPC*
+ext_func_args -> (value_expr SPC* (COMMA SPC* value_expr SPC*)*)?
 
 
 VAR	-> ^([a-zA-Z]+)$

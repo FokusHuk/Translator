@@ -27,6 +27,8 @@ namespace Translator
             var triadStackMachine = new TriadsStackMachine();
 
             var tokens = Lexer.GetTokensFromExpression(source);
+            DisplayManager.DisplayLexerResults(tokens);
+            
             var parserResults = parser.Check(tokens);
             
             DisplayManager.DisplayParserResults(parserResults);
