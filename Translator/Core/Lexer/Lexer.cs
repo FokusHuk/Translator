@@ -34,6 +34,15 @@ namespace Translator.Core.Lexer
                 {
                     if (matches.Count != 0)
                     {
+                        if (matches.Peek().Lexem == Lexem.LB)
+                        {
+                            var tempIndex = tokens.Count - 1;
+                            while (tokens[tempIndex].Lexem == Lexem.SPC && tempIndex > 0) tempIndex--;
+                            if (tokens[tempIndex].Lexem == Lexem.VAR)
+                            {
+                                tokens[tempIndex].Lexem = Lexem.EF_NAME;
+                            }
+                        }
                         tokens.Add(matches.Peek());
                         subexpression = "";
                         matches.Clear();

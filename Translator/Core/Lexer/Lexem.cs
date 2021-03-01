@@ -53,6 +53,7 @@ namespace Translator.Core.Lexer
         public static readonly Lexem VOID_T = new Lexem("VOID_T", @"^void$");
         public static readonly Lexem FUNC_T = new Lexem("FUNC_T", @"^func$");
         public static readonly Lexem RETURN_KW = new Lexem("RETURN_KW", @"^return$");
+        public static readonly Lexem EF_NAME = new Lexem("EXT_FUNC_NAME", @"^([a-zA-Z]+)$");
 
         public static List<Lexem> GetAll()
         {

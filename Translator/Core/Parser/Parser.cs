@@ -42,7 +42,7 @@ namespace Translator.Core.Parser
         {
             int currentIteration = _iteration;
 
-            if (!func_type() || !spc() || !var() || !spc() || !lb() || !spc() || !function_args() || !spc() ||
+            if (!func_type() || !spc() || !ef_name() || !spc() || !lb() || !spc() || !function_args() || !spc() ||
                 !rb() || !spc() || !lsb() || !spc())
             {
                 reset(currentIteration);
@@ -553,7 +553,7 @@ namespace Translator.Core.Parser
         {
             int currentIteration = _iteration;
 
-            if (!var() || !spc() || !lb() || !spc() || !ext_func_args() || !spc() || !rb() || !spc())
+            if (!ef_name() || !spc() || !lb() || !spc() || !ext_func_args() || !spc() || !rb() || !spc())
             {
                 reset(currentIteration);
                 return false;
@@ -733,6 +733,11 @@ namespace Translator.Core.Parser
         private bool func_t()
         {
             return match(Lexem.FUNC_T);
+        }
+
+        private bool ef_name()
+        {
+            return match(Lexem.EF_NAME);
         }
         
         #endregion
