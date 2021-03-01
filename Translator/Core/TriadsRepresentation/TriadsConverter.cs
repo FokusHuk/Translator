@@ -52,7 +52,7 @@ namespace Translator.Core.TriadsRepresentation
             TriadsConditionIndexes = new List<bool>();
         }
         
-        public IEnumerable<Triad> GetTriadsFromPolis(List<Token> Polis, List<bool> PolisConditionIndexes)
+        public List<Triad> GetTriadsFromPolis(List<Token> Polis, List<bool> PolisConditionIndexes)
         {
             this.Polis = Polis;
             this.PolisConditionIndexes = PolisConditionIndexes;

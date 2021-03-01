@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Analyzer\SyntacticalAnalyzer.cs" />
+    <Compile Include="Core\Compiler.cs" />
     <Compile Include="Core\Lexer\Lexem.cs" />
     <Compile Include="Core\Lexer\Lexer.cs" />
     <Compile Include="Core\Lexer\Token.cs" />

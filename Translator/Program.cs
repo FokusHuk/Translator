@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using Newtonsoft.Json;
 using Translator.Core;
 using Translator.Core.Analyzer;
@@ -18,20 +20,15 @@ namespace Translator
         {
             var settingInJson = File.ReadAllText("appsettings.json");
             var settings =  JsonConvert.DeserializeObject<TranslatorSettings>(settingInJson);
-            
-            var programCode = FileManager.ReadAllFile(settings.SourceFilePath);
+            var source = FileManager.ReadAllFile(settings.SourceFilePath);
             
             var parser = new Parser();
-            var syntacticalAnalyzer = new SyntacticalAnalyzer();
-            var stackMachine = new StackMachine();
+            var compiler = new Compiler();
             var triadStackMachine = new TriadsStackMachine();
-            var triadsConverter = new TriadsConverter();
-            var triadsOptimizer = new TriadsOptimizer();
-            
-            var tokens = Lexer.GetTokensFromExpression(programCode);
+
+            var tokens = Lexer.GetTokensFromExpression(source);
             var parserResults = parser.Check(tokens);
             
-            DisplayManager.DisplayLexerResults(tokens);
             DisplayManager.DisplayParserResults(parserResults);
             
             if (!parserResults.IsValid)
@@ -41,22 +38,12 @@ namespace Translator
 
             var functionContexts = ContextManager.GetFunctionContexts(tokens);
 
-            var POLIS = syntacticalAnalyzer.Convert(tokens);
+            foreach (var context in functionContexts)
+            {
+                compiler.Compile(context);
+            }
 
-            DisplayManager.DisplayExpressionInPolishNotation(POLIS);
-            
-            stackMachine.calculate(POLIS);
-            DisplayManager.DisplayVariablesAfterCalculations(stackMachine.Variables);
-            
-            var triads = triadsConverter
-                .GetTriadsFromPolis(POLIS, syntacticalAnalyzer.PolisConditionsIndexes)
-                .ToList();
-            DisplayManager.DisplayTriads(triads, "Triads");
-            
-            var optimizedTriads = triadsOptimizer.Optimize(triads, triadsConverter.TriadsConditionIndexes);
-            DisplayManager.DisplayTriads(triads, "Optimized triads");
-            
-            triadStackMachine.Calculate(optimizedTriads);
+            triadStackMachine.Calculate(functionContexts.First().OptimizedTriads);
 
             Console.WriteLine("Triads stack machine result:");
             foreach (var variable in triadStackMachine.Variables)
