@@ -38,6 +38,7 @@ namespace Translator.Core.TriadsRepresentation
         private int CurrentIndex;
 
         public List<Variable> Variables { get; private set; }
+        public string ReturnResult { get; private set; }
         public string Output { get; private set; }
 
         public void Calculate(List<Triad> triads)
@@ -73,6 +74,11 @@ namespace Translator.Core.TriadsRepresentation
                         CurrentIndex = int.Parse(triad.RightOperand.Token.Value);
                         continue;
                     }
+                }
+                else if (triad.Operation.Lexem == Lexem.RETURN_KW)
+                {
+                    ReturnResult = GetTriadOperandValue(triad.RightOperand);
+                    break;
                 }
                 
                 CurrentIndex++;

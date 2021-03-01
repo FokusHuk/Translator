@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Translator.Core.Lexer;
 
 namespace Translator.Core.Analyzer
@@ -81,6 +82,7 @@ namespace Translator.Core.Analyzer
             else if (currentLexem == Lexem.END)
             {
                 freeStack();
+                POLIS.Add(tokens[pointer]);
                 return false;
             }
             else if (currentLexem == Lexem.IF_KW)
@@ -136,6 +138,29 @@ namespace Translator.Core.Analyzer
             else if (currentLexem == Lexem.SPC || currentLexem == Lexem.LSB)
             {
                 pointer++;
+            }
+            // return;     return a + b;
+            else if (currentLexem == Lexem.RETURN_KW)
+            {
+                var tempPointer = pointer + 1;
+                while (tokens[tempPointer].Lexem == Lexem.SPC) tempPointer++;
+                
+                if (tokens[tempPointer].Lexem == Lexem.EOL)
+                {
+                    POLIS.Add(new Token("RET", currentLexem));
+                    pointer = tempPointer + 1;
+                }
+                else
+                {
+                    pointer++;
+                    while (tokens[pointer].Lexem != Lexem.EOL)
+                    {
+                        simpleExpression();
+                    }
+                    freeStack();
+                    POLIS.Add(new Token("RET", currentLexem));
+                    pointer++;
+                }
             }
 
             return true;

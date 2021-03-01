@@ -121,6 +121,42 @@ namespace Translator.Core.TriadsRepresentation
                         OptimizedTriads.Add(triad);
                     }
                 }
+                else if (triad.Operation.Lexem == Lexem.RETURN_KW)
+                {
+                    if (triad.RightOperand.IsLinkToAnotherTriad)
+                    {
+                        var calculatedTriad = CalculatedTriads.FirstOrDefault(t => t.TriadIndex == int.Parse(triad.RightOperand.Token.Value));
+                        if (calculatedTriad == null)
+                        {
+                            OptimizedTriads.Add(triad);
+                        }
+                        else
+                        {
+                            triad.RightOperand.Token.Value = calculatedTriad.Value;
+                            triad.RightOperand.Token.Lexem = Lexem.DIGIT;
+                            triad.RightOperand.IsLinkToAnotherTriad = false;
+                            OptimizedTriads.Add(triad);
+                        }
+                    }
+                    else if (triad.RightOperand.Token.Lexem == Lexem.VAR)
+                    {
+                        var variable = Variables.First(v => v.Name == triad.RightOperand.Token.Value);
+                        if (variable.IsSafe)
+                        {
+                            triad.RightOperand.Token.Value = variable.Value;
+                            triad.RightOperand.Token.Lexem = Lexem.DIGIT;
+                            OptimizedTriads.Add(triad);
+                        }
+                        else
+                        {
+                            OptimizedTriads.Add(triad);
+                        }
+                    }
+                    else
+                    {
+                        OptimizedTriads.Add(triad);
+                    }
+                }
                 else
                 {
                     OptimizedTriads.Add(triad);

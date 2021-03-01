@@ -111,6 +111,10 @@ namespace Translator.Core.TriadsRepresentation
             {
                 CreateTriadAndSaveIndex(0, token);
             }
+            else if (token.Lexem == Lexem.RETURN_KW)
+            {
+                CreateTriadAndSaveIndex(1, token);
+            }
         }
 
         private void CheckCurrentTokenIndexForConditionIndexes(int tokenIndex)

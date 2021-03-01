@@ -43,13 +43,14 @@ namespace Translator
                 compiler.Compile(context);
             }
 
-            triadStackMachine.Calculate(functionContexts.First().OptimizedTriads);
+            triadStackMachine.Calculate(functionContexts.First(c => c.Name == "main").OptimizedTriads);
 
             Console.WriteLine("Triads stack machine result:");
             foreach (var variable in triadStackMachine.Variables)
             {
                 Console.WriteLine(variable.Name + " " + variable.Value);
             }
+            Console.WriteLine($"Return result = {triadStackMachine.ReturnResult}");
         }
     }
 }
