@@ -52,6 +52,8 @@
     <Compile Include="Core\Parser\GrammarMistake.cs" />
     <Compile Include="Core\Parser\Parser.cs" />
     <Compile Include="Core\Parser\ParserResults.cs" />
+    <Compile Include="Core\ProgramContext\ContextManager.cs" />
+    <Compile Include="Core\ProgramContext\FunctionContext.cs" />
     <Compile Include="Core\StackMachine\StackMachine.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\Triad.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\TriadOperand.cs" />

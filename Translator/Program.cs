@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Translator.Core;
 using Translator.Core.Analyzer;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
@@ -32,18 +33,16 @@ namespace Translator
             
             DisplayManager.DisplayLexerResults(tokens);
             DisplayManager.DisplayParserResults(parserResults);
-
-            return;
             
             if (!parserResults.IsValid)
             {
                 Environment.Exit(-1);
             }
-            
+
+            var functionContexts = ContextManager.GetFunctionContexts(tokens);
+
             var POLIS = syntacticalAnalyzer.Convert(tokens);
 
-            DisplayManager.DisplayLexerResults(tokens);
-            DisplayManager.DisplayParserResults(parserResults);
             DisplayManager.DisplayExpressionInPolishNotation(POLIS);
             
             stackMachine.calculate(POLIS);
