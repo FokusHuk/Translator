@@ -20,14 +20,14 @@ namespace Translator.Core.Parser
             _iteration = 0;
             _mistakes.Clear();
 
-            if (!expr())
+            if (!function())
             {
                 return new ParserResults(false, _mistakes);
             }
 
             while (_iteration < tokens.Count)
             {
-                if (!expr())
+                if (!function())
                 {
                     return new ParserResults(false, _mistakes);
                 }
@@ -35,6 +35,54 @@ namespace Translator.Core.Parser
 
             return new ParserResults(true, _mistakes);
         }
+
+        #region Функции
+        
+        private bool function()
+        {
+            int currentIteration = _iteration;
+
+            if (!func_type() || !spc() || !var() || !spc() || !lb() || !spc() || !function_args() || !spc() ||
+                !rb() || !spc() || !lsb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+            
+            while (expr()) { }
+
+            if (!spc() || !rsb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+        
+        private bool function_args()
+        {
+            if (!var() || !spc())
+                return true;
+
+            while (true)
+            {
+                if (!comma())
+                    return true;
+                if (!spc() || !var() || !spc())
+                    return false;
+            }
+        }
+        
+        private bool func_type()
+        {
+            if (void_t() || func_t())
+                return true;
+
+            return false;
+        }
+
+        #endregion
         
         #region Начальные грамматики
 
@@ -44,7 +92,7 @@ namespace Translator.Core.Parser
 
             spc();
 
-            if (assignExpr() || condition_expr() || whileExpr() || function() || listExpr() || htExpr() || forExpr())
+            if (assignExpr() || condition_expr() || whileExpr() || lang_func() || listExpr() || htExpr() || forExpr() || return_expr())
             {
                 return true;
             }
@@ -145,7 +193,7 @@ namespace Translator.Core.Parser
             return true;
         }
 
-        private bool function()
+        private bool lang_func()
         {
             int currentIteration = _iteration;
 
@@ -155,6 +203,34 @@ namespace Translator.Core.Parser
                 return false;
             }
 
+            return true;
+        }
+// return_expr -> RETURN_KW SPC* value_expr? SPC* EOL SPC*
+        private bool return_expr()
+        {
+            int currentIteration = _iteration;
+
+            if (!return_kw() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            if (valueExpr())
+            {
+                if (valueExpr())
+                {
+                    reset(currentIteration);
+                    return false;
+                }
+            }
+
+            if (!spc() || !eol() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+            
             return true;
         }
         
@@ -602,6 +678,21 @@ namespace Translator.Core.Parser
         private bool search_kw()
         {
             return match(Lexem.SEARCH_KW);
+        }
+
+        private bool return_kw()
+        {
+            return match(Lexem.RETURN_KW);
+        }
+
+        private bool void_t()
+        {
+            return match(Lexem.VOID_T);
+        }
+
+        private bool func_t()
+        {
+            return match(Lexem.FUNC_T);
         }
         
         #endregion

@@ -30,18 +30,17 @@ namespace Translator
             var tokens = Lexer.GetTokensFromExpression(programCode);
             var parserResults = parser.Check(tokens);
             
+            DisplayManager.DisplayLexerResults(tokens);
+            DisplayManager.DisplayParserResults(parserResults);
+
+            return;
+            
             if (!parserResults.IsValid)
             {
                 Environment.Exit(-1);
             }
             
             var POLIS = syntacticalAnalyzer.Convert(tokens);
-            
-            var triads = triadsConverter
-                .GetTriadsFromPolis(POLIS, syntacticalAnalyzer.PolisConditionsIndexes)
-                .ToList();
-            
-            var optimizedTriads = triadsOptimizer.Optimize(triads, triadsConverter.TriadsConditionIndexes);
 
             DisplayManager.DisplayLexerResults(tokens);
             DisplayManager.DisplayParserResults(parserResults);
@@ -49,11 +48,18 @@ namespace Translator
             
             stackMachine.calculate(POLIS);
             DisplayManager.DisplayVariablesAfterCalculations(stackMachine.Variables);
+            
+            var triads = triadsConverter
+                .GetTriadsFromPolis(POLIS, syntacticalAnalyzer.PolisConditionsIndexes)
+                .ToList();
             DisplayManager.DisplayTriads(triads, "Triads");
+            
+            var optimizedTriads = triadsOptimizer.Optimize(triads, triadsConverter.TriadsConditionIndexes);
             DisplayManager.DisplayTriads(triads, "Optimized triads");
             
             triadStackMachine.Calculate(optimizedTriads);
-            Console.WriteLine("Result:");
+
+            Console.WriteLine("Triads stack machine result:");
             foreach (var variable in triadStackMachine.Variables)
             {
                 Console.WriteLine(variable.Name + " " + variable.Value);
