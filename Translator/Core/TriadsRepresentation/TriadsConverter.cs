@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Translator.Core.Lexer;
 using Translator.Core.TriadsRepresentation.Entities;
@@ -38,6 +39,7 @@ namespace Translator.Core.TriadsRepresentation
         private List<TriadWithUnprocessedLabel> TriadsWithUnprocessedLabel;
         private List<Token> Polis;
         private Stack<TriadOperand> Stack;
+        private List<FunctionDescription> ProgramFucntions;
         private int LastTriadIndex => Triads.Count - 1;
 
         private List<bool> PolisConditionIndexes;
@@ -52,10 +54,14 @@ namespace Translator.Core.TriadsRepresentation
             TriadsConditionIndexes = new List<bool>();
         }
         
-        public List<Triad> GetTriadsFromPolis(List<Token> Polis, List<bool> PolisConditionIndexes)
+        public List<Triad> GetTriadsFromPolis(
+            List<Token> Polis, 
+            List<bool> PolisConditionIndexes, 
+            List<FunctionDescription> ProgramFucntions)
         {
             this.Polis = Polis;
             this.PolisConditionIndexes = PolisConditionIndexes;
+            this.ProgramFucntions = ProgramFucntions;
             Initialize();
 
             foreach (var token in Polis)
@@ -115,6 +121,36 @@ namespace Translator.Core.TriadsRepresentation
             {
                 CreateTriadAndSaveIndex(1, token);
             }
+            else if (token.Lexem == Lexem.EF_NAME)
+            {
+                var functionDescription = ProgramFucntions.FirstOrDefault(f => f.Name == token.Value);
+                
+                if (functionDescription == null)
+                    throw new InvalidOperationException();
+
+                var args = GetFunctionArguments(functionDescription.ArgsCount);
+                
+                Stack.Push(new TriadOperand(
+                    new Token(
+                        args, 
+                        Lexem.VAR), 
+                    false));
+                
+                CreateTriadAndSaveIndex(1, token);
+                Stack.Push(new TriadOperand(new Token(LastTriadIndex.ToString(), Lexem.DIGIT), true));
+            }
+        }
+
+        private string GetFunctionArguments(int argsCount)
+        {
+            var args = string.Empty;
+
+            for (int i = 0; i < argsCount; i++)
+            {
+                args += Stack.Pop().Token.Value + " ";
+            }
+
+            return args;
         }
 
         private void CheckCurrentTokenIndexForConditionIndexes(int tokenIndex)

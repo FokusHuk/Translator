@@ -38,11 +38,11 @@ namespace Translator
                 Environment.Exit(-1);
             }
 
-            var functionContexts = ContextManager.GetFunctionContexts(tokens);
+            var (functionContexts, functionDescriptions) = ContextManager.GetFunctionContexts(tokens);
 
             foreach (var context in functionContexts)
             {
-                compiler.Compile(context);
+                compiler.Compile(context, functionDescriptions);
             }
 
             triadStackMachine.Calculate(functionContexts.First(c => c.Name == "main").OptimizedTriads);

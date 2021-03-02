@@ -36,12 +36,17 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net20\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +60,7 @@
     <Compile Include="Core\Parser\ParserResults.cs" />
     <Compile Include="Core\ProgramContext\ContextManager.cs" />
     <Compile Include="Core\ProgramContext\FunctionContext.cs" />
+    <Compile Include="Core\ProgramContext\FunctionDescription.cs" />
     <Compile Include="Core\StackMachine\StackMachine.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\Triad.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\TriadOperand.cs" />

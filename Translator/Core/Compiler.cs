@@ -1,4 +1,5 @@
-﻿using Translator.Core.Analyzer;
+﻿using System.Collections.Generic;
+using Translator.Core.Analyzer;
 using Translator.Core.TriadsRepresentation;
 using Translator.Infrastructure;
 
@@ -17,11 +18,11 @@ namespace Translator.Core
             TriadsOptimizer = new TriadsOptimizer();
         }
         
-        public void Compile(FunctionContext context)
+        public void Compile(FunctionContext context, List<FunctionDescription> functionDescriptions)
         {
             var POLIS = SyntacticalAnalyzer.Convert(context.Tokens);
             DisplayManager.DisplayExpressionInPolishNotation(POLIS);
-            var triads = TriadsConverter.GetTriadsFromPolis(POLIS, SyntacticalAnalyzer.PolisConditionsIndexes);
+            var triads = TriadsConverter.GetTriadsFromPolis(POLIS, SyntacticalAnalyzer.PolisConditionsIndexes, functionDescriptions);
             DisplayManager.DisplayTriads(triads, "Triads");
             var optimizedTriads = TriadsOptimizer.Optimize(triads, TriadsConverter.TriadsConditionIndexes);
             DisplayManager.DisplayTriads(optimizedTriads, "Optimized triads");

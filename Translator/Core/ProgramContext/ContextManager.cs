@@ -7,8 +7,9 @@ namespace Translator.Core
 {
     public static class ContextManager
     {
-        public static List<FunctionContext> GetFunctionContexts(List<Token> tokens)
+        public static (List<FunctionContext>, List<FunctionDescription>) GetFunctionContexts(List<Token> tokens)
         {
+            var functionDescriptions = new List<FunctionDescription>();
             var contexts = new List<FunctionContext>();
 
             var startIndex = 0;
@@ -20,9 +21,11 @@ namespace Translator.Core
                 var context = GetContext(tokens.Skip(startIndex).Take(lastContextIndex - startIndex + 1).ToList());
                 contexts.Add(context);
                 startIndex = lastContextIndex + 1;
+                
+                functionDescriptions.Add(new FunctionDescription(context.Name, context.Arguments.Length));
             }
 
-            return contexts;
+            return (contexts, functionDescriptions);
         }
 
         private static int GetLastContextIndex(int startIndex, List<Token> tokens)
