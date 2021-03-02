@@ -76,7 +76,8 @@ namespace Translator.Core.Analyzer
                     POLIS.Add(stack.Pop());
                 }
 
-                stack.Pop();
+                if (stack.Count != 0)
+                    stack.Pop();
                 pointer++;
             }
             else if (currentLexem == Lexem.END)
@@ -139,7 +140,6 @@ namespace Translator.Core.Analyzer
             {
                 pointer++;
             }
-            // return;     return a + b;
             else if (currentLexem == Lexem.RETURN_KW)
             {
                 var tempPointer = pointer + 1;
@@ -161,6 +161,24 @@ namespace Translator.Core.Analyzer
                     POLIS.Add(new Token("RET", currentLexem));
                     pointer++;
                 }
+            }
+            else if (currentLexem == Lexem.EF_NAME)
+            {
+                int stackCount = stack.Count;
+                var functToken = tokens[pointer];
+                while (tokens[pointer].Lexem != Lexem.LB) pointer++;
+                pointer++;
+                while (tokens[pointer].Lexem != Lexem.RB)
+                {
+                    simpleExpression();
+                    if (tokens[pointer].Lexem == Lexem.COMMA)
+                    {
+                        freeStack(stackCount);
+                        pointer++;
+                    }
+                }
+                freeStack(stackCount);
+                POLIS.Add(functToken);
             }
 
             return true;
@@ -211,6 +229,14 @@ namespace Translator.Core.Analyzer
         private void freeStack()
         {
             while (stack.Count != 0)
+            {
+                POLIS.Add(stack.Pop());
+            }
+        }
+
+        private void freeStack(int count)
+        {
+            while (stack.Count != count)
             {
                 POLIS.Add(stack.Pop());
             }
