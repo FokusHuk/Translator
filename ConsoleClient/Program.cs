@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Contexts;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using Newtonsoft.Json;
+using Translator;
 using Translator.Core;
-using Translator.Core.Analyzer;
 using Translator.Core.FunctionResultParameters;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
-using Translator.Core.ProgramContext;
-using Translator.Core.StackMachine;
 using Translator.Core.TriadsRepresentation;
-using Translator.Core.TriadsRepresentation.Entities;
 using Translator.Infrastructure;
 
-namespace Translator
+namespace ConsoleClient
 {
     class Program
     {

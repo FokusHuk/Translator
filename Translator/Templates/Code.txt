@@ -1,19 +1,24 @@
 ﻿void main()
 {
-    a = tri(1, 2, 3);
+    first();
+    second();
+    
+    a = 9999999;
+    out(a);
 }
 
-func foo(a)
+async func first()
 {
-    return a + 1;
+    for (i = 0; i < 100; i = i + 1)
+    {
+        out(i);
+    }
 }
 
-func sum(a, b)
+async func second()
 {
-    return foo(a, b);
-}
-
-func tri(a, b, c)
-{
-    return a + b + c;
+    for (i = 101; i < 200; i = i + 1)
+    {
+        out(i);
+    }
 }
