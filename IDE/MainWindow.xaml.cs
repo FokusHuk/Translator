@@ -56,9 +56,10 @@ namespace IDE
                 foreach (var context in functionContexts)
                 {
                     Compiler.Compile(context, functionDescriptions);
-                    Polis.Text = ResultManager.GetExpressionInPolishNotation(context.POLIS);
-                    Triads.Text = ResultManager.GetTriadsResult(context.Triads);
-                    Optimization.Text = ResultManager.GetTriadsResult(context.OptimizedTriads);
+                    var title = $"function: {context.Name}\n\n";
+                    Polis.Text += title + ResultManager.GetExpressionInPolishNotation(context.POLIS) + "\n\n";
+                    Triads.Text += title + ResultManager.GetTriadsResult(context.Triads) + "\n\n";
+                    Optimization.Text += title + ResultManager.GetTriadsResult(context.OptimizedTriads) + "\n\n";
                 }
             }
             catch (Exception exception)
@@ -161,7 +162,7 @@ namespace IDE
                 Variables.Text += variable.Name + "\t" + variable.Value + "\n";
             }
             
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             Output.Text = GlobalOutput.Output;
             

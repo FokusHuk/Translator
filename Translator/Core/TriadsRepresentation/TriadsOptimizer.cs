@@ -121,7 +121,7 @@ namespace Translator.Core.TriadsRepresentation
                         OptimizedTriads.Add(triad);
                     }
                 }
-                else if (triad.Operation.Lexem == Lexem.RETURN_KW)
+                else if (triad.Operation.Lexem == Lexem.RETURN_KW || triad.Operation.Lexem == Lexem.OUT_KW)
                 {
                     if (triad.RightOperand.IsLinkToAnotherTriad)
                     {
