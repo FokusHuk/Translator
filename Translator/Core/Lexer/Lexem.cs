@@ -54,6 +54,7 @@ namespace Translator.Core.Lexer
         public static readonly Lexem FUNC_T = new Lexem("FUNC_T", @"^func$");
         public static readonly Lexem RETURN_KW = new Lexem("RETURN_KW", @"^return$");
         public static readonly Lexem EF_NAME = new Lexem("EXT_FUNC_NAME", @"^([a-zA-Z]+)$");
+        public static readonly Lexem ASYNC_KW = new Lexem("ASYNC_KW", @"^async$");
 
         public static List<Lexem> GetAll()
         {
@@ -61,7 +62,7 @@ namespace Translator.Core.Lexer
             {
                 VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL, 
                 SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
-                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW
+                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW, ASYNC_KW
             };
         }
     }

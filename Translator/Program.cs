@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using Newtonsoft.Json;
 using Translator.Core;
 using Translator.Core.Analyzer;
@@ -66,28 +67,45 @@ namespace Translator
                 }
                 else if (executingContext.Parameters.ResultType == ResultType.Call)
                 {
-                    callStack.Push(currentFunctionContext.GetNewFunctionContext(executingContext));
-
                     var functionContext = functionContexts
                         .First(c => c.Name == executingContext.Parameters.FunctionName);
 
-                    currentFunctionContext = functionContext.GetNewFunctionContext(functionContext.ExecutingContext);
-
-                    // описание функции
-                    var funcDescription = functionDescriptions
-                        .First(f => f.Name == executingContext.Parameters.FunctionName);
-                    
-                    // получить числовые аргументы
-                    var functionArgs = executingContext.Parameters.FunctionArgs
-                        .Split(' ')
-                        .Select(arg => arg.Replace(" ", ""))
-                        .ToList();
-
-                    // добавить переменные из аргументов в variables для функции
-                    for (int i = 0; i < funcDescription.ArgsCount; i++)
+                    if (functionContext.IsAsync)
                     {
-                        currentFunctionContext.ExecutingContext.Variables
-                            .Add(new TriadsStackMachine.Variable(currentFunctionContext.Arguments[i], functionArgs[i]));
+                        var threadFunctionContext = functionContext
+                            .GetNewFunctionContext(functionContext.ExecutingContext);
+
+                        var threadStackMachine = new TriadsStackMachine();
+
+                        var thread = new Thread(() => threadStackMachine.Calculate(threadFunctionContext));
+                        thread.Start();
+
+                        currentFunctionContext.ExecutingContext.CurrentIndex++;
+                    }
+                    else
+                    {
+                        callStack.Push(currentFunctionContext.GetNewFunctionContext(executingContext));
+
+                        currentFunctionContext =
+                            functionContext.GetNewFunctionContext(functionContext.ExecutingContext);
+
+                        // описание функции
+                        var funcDescription = functionDescriptions
+                            .First(f => f.Name == executingContext.Parameters.FunctionName);
+
+                        // получить числовые аргументы
+                        var functionArgs = executingContext.Parameters.FunctionArgs
+                            .Split(' ')
+                            .Select(arg => arg.Replace(" ", ""))
+                            .ToList();
+
+                        // добавить переменные из аргументов в variables для функции
+                        for (int i = 0; i < funcDescription.ArgsCount; i++)
+                        {
+                            currentFunctionContext.ExecutingContext.Variables
+                                .Add(new TriadsStackMachine.Variable(currentFunctionContext.Arguments[i],
+                                    functionArgs[i]));
+                        }
                     }
                 }
                 else if (executingContext.Parameters.ResultType == ResultType.Return)

@@ -22,7 +22,7 @@ namespace Translator.Core
                 contexts.Add(context);
                 startIndex = lastContextIndex + 1;
                 
-                functionDescriptions.Add(new FunctionDescription(context.Name, context.Arguments.Length));
+                functionDescriptions.Add(new FunctionDescription(context.Name, context.Arguments.Length, context.IsAsync));
             }
 
             return (contexts, functionDescriptions);
@@ -47,11 +47,25 @@ namespace Translator.Core
         private static FunctionContext GetContext(List<Token> tokens)
         {
             var tokensWithoutSpaces = tokens.Where(t => t.Lexem != Lexem.SPC).ToList();
-            
-            var name = tokensWithoutSpaces[1].Value;
+
+            string name;
+            int index;
             var arguments = new List<string>();
-            var index = 3;
-            
+            bool isAsync;
+
+            if (tokensWithoutSpaces[0].Lexem == Lexem.ASYNC_KW)
+            {
+                name = tokensWithoutSpaces[2].Value;
+                index = 4;
+                isAsync = true;
+            }
+            else
+            {
+                name = tokensWithoutSpaces[1].Value;
+                index = 3;
+                isAsync = false;
+            }
+
             while (tokensWithoutSpaces[index].Lexem != Lexem.RB)
             {
                 if (tokensWithoutSpaces[index].Lexem == Lexem.VAR)
@@ -63,7 +77,7 @@ namespace Translator.Core
             tokens = tokens.Skip(tokens.FindIndex(t => t.Lexem != Lexem.SPC)).ToList();
             tokens.RemoveAt(tokens.Count - 1);
             
-            return new FunctionContext(name, arguments.ToArray(), tokens);
+            return new FunctionContext(name, arguments.ToArray(), tokens, isAsync);
         }
     }
 }

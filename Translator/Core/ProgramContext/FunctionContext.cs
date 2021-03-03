@@ -13,6 +13,7 @@ namespace Translator.Core
     {
         public string Name { get; set; }
         public string[] Arguments { get; set; }
+        public bool IsAsync { get; }
         public List<Token> Tokens { get; set; }
         public List<Token> POLIS { get; set; }
         public List<Triad> Triads { get; set; }
@@ -20,11 +21,12 @@ namespace Translator.Core
         
         public ExecutingFunctionContext ExecutingContext { get; set; }
 
-        public FunctionContext(string name, string[] arguments, List<Token> tokens)
+        public FunctionContext(string name, string[] arguments, List<Token> tokens, bool isAsync)
         {
             Name = name;
             Arguments = arguments;
             Tokens = tokens;
+            IsAsync = isAsync;
             Initialize();
         }
 
@@ -35,7 +37,7 @@ namespace Translator.Core
 
         public FunctionContext GetNewFunctionContext(ExecutingFunctionContext executingContext)
         {
-            var newContext = new FunctionContext(Name, Arguments, Tokens);
+            var newContext = new FunctionContext(Name, Arguments, Tokens, IsAsync);
             
             var newPolis = new List<Token>();
             foreach (var token in POLIS)

@@ -113,7 +113,8 @@ namespace Translator.Core.TriadsRepresentation
                         args += argument + " ";
                     }
 
-                    args = args.Remove(args.Length - 1);
+                    if (args.Length != 0)
+                        args = args.Remove(args.Length - 1);
                     
                     return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
                         new ProgramContext.FunctionResultParameters(ResultType.Call, triad.Operation.Value, args));

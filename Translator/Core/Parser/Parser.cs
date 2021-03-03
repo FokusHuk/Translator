@@ -20,14 +20,14 @@ namespace Translator.Core.Parser
             _iteration = 0;
             _mistakes.Clear();
 
-            if (!function())
+            if (!function() && !async_func())
             {
                 return new ParserResults(false, _mistakes);
             }
 
             while (_iteration < tokens.Count)
             {
-                if (!function())
+                if (!function() && !async_func())
                 {
                     return new ParserResults(false, _mistakes);
                 }
@@ -52,6 +52,20 @@ namespace Translator.Core.Parser
             while (expr()) { }
 
             if (!spc() || !rsb() || !spc())
+            {
+                reset(currentIteration);
+                return false;
+            }
+
+            return true;
+        }
+        
+        
+        private bool async_func()
+        {
+            int currentIteration = _iteration;
+
+            if (!async_kw() || !spc() || !function())
             {
                 reset(currentIteration);
                 return false;
@@ -246,7 +260,7 @@ namespace Translator.Core.Parser
 
             return true;
         }
-        
+
         #endregion
 
         #region Хеш-таблица
@@ -738,6 +752,11 @@ namespace Translator.Core.Parser
         private bool ef_name()
         {
             return match(Lexem.EF_NAME);
+        }
+
+        private bool async_kw()
+        {
+            return match(Lexem.ASYNC_KW);
         }
         
         #endregion

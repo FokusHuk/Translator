@@ -1,7 +1,8 @@
 ﻿Grammar.
 
-lang -> function+
+lang -> function+|async_func
 
+async_func - > ASYNC_KW SPC* function
 function -> func_type SPC* VAR SPC* LB SPC* function_args SPC* RB SPC* LSB SPC* expr* SPC* RSB SPC*
 function_args -> (VAR SPC* (COMMA SPC* VAR SPC*)*)?
 func_type -> VOID_T|FUNC_T
