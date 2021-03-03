@@ -140,6 +140,10 @@ namespace Translator.Core.TriadsRepresentation
                 CreateTriadAndSaveIndex(1, token);
                 Stack.Push(new TriadOperand(new Token(LastTriadIndex.ToString(), Lexem.DIGIT), true));
             }
+            else if (token.Lexem == Lexem.OUT_KW)
+            {
+                CreateTriadAndSaveIndex(1, token);
+            }
         }
 
         private string GetFunctionArguments(int argsCount)

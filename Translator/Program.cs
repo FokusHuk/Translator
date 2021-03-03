@@ -118,7 +118,7 @@ namespace Translator
             }
 
             Console.WriteLine("Triads stack machine result:");
-            foreach (var variable in triadStackMachine.Variables)
+            foreach (var variable in functionContexts[0].ExecutingContext.Variables)
             {
                 Console.WriteLine(variable.Name + " " + variable.Value);
             }

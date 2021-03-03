@@ -118,12 +118,17 @@ namespace Translator.Core.TriadsRepresentation
                     return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
                         new ProgramContext.FunctionResultParameters(ResultType.Call, triad.Operation.Value, args));
                 }
+                else if (triad.Operation.Lexem == Lexem.OUT_KW)
+                {
+                    var value = GetTriadOperandValue(triad.RightOperand);
+                    Console.WriteLine(value);
+                }
                 
                 CurrentIndex++;
             }
 
             return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
-                new ProgramContext.FunctionResultParameters(ResultType.Complete));
+                new ProgramContext.FunctionResultParameters(ResultType.Return));
         }
 
         private void CalculateTriad(Triad triad)
