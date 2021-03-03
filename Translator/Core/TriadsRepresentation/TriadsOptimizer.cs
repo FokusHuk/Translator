@@ -140,8 +140,8 @@ namespace Translator.Core.TriadsRepresentation
                     }
                     else if (triad.RightOperand.Token.Lexem == Lexem.VAR)
                     {
-                        var variable = Variables.First(v => v.Name == triad.RightOperand.Token.Value);
-                        if (variable.IsSafe)
+                        var variable = Variables.FirstOrDefault(v => v.Name == triad.RightOperand.Token.Value);
+                        if (variable != null && variable.IsSafe)
                         {
                             triad.RightOperand.Token.Value = variable.Value;
                             triad.RightOperand.Token.Lexem = Lexem.DIGIT;
@@ -221,8 +221,8 @@ namespace Translator.Core.TriadsRepresentation
 
             if (triadOperand.Token.Lexem == Lexem.VAR)
             {
-                var variable = Variables.First(v => v.Name == triadOperand.Token.Value);
-                if (variable.IsSafe)
+                var variable = Variables.FirstOrDefault(v => v.Name == triadOperand.Token.Value);
+                if (variable != null && variable.IsSafe)
                     return true;
                 return false;
             }

@@ -59,8 +59,11 @@
     <Compile Include="Core\Parser\Parser.cs" />
     <Compile Include="Core\Parser\ParserResults.cs" />
     <Compile Include="Core\ProgramContext\ContextManager.cs" />
+    <Compile Include="Core\ProgramContext\ExecutingFunctionContext.cs" />
     <Compile Include="Core\ProgramContext\FunctionContext.cs" />
     <Compile Include="Core\ProgramContext\FunctionDescription.cs" />
+    <Compile Include="Core\ProgramContext\FunctionResultParameters\FunctionResultParameters.cs" />
+    <Compile Include="Core\ProgramContext\FunctionResultParameters\ResultType.cs" />
     <Compile Include="Core\StackMachine\StackMachine.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\Triad.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\TriadOperand.cs" />

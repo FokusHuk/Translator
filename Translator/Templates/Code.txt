@@ -1,21 +1,19 @@
-﻿htable ht;
-
-ht.insert(5, 3);
-ht.insert(6, 4);
-ht.insert((7 + 3)/2 + 2, 5);
-ht.insert(ht.search(6) * 2, 5);
-
-mult = 1;
-
-for (i = 5; i <= 8; i = i + 1)
+﻿void main()
 {
-mult = mult * ht.search(i);
+    a = tri(1, 2, 3);
 }
 
-out(mult);
+func foo(a)
+{
+    return a + 1;
+}
 
-ht.delete(7);
-ht.insert(7, 4);
-ht.insert(262, 5);
+func sum(a, b)
+{
+    return foo(a, b);
+}
 
-ht.display();
+func tri(a, b, c)
+{
+    return a + b + c;
+}

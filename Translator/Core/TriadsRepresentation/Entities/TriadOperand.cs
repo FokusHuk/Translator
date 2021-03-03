@@ -12,5 +12,10 @@ namespace Translator.Core.TriadsRepresentation.Entities
             Token = token;
             IsLinkToAnotherTriad = isLinkToAnotherTriad;
         }
+
+        public TriadOperand GetCopy()
+        {
+            return new TriadOperand(new Token(Token.Value, Token.Lexem), IsLinkToAnotherTriad);
+        }
     }
 }

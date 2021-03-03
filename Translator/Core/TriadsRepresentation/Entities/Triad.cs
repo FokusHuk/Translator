@@ -4,8 +4,8 @@ namespace Translator.Core.TriadsRepresentation.Entities
 {
     public class Triad
     {
-        public TriadOperand LeftOperand { get; }
-        public TriadOperand RightOperand { get; }
+        public TriadOperand LeftOperand { get; set; }
+        public TriadOperand RightOperand { get; set; }
         public Token Operation { get; }
         public int? Previous { get; set; }
         public int? Next { get; set; }

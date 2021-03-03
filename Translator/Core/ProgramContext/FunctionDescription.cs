@@ -1,4 +1,6 @@
-﻿namespace Translator.Core
+﻿using System.Collections.Generic;
+
+namespace Translator.Core
 {
     public class FunctionDescription
     {
@@ -10,5 +12,6 @@
 
         public string Name { get; }
         public int ArgsCount { get; }
+        public List<string> Args { get; }
     }
 }

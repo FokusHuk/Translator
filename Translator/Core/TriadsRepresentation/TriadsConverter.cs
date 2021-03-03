@@ -76,10 +76,11 @@ namespace Translator.Core.TriadsRepresentation
 
         private void Initialize()
         {
-            Triads.Clear();
-            TriadsIndexesInPolis.Clear();
-            TriadsWithUnprocessedLabel.Clear();
-            Stack.Clear();
+            Triads = new List<Triad>();
+            TriadsIndexesInPolis = new List<TriadWithPolisIndex>();
+            TriadsWithUnprocessedLabel = new List<TriadWithUnprocessedLabel>();
+            Stack = new Stack<TriadOperand>();
+            TriadsConditionIndexes = new List<bool>();
 
             TriadsConditionIndexes = new List<bool>();
             for (int i = 0; i < PolisConditionIndexes.Count; i++)
@@ -143,14 +144,26 @@ namespace Translator.Core.TriadsRepresentation
 
         private string GetFunctionArguments(int argsCount)
         {
-            var args = string.Empty;
+            var args = new List<string>();
 
             for (int i = 0; i < argsCount; i++)
             {
-                args += Stack.Pop().Token.Value + " ";
+                if (Stack.Peek().IsLinkToAnotherTriad)
+                    args.Add("!" + Stack.Pop().Token.Value + " ");
+                else
+                    args.Add(Stack.Pop().Token.Value + " ");
             }
 
-            return args;
+            args.Reverse();
+
+            var ret = string.Empty;
+
+            foreach (var arg in args)
+            {
+                ret += arg;
+            }
+
+            return ret;
         }
 
         private void CheckCurrentTokenIndexForConditionIndexes(int tokenIndex)

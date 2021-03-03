@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Translator.Core.FunctionResultParameters;
 using Translator.Core.Lexer;
+using Translator.Core.ProgramContext;
 using Translator.Core.TriadsRepresentation.Entities;
 
 namespace Translator.Core.TriadsRepresentation
 {
     public class TriadsStackMachine
     {
-        private class TriadWithResult
+        public class TriadWithResult
         {
             public int TriadIndex { get; }
             public string Value { get; set; }
@@ -41,15 +43,15 @@ namespace Translator.Core.TriadsRepresentation
         public string ReturnResult { get; private set; }
         public string Output { get; private set; }
 
-        public void Calculate(List<Triad> triads)
+        public ExecutingFunctionContext Calculate(FunctionContext context)
         {
-            Initialize();
-            Triads = triads;
+            Initialize(context);
+            Triads = context.OptimizedTriads;
 
-            while (triads[CurrentIndex].Type != TriadType.End)
+            while (Triads[CurrentIndex].Type != TriadType.End)
             {
-                var triad = triads[CurrentIndex];
-                
+                var triad = Triads[CurrentIndex];
+               
                 if (triad.Operation.Lexem == Lexem.OP || triad.Operation.Lexem == Lexem.COMP_OP)
                 {
                     CalculateTriad(triad);
@@ -78,11 +80,50 @@ namespace Translator.Core.TriadsRepresentation
                 else if (triad.Operation.Lexem == Lexem.RETURN_KW)
                 {
                     ReturnResult = GetTriadOperandValue(triad.RightOperand);
-                    break;
+
+                    return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
+                        new ProgramContext.FunctionResultParameters(ResultType.Return, ReturnResult));
+                }
+                else if (triad.Operation.Lexem == Lexem.EF_NAME)
+                {
+                    var arguments = triad.RightOperand.Token.Value
+                        .Split(' ')
+                        .Select(arg => arg.Replace(" ", ""))
+                        .Where(arg => arg != "")
+                        .Select(arg =>
+                        {
+                            if (arg[0] == '!')
+                            {
+                                return new TriadOperand(new Token(arg, Lexem.DIGIT), true);
+                            }
+
+                            if (char.IsLetter(arg[0]))
+                            {
+                                return new TriadOperand(new Token(arg, Lexem.VAR), false);
+                            }
+
+                            return new TriadOperand(new Token(arg, Lexem.DIGIT), false);
+                        })
+                        .Select(arg => GetTriadOperandValue(arg))
+                        .ToList();
+
+                    var args = string.Empty;
+                    foreach (var argument in arguments)
+                    {
+                        args += argument + " ";
+                    }
+
+                    args = args.Remove(args.Length - 1);
+                    
+                    return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
+                        new ProgramContext.FunctionResultParameters(ResultType.Call, triad.Operation.Value, args));
                 }
                 
                 CurrentIndex++;
             }
+
+            return new ExecutingFunctionContext(TriadResults, Variables, CurrentIndex,
+                new ProgramContext.FunctionResultParameters(ResultType.Complete));
         }
 
         private void CalculateTriad(Triad triad)
@@ -187,12 +228,12 @@ namespace Translator.Core.TriadsRepresentation
                 TriadResults.Add(new TriadWithResult(GetTriadIndex(triad), result.ToString()));
         }
 
-        private void Initialize()
+        private void Initialize(FunctionContext context)
         {
-            CurrentIndex = 0;
+            CurrentIndex = context.ExecutingContext.CurrentIndex;
             Output = String.Empty;
-            TriadResults = new List<TriadWithResult>();
-            Variables = new List<Variable>();
+            TriadResults = context.ExecutingContext.TriadResults;
+            Variables = context.ExecutingContext.Variables;
         }
     }
 }

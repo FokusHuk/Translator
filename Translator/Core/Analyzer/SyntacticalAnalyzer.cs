@@ -418,6 +418,9 @@ namespace Translator.Core.Analyzer
 
         private void Initialize()
         {
+            POLIS = new List<Token>();
+            stack = new Stack<Token>();
+            PolisConditionsIndexes = new List<bool>();
             PolisConditionsIndexes = new List<bool>();
             
             for (int i = 0; i < tokens.Count * 2; i++)
