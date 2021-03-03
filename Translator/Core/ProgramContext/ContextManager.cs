@@ -36,7 +36,7 @@ namespace Translator.Core
             {
                 if (tokens[i].Lexem == Lexem.LSB) bias++;
                 else if (tokens[i].Lexem == Lexem.RSB) bias--;
-
+                
                 if (bias == 0)
                     return i;
             }

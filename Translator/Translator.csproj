@@ -78,8 +78,10 @@
     <Compile Include="Exceptions\LexemNotFoundException.cs" />
     <Compile Include="Exceptions\TypeNotRecognizedException.cs" />
     <Compile Include="Exceptions\VariableNotFoundException.cs" />
+    <Compile Include="GlobalOutput.cs" />
     <Compile Include="Infrastructure\DisplayManager.cs" />
     <Compile Include="Infrastructure\FileManager.cs" />
+    <Compile Include="Infrastructure\ResultManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TranslatorSettings.cs" />
   </ItemGroup>

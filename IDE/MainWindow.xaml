@@ -10,20 +10,32 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Input" Margin="10,41,10.2,282.2" TextWrapping="Wrap" BorderThickness="2"/>
-        <Button x:Name="Run" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="25" Height="23" RenderTransformOrigin="-1.4,-1.52" BorderThickness="0">
+        <TextBox x:Name="Input" Margin="10,41,10.2,282.2" TextWrapping="Wrap" BorderThickness="2" Text="void main()&#xD;&#xA;{&#xD;&#xA;    first();&#xD;&#xA;    second();&#xD;&#xA;    &#xD;&#xA;    a = 9999999;&#xD;&#xA;    out(a);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;async func first()&#xD;&#xA;{&#xD;&#xA;    for (i = 0; i &lt; 100; i = i + 1)&#xD;&#xA;    {&#xD;&#xA;        out(i);&#xD;&#xA;    }&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;async func second()&#xD;&#xA;{&#xD;&#xA;    for (i = 101; i &lt; 200; i = i + 1)&#xD;&#xA;    {&#xD;&#xA;        out(i);&#xD;&#xA;    }&#xD;&#xA;}" AcceptsTab="True" AcceptsReturn="True" TextOptions.TextFormattingMode="Display"/>
+        <Button x:Name="Run" Click="Run_Click" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="25" Height="23" RenderTransformOrigin="-1.4,-1.52" BorderThickness="0">
             <Image Source="D:\unnamed.jpg" Stretch="Fill"/>
         </Button>
-        <TabControl Margin="10,398,10.2,10" UseLayoutRounding="False" BorderThickness="2">
-            <TabItem x:Name="Lexems" Header="Lexems" Height="23" Margin="-2,-2,-2,0" Width="66" Content=""/>
-            <TabItem x:Name="Polis" Header="POLIS" Width="58"/>
-            <TabItem x:Name="Triads" Header="Triads" Width="52"/>
-            <TabItem x:Name="Optimization" Header="Optimization" Width="90"/>
-            <TabItem x:Name="Output" Header="Output" Width="60"/>
-            <TabItem x:Name="Variables" Header="Variables" Width="70"/>
+        <TabControl x:Name="WorkPanel" Margin="10,398,10.2,10" UseLayoutRounding="False" BorderThickness="2">
+            <TabItem Header="Lexems" Height="23" Margin="-2,-2,-2,0" Width="66">
+                <TextBox x:Name="Lexems" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="POLIS" Width="58">
+                <TextBox x:Name="Polis" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="Triads" Width="52">
+                <TextBox x:Name="Triads" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="Optimization" Width="90">
+                <TextBox x:Name="Optimization" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="Output" Width="60">
+                <TextBox x:Name="Output" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="Variables" Width="70">
+                <TextBox x:Name="Variables" IsReadOnly="True"/>
+            </TabItem>
         </TabControl>
         <Label Content="Build:" HorizontalAlignment="Left" Margin="555,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Label x:Name="Build" Content="Success" HorizontalAlignment="Left" Margin="598,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Build" Content="&#xD;&#xA;" HorizontalAlignment="Left" Margin="598,10,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

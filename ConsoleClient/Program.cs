@@ -40,8 +40,6 @@ namespace ConsoleClient
 
             var (functionContexts, functionDescriptions) = ContextManager.GetFunctionContexts(tokens);
 
-            var t = functionContexts[0].ExecutingContext == functionContexts[1].ExecutingContext;
-            
             foreach (var context in functionContexts)
             {
                 compiler.Compile(context, functionDescriptions);
@@ -134,6 +132,8 @@ namespace ConsoleClient
                 Console.WriteLine(variable.Name + " " + variable.Value);
             }
             Console.WriteLine($"Return result = {functionContexts[0].ExecutingContext.Parameters?.Value}");
+
+            Console.WriteLine(GlobalOutput.Output);
         }
     }
 }

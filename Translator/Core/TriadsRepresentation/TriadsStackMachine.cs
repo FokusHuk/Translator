@@ -122,7 +122,8 @@ namespace Translator.Core.TriadsRepresentation
                 else if (triad.Operation.Lexem == Lexem.OUT_KW)
                 {
                     var value = GetTriadOperandValue(triad.RightOperand);
-                    Console.WriteLine(value);
+                    //Console.WriteLine(value);
+                    GlobalOutput.Output += value + "\n";
                 }
                 
                 CurrentIndex++;
