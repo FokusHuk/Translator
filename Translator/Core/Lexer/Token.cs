@@ -1,4 +1,6 @@
-﻿namespace Translator.Core.Lexer
+﻿using System.IO;
+
+namespace Translator.Core.Lexer
 {
     public class Token
     {
@@ -14,6 +16,19 @@
         public override string ToString()
         {
             return $"{Value} - {Lexem.Name}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Token))
+                return false;
+
+            var token = (Token) obj;
+
+            if (token.Value == Value && token.Lexem == Lexem)
+                return true;
+
+            return false;
         }
     }
 }
