@@ -8,6 +8,11 @@ namespace Translator.Core.Lexer
     {
         public static List<Token> GetTokensFromExpression(string expression)
         {
+            expression = expression
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("\t", " ")
+                .TrimStart(' ');
             var tokens = new List<Token>();
             var matches = new Stack<Token>();
             var lexems = Lexem.GetAll();
