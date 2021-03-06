@@ -9,7 +9,7 @@ namespace Tests.Compiler
     public class SyntacticalAnalyzerTests
     {
         [Test]
-        public void Check_ArithmeticExpressionWithConditions_Valid()
+        public void Convert_ArithmeticExpressionWithConditions_CorrectTokens()
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
@@ -32,7 +32,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionWithCyclesAndConditions_Valid()
+        public void Convert_ExpressionWithCyclesAndConditions_CorrectTokens()
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
@@ -70,7 +70,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionWithFunctions_Valid()
+        public void Convert_ExpressionWithFunctions_CorrectTokens()
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
@@ -100,7 +100,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionWithReturn_Valid()
+        public void Convert_ExpressionWithReturn_CorrectTokens()
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
