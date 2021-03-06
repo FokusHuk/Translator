@@ -30,5 +30,10 @@ namespace Translator.Core.Lexer
 
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode() + Lexem.GetHashCode();
+        }
     }
 }

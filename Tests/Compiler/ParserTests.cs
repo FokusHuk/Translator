@@ -206,5 +206,64 @@ namespace Tests.Compiler
             
             Assert.IsTrue(actual.IsValid);
         }
+        
+        [Test]
+        public void Check_ProgramCodeWithMistakeInGrammar_NoSemicolon_Invalid()
+        {
+            var parser = new Parser();
+            var expression = @"
+            void main()
+            {
+                first();
+                second();
+                
+                a = 9999999;
+                out(a);
+            }
+            
+            async func first()
+            {
+                for (i = 0; i < 100; i = i + 1)
+                {
+                    out(i)
+                }
+            }
+            
+            async func second()
+            {
+                for (i = 101; i < 200; i = i + 1)
+                {
+                    out(i);
+                }
+            }";
+
+            var tokens = Lexer.GetTokensFromExpression(expression);
+
+            var actual = parser.Check(tokens);
+            
+            Assert.IsFalse(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ProgramCodeWithMistakeInGrammar_NoSquareBracket_Invalid()
+        {
+            var parser = new Parser();
+            var expression = @"
+            void main(){
+            a = 5;
+
+            for (i = 0; i < 5; i = i + 1)
+            {
+                out(a);
+                a = a + 1;
+            }
+            ";
+
+            var tokens = Lexer.GetTokensFromExpression(expression);
+
+            var actual = parser.Check(tokens);
+            
+            Assert.IsFalse(actual.IsValid);
+        }
     }
 }

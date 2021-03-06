@@ -4,7 +4,7 @@ using Translator.Core.Lexer;
 
 namespace Translator.Core.Analyzer
 {
-    class SyntacticalAnalyzer
+    public class SyntacticalAnalyzer
     {
         private List<Token> POLIS;
         private List<Token> tokens;
