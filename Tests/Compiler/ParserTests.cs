@@ -90,7 +90,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionCycleAndConditions_Valid()
+        public void Check_ExpressionWithCycleAndConditions_Valid()
         {
             var parser = new Parser();
             var expression = @"
@@ -125,7 +125,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionCycleWhile_Valid()
+        public void Check_ExpressionWithCycleWhile_Valid()
         {
             var parser = new Parser();
             var expression = @"
@@ -149,7 +149,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ExpressionCycleFor_Valid()
+        public void Check_ExpressionWithCycleFor_Valid()
         {
             var parser = new Parser();
             var expression = @"
@@ -208,7 +208,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ProgramCodeWithMistakeInGrammar_NoSemicolon_Invalid()
+        public void Check_ProgramCodeWithGrammarMistake_NoSemicolon_Invalid()
         {
             var parser = new Parser();
             var expression = @"
@@ -245,7 +245,7 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void Check_ProgramCodeWithMistakeInGrammar_NoSquareBracket_Invalid()
+        public void Check_ProgramCodeWithGrammarMistake_NoSquareBracket_Invalid()
         {
             var parser = new Parser();
             var expression = @"
