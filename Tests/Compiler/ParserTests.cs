@@ -74,9 +74,7 @@ namespace Tests.Compiler
             
             Assert.IsTrue(actual.IsValid);
         }
-        
-        // TODO: Убрать каплинг на лексер
-        
+
         [Test]
         public void Check_ArithmeticExpressionWithConditions_Valid()
         {

@@ -112,8 +112,6 @@ namespace Tests.Compiler
             var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
 
             var actual = syntacticalAnalyzer.Convert(tokens);
-            
-            ForTestCreations(actual);
 
             Assert.AreEqual(expected, actual);
         }
