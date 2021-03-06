@@ -11,89 +11,74 @@ namespace Tests.Compiler
         public void Check_ArithmeticExpressionWithConditions_Valid()
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
-            var expression = "a = 5; if(a > 3){ if(a < 8){b = a / 2;} }c = a + b";
+            var expression = @"
+            a = 5; 
+            if(a > 3)
+            { 
+                if(a < 8)
+                {
+                    b = a / 2;
+                } 
+            }
+            c = a + b";
+            var polisExpression = "a 5 = a 3 > 18 !F a 8 < 18 !F b a 2 / = c a b + = $";
             var tokens = Lexer.GetTokensFromExpression(expression);
-
-            var expected = new List<Token>()
-            {
-                new Token("a", Lexem.VAR),
-                new Token("5", Lexem.DIGIT),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("a", Lexem.VAR),
-                new Token("3", Lexem.DIGIT),
-                new Token(">", Lexem.COMP_OP),
-                new Token("18", Lexem.TRANS_LBL),
-                new Token("!F", Lexem.F_TRANS),
-                new Token("a", Lexem.VAR),
-                new Token("8", Lexem.DIGIT),
-                new Token("<", Lexem.COMP_OP),
-                new Token("18", Lexem.TRANS_LBL),
-                new Token("!F", Lexem.F_TRANS),
-                new Token("b", Lexem.VAR),
-                new Token("a", Lexem.VAR),
-                new Token("2", Lexem.DIGIT),
-                new Token("/", Lexem.OP),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("c", Lexem.VAR),
-                new Token("a", Lexem.VAR),
-                new Token("b", Lexem.VAR),
-                new Token("+", Lexem.OP),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("$", Lexem.END)
-            };
+            var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
 
             var actual = syntacticalAnalyzer.Convert(tokens);
+
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithCyclesAndConditions_Valid()
+        {
+            var syntacticalAnalyzer = new SyntacticalAnalyzer();
+            var expression = @"
+            a = 0;
+            while(a < 10)
+            {
+                a = a + 3;
+                if(a < 7)
+                {
+                    b = 4;
+                }
+                else
+                {
+                    b = 10;
+                } 
+            } 
+            b = b / 2;
+            s = 0;
+            for (i = 1; i <= b; i = i + 1)
+            {
+                s = s + i;
+            }
+            out(a);
+            out(b);
+            out(s);";
+            var polisExpression =
+                "a 0 = a 10 < 28 !F a a 3 + = a 7 < 23 !F b 4 = 26 ! b 10 = 3 ! b b 2 / = s 0 = i 1 = i b <= 60 !F 53" +
+                " ! i i 1 + = 39 ! s s i + = 46 ! a & out b & out s & out $ ";
+            var tokens = Lexer.GetTokensFromExpression(expression);
+            var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
             
+            var actual = syntacticalAnalyzer.Convert(tokens);
+
             Assert.AreEqual(expected, actual);
         }
 
         // TODO: delete this
-        void ForTestCreations()
+        void ForTestCreations(List<Token> tokens)
         {
-            var expected = new List<Token>()
+            var s = "";
+
+            foreach (var token in tokens)
             {
-                new Token("a", Lexem.VAR),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-                new Token("5", Lexem.DIGIT),
-            };
+                s += token.Value + " ";
+            }
+
+            s = "";
         }
     }
 }

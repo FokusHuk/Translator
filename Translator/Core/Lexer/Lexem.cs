@@ -43,12 +43,12 @@ namespace Translator.Core.Lexer
         public static readonly Lexem HT_KW = new Lexem("HT_KW", @"^htable$");
         public static readonly Lexem SEARCH_KW = new Lexem("SEARCH_KW", @"^search$");
 
-        public static readonly Lexem END = new Lexem("END", "");
-        public static readonly Lexem F_TRANS = new Lexem("F_TRANS", "");
+        public static readonly Lexem END = new Lexem("END", @"^\$$");
+        public static readonly Lexem F_TRANS = new Lexem("F_TRANS", @"^!F$");
         public static readonly Lexem T_TRANS = new Lexem("T_TRANS", "");
-        public static readonly Lexem UNC_TRANS = new Lexem("UNC_TRANS", "");
+        public static readonly Lexem UNC_TRANS = new Lexem("UNC_TRANS", @"^!$");
         public static readonly Lexem TRANS_LBL = new Lexem("TRANS_LBL", "");
-        public static readonly Lexem FUNC = new Lexem("FUNC", "");
+        public static readonly Lexem FUNC = new Lexem("FUNC", @"^\&$");
         
         public static readonly Lexem VOID_T = new Lexem("VOID_T", @"^void$");
         public static readonly Lexem FUNC_T = new Lexem("FUNC_T", @"^func$");
@@ -56,14 +56,19 @@ namespace Translator.Core.Lexer
         public static readonly Lexem EF_NAME = new Lexem("EXT_FUNC_NAME", @"^([a-zA-Z]+)$");
         public static readonly Lexem ASYNC_KW = new Lexem("ASYNC_KW", @"^async$");
 
-        public static List<Lexem> GetAll()
+        public static List<Lexem> GetForLexer() => new List<Lexem>
         {
-            return new List<Lexem>
-            {
-                VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL, 
-                SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
-                DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW, ASYNC_KW
-            };
-        }
+            VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL,
+            SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
+            DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW, ASYNC_KW
+        };
+
+        public static List<Lexem> GetAll() => new List<Lexem>
+        {
+            VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL,
+            SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
+            DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW, ASYNC_KW,
+            F_TRANS, UNC_TRANS, END, FUNC
+        };
     }
 }

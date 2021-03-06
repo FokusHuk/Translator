@@ -6,7 +6,7 @@ namespace Translator.Core.Lexer
 {
     public static class Lexer
     {
-        public static List<Token> GetTokensFromExpression(string expression)
+        public static List<Token> GetTokensFromExpression(string expression, List<Lexem> lexems = null)
         {
             expression = expression
                 .Replace("\r", " ")
@@ -15,7 +15,13 @@ namespace Translator.Core.Lexer
                 .TrimStart(' ');
             var tokens = new List<Token>();
             var matches = new Stack<Token>();
-            var lexems = Lexem.GetAll();
+
+            List<Lexem> Lexems;
+            if (lexems == null)
+                Lexems = Lexem.GetForLexer();
+            else
+                Lexems = lexems;
+            
             var subexpression = "";
             var endOfLexem = true;
             var maxSearchRange = 2;
@@ -26,7 +32,7 @@ namespace Translator.Core.Lexer
                 endOfLexem = true;
                 subexpression += expression[i];
 
-                foreach (Lexem lexem in lexems)
+                foreach (Lexem lexem in Lexems)
                 {
                     if (Regex.IsMatch(subexpression, lexem.Value))
                     {
