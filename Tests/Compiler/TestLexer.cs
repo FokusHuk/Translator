@@ -16,6 +16,8 @@ namespace Tests.Compiler
             {
                 if (tokens[i].Lexem == Lexem.F_TRANS || tokens[i].Lexem == Lexem.UNC_TRANS)
                     tokens[i - 1].Lexem = Lexem.TRANS_LBL;
+                if (tokens[i].Value == "return")
+                    tokens[i].Value = "RET";
             }
 
             return tokens;
