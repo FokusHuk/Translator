@@ -96,7 +96,46 @@ namespace Tests.Compiler
         }
         
         [Test]
-        public void GetTokensFromExpression_ExpressionWithCycles_CorrectTokens()
+        public void GetTokensFromExpression_ExpressionWithCycleWhile_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var expression = "for(i=1;i<5;i=i+1)while(a>0){}";
+            
+            var expected = new List<Token>()
+            {
+                new Token("for", Lexem.FOR_KW),
+                new Token("(", Lexem.LB),
+                new Token("i", Lexem.VAR),
+                new Token("=", Lexem.ASSIGN_OP),
+                new Token("1", Lexem.DIGIT),
+                new Token(";", Lexem.EOL),
+                new Token("i", Lexem.VAR),
+                new Token("<", Lexem.COMP_OP),
+                new Token("5", Lexem.DIGIT),
+                new Token(";", Lexem.EOL),
+                new Token("i", Lexem.VAR),
+                new Token("=", Lexem.ASSIGN_OP),
+                new Token("i", Lexem.VAR),
+                new Token("+", Lexem.OP),
+                new Token("1", Lexem.DIGIT),
+                new Token(")", Lexem.RB),
+                new Token("while", Lexem.WHILE_KW),
+                new Token("(", Lexem.LB),
+                new Token("a", Lexem.VAR),
+                new Token(">", Lexem.COMP_OP),
+                new Token("0", Lexem.DIGIT),
+                new Token(")", Lexem.RB),
+                new Token("{", Lexem.LSB),
+                new Token("}", Lexem.RSB)
+            };
+
+            var actual = lexer.GetTokensFromExpression(expression);
+            
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithCycleFor_CorrectTokens()
         {
             var lexer = new Lexer();
             var expression = "for(i=1;i<5;i=i+1)while(a>0){}";

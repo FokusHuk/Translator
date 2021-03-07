@@ -12,6 +12,7 @@
         <AssemblyName>Tests</AssemblyName>
         <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +53,10 @@
         <Compile Include="Compiler\SyntacticalAnalyzerTests.cs" />
         <Compile Include="Compiler\TestLexer.cs" />
         <Compile Include="ComplexTests\ComplexTests.cs" />
+        <Compile Include="Infrastracture\TestGrammarMistakeType.cs" />
+        <Compile Include="Infrastracture\TestProgram.cs" />
+        <Compile Include="Infrastracture\TestProgramBuilder.cs" />
+        <Compile Include="Infrastracture\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
