@@ -104,10 +104,11 @@ namespace Tests.ComplexTests
 
         private List<FunctionContext> Execute(string programCode)
         {
+            var lexer = new Lexer();
             var compiler = new Translator.Core.Compiler();
             var triadStackMachine = new TriadsStackMachine();
             
-            var tokens = Lexer.GetTokensFromExpression(programCode);
+            var tokens = lexer.GetTokensFromExpression(programCode);
             var (functionContexts, functionDescriptions) = ContextManager.GetFunctionContexts(tokens);
             
             foreach (var context in functionContexts)

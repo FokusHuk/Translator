@@ -78,9 +78,10 @@ namespace Tests.Compiler
         [Test]
         public void Check_ArithmeticExpressionWithConditions_Valid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = "void main(){ a = 5; if(a > 3){ if(a < 8){b = a / 2;} }c = a + b;}";
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -90,6 +91,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ExpressionWithCycleAndConditions_Valid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main() {
@@ -115,7 +117,7 @@ namespace Tests.Compiler
             out(b);
             }";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -125,6 +127,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ExpressionWithCycleWhile_Valid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main(){
@@ -139,7 +142,7 @@ namespace Tests.Compiler
                 a = a - b;
             }}";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -149,6 +152,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ExpressionWithCycleFor_Valid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main(){
@@ -161,7 +165,7 @@ namespace Tests.Compiler
             }
             }";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -171,6 +175,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ThreeFunctionsTwoAreAsync_Valid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main()
@@ -198,7 +203,7 @@ namespace Tests.Compiler
                 }
             }";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -208,6 +213,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ProgramCodeWithGrammarMistake_NoSemicolon_Invalid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main()
@@ -235,7 +241,7 @@ namespace Tests.Compiler
                 }
             }";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             
@@ -245,6 +251,7 @@ namespace Tests.Compiler
         [Test]
         public void Check_ProgramCodeWithGrammarMistake_NoSquareBracket_Invalid()
         {
+            var lexer = new Lexer();
             var parser = new Parser();
             var expression = @"
             void main(){
@@ -257,7 +264,7 @@ namespace Tests.Compiler
             }
             ";
 
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
 
             var actual = parser.Check(tokens);
             

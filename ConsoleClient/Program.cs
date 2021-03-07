@@ -21,12 +21,13 @@ namespace ConsoleClient
             var settingInJson = File.ReadAllText("appsettings.json");
             var settings =  JsonConvert.DeserializeObject<TranslatorSettings>(settingInJson);
             var source = FileManager.ReadAllFile(settings.SourceFilePath);
-            
+
+            var lexer = new Lexer();
             var parser = new Parser();
             var compiler = new Compiler();
             var triadStackMachine = new TriadsStackMachine();
 
-            var tokens = Lexer.GetTokensFromExpression(source);
+            var tokens = lexer.GetTokensFromExpression(source);
             DisplayManager.DisplayLexerResults(tokens);
             
             var parserResults = parser.Check(tokens);

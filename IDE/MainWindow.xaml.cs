@@ -24,11 +24,13 @@ namespace IDE
         {
             InitializeComponent();
 
+            Lexer = new Lexer();
             Parser = new Parser();
             Compiler = new Compiler();
             TriadsStackMachine = new TriadsStackMachine();
         }
 
+        private Lexer Lexer;
         private Parser Parser;
         private Compiler Compiler;
         private TriadsStackMachine TriadsStackMachine;

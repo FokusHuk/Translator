@@ -1,83 +1,106 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Translator.Exceptions;
 
 namespace Translator.Core.Lexer
 {
-    public static class Lexer
+    public class Lexer
     {
-        public static List<Token> GetTokensFromExpression(string expression, List<Lexem> lexems = null)
+        private string Expression;
+        private List<Lexem> Lexems;
+        
+        private readonly List<Token> Tokens;
+        private readonly Stack<Token> Matches;
+
+        private string Subexpression;
+        private bool EndOfLexem;
+        private int MaxSearchRange;
+        private int SearchIndex;
+
+        public Lexer()
         {
-            expression = expression
+            Tokens = new List<Token>();
+            Matches = new Stack<Token>();
+        }
+
+        private void Initialize(string expression, List<Lexem> lexems)
+        {
+            Expression = expression
                 .Replace("\r", " ")
                 .Replace("\n", " ")
                 .Replace("\t", " ")
                 .TrimStart(' ');
-            var tokens = new List<Token>();
-            var matches = new Stack<Token>();
-
-            List<Lexem> Lexems;
-            if (lexems == null)
-                Lexems = Lexem.GetForLexer();
-            else
-                Lexems = lexems;
             
-            var subexpression = "";
-            var endOfLexem = true;
-            var maxSearchRange = 2;
-            var searchIndex = 0;
+            Lexems = lexems ?? Lexem.GetForInitialAnalysis();
 
-            for (int i = 0; i < expression.Length; i++)
+            Tokens.Clear();
+            Matches.Clear();
+
+            Subexpression = String.Empty;
+            EndOfLexem = true;
+            MaxSearchRange = 2;
+            SearchIndex = 0;
+        }
+        
+        public List<Token> GetTokensFromExpression(string expression, List<Lexem> lexems = null)
+        {
+            Initialize(expression, lexems);
+
+            for (int i = 0; i < Expression.Length; i++)
             {
-                endOfLexem = true;
-                subexpression += expression[i];
+                EndOfLexem = true;
+                Subexpression += Expression[i];
 
                 foreach (Lexem lexem in Lexems)
                 {
-                    if (Regex.IsMatch(subexpression, lexem.Value))
+                    if (Regex.IsMatch(Subexpression, lexem.Value))
                     {
-                        matches.Push(new Token(subexpression, lexem));
-                        endOfLexem = false;
+                        Matches.Push(new Token(Subexpression, lexem));
+                        EndOfLexem = false;
                     }
                 }
 
-                if (endOfLexem || i == expression.Length - 1)
+                if (EndOfLexem || i == Expression.Length - 1)
                 {
-                    if (matches.Count != 0)
+                    if (Matches.Count != 0)
                     {
-                        if (matches.Peek().Lexem == Lexem.LB)
+                        if (Matches.Peek().Lexem == Lexem.LB)
                         {
-                            var tempIndex = tokens.Count - 1;
-                            while (tokens[tempIndex].Lexem == Lexem.SPC && tempIndex > 0) tempIndex--;
-                            if (tokens[tempIndex].Lexem == Lexem.VAR)
+                            var innerSearchIndex = Tokens.Count - 1;
+                            
+                            while (Tokens[innerSearchIndex].Lexem == Lexem.SPC && innerSearchIndex > 0) innerSearchIndex--;
+                            
+                            if (Tokens[innerSearchIndex].Lexem == Lexem.VAR)
                             {
-                                tokens[tempIndex].Lexem = Lexem.EF_NAME;
+                                Tokens[innerSearchIndex].Lexem = Lexem.EF_NAME;
                             }
                         }
-                        tokens.Add(matches.Peek());
-                        subexpression = "";
-                        matches.Clear();
-                        searchIndex = 0;
+                        
+                        Tokens.Add(Matches.Peek());
+                        Subexpression = "";
+                        Matches.Clear();
+                        SearchIndex = 0;
                     }
                     else
                     {
-                        searchIndex++;
-                        if (searchIndex == maxSearchRange)
+                        SearchIndex++;
+                        if (SearchIndex == MaxSearchRange)
                         {
-                            throw new LexemNotFoundException(subexpression);
+                            throw new LexemNotFoundException(Subexpression);
                         }
 
                         continue;
                     }
 
-                    if (endOfLexem)
+                    if (EndOfLexem)
                     {
                         i--;
                     }
                 }
             }
 
-            return tokens;
+            return Tokens;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Translator.Core.Lexer
         public string Name { get; }
         public string Value { get; }
 
-        public Lexem(string name, string value)
+        private Lexem(string name, string value)
         {
             Name = name;
             Value = value;
@@ -45,7 +45,7 @@ namespace Translator.Core.Lexer
 
         public static readonly Lexem END = new Lexem("END", @"^\$$");
         public static readonly Lexem F_TRANS = new Lexem("F_TRANS", @"^!F$");
-        public static readonly Lexem T_TRANS = new Lexem("T_TRANS", "");
+        public static readonly Lexem TRANS = new Lexem("T_TRANS", "");
         public static readonly Lexem UNC_TRANS = new Lexem("UNC_TRANS", @"^!$");
         public static readonly Lexem TRANS_LBL = new Lexem("TRANS_LBL", "");
         public static readonly Lexem FUNC = new Lexem("FUNC", @"^\&$");
@@ -56,14 +56,17 @@ namespace Translator.Core.Lexer
         public static readonly Lexem EF_NAME = new Lexem("EXT_FUNC_NAME", @"^([a-zA-Z]+)$");
         public static readonly Lexem ASYNC_KW = new Lexem("ASYNC_KW", @"^async$");
 
-        public static List<Lexem> GetForLexer() => new List<Lexem>
+        public static List<Lexem> GetForInitialAnalysis() => LexemsForInitialAnalysis;
+        public static List<Lexem> GetAll() => AllLexems;
+        
+        private static readonly List<Lexem> LexemsForInitialAnalysis = new List<Lexem>
         {
             VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL,
             SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,
             DELETE_KW, CLEAR_KW, DISPLAY_KW, SIZE_KW, HT_KW, SEARCH_KW, VOID_T, FUNC_T, RETURN_KW, ASYNC_KW
         };
-
-        public static List<Lexem> GetAll() => new List<Lexem>
+        
+        private static readonly List<Lexem> AllLexems = new List<Lexem>
         {
             VAR, DIGIT, ASSIGN_OP, OP, LB, RB, IF_KW, ELSE_KW, LSB, RSB, COMP_OP, WHILE_KW, FOR_KW, EOL,
             SPC, OUT_KW, LIST_KW, POINT, COMMA, SPC, INSERT_KW, GET_VALUE_KW, GET_VALUE_KW, GET_INDEX_KW,

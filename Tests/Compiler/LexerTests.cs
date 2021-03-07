@@ -9,6 +9,7 @@ namespace Tests.Compiler
         [Test]
         public void GetTokensFromExpression_ArithmeticExpression_CorrectTokens()
         {
+            var lexer = new Lexer();
             var expression = "a + b - 2 / 2";
 
             var expected = new List<Token>()
@@ -28,7 +29,7 @@ namespace Tests.Compiler
                 new Token("2", Lexem.DIGIT)
             };
 
-            var actual = Lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(expression);
             
             Assert.AreEqual(expected, actual);
         }
@@ -36,6 +37,7 @@ namespace Tests.Compiler
         [Test]
         public void GetTokensFromExpression_ExpressionWithConditions_CorrectTokens()
         {
+            var lexer = new Lexer();
             var expression = "if(a>5){b=2}else{b=0}";
             
             var expected = new List<Token>()
@@ -59,7 +61,7 @@ namespace Tests.Compiler
                 new Token("}", Lexem.RSB)
             };
 
-            var actual = Lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(expression);
             
             Assert.AreEqual(expected, actual);
         }
@@ -68,6 +70,7 @@ namespace Tests.Compiler
         [Test]
         public void GetTokensFromExpression_ExpressionWithFunction_CorrectTokens()
         {
+            var lexer = new Lexer();
             var expression = "async void function(){return a;}";
             
             var expected = new List<Token>()
@@ -87,7 +90,7 @@ namespace Tests.Compiler
                 new Token("}", Lexem.RSB)
             };
 
-            var actual = Lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(expression);
             
             Assert.AreEqual(expected, actual);
         }
@@ -95,6 +98,7 @@ namespace Tests.Compiler
         [Test]
         public void GetTokensFromExpression_ExpressionWithCycles_CorrectTokens()
         {
+            var lexer = new Lexer();
             var expression = "for(i=1;i<5;i=i+1)while(a>0){}";
             
             var expected = new List<Token>()
@@ -125,7 +129,7 @@ namespace Tests.Compiler
                 new Token("}", Lexem.RSB)
             };
 
-            var actual = Lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(expression);
             
             Assert.AreEqual(expected, actual);
         }

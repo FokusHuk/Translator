@@ -6,6 +6,8 @@ namespace Tests.Compiler
 {
     public static class TestLexer
     {
+        private static Lexer Lexer = new Lexer();
+        
         public static List<Token> GetPolisTokensFromExpression(string expression)
         {
             var tokens = Lexer.GetTokensFromExpression(expression, Lexem.GetAll())

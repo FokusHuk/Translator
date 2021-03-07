@@ -11,6 +11,7 @@ namespace Tests.Compiler
         [Test]
         public void Convert_ArithmeticExpressionWithConditions_CorrectTokens()
         {
+            var lexer = new Lexer();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
             a = 5; 
@@ -23,7 +24,7 @@ namespace Tests.Compiler
             }
             c = a + b";
             var polisExpression = "a 5 = a 3 > 18 !F a 8 < 18 !F b a 2 / = c a b + = $";
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
             var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
 
             var actual = syntacticalAnalyzer.Convert(tokens);
@@ -34,6 +35,7 @@ namespace Tests.Compiler
         [Test]
         public void Convert_ExpressionWithCyclesAndConditions_CorrectTokens()
         {
+            var lexer = new Lexer();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
             a = 0;
@@ -61,7 +63,7 @@ namespace Tests.Compiler
             var polisExpression =
                 "a 0 = a 10 < 28 !F a a 3 + = a 7 < 23 !F b 4 = 26 ! b 10 = 3 ! b b 2 / = s 0 = i 1 = i b <= 60 !F 53" +
                 " ! i i 1 + = 39 ! s s i + = 46 ! a & out b & out s & out $";
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
             var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
             
             var actual = syntacticalAnalyzer.Convert(tokens);
@@ -72,6 +74,7 @@ namespace Tests.Compiler
         [Test]
         public void Convert_ExpressionWithFunctions_CorrectTokens()
         {
+            var lexer = new Lexer();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
             a = 5;
@@ -83,7 +86,7 @@ namespace Tests.Compiler
             a = 10;
             out(a);";
             var polisExpression = "a 5 = b 3 = c a b sum = d c upd = noArgs a 10 = a & out $";
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
             var expected = TestLexer
                 .GetPolisTokensFromExpression(polisExpression)
                 .Select(token =>
@@ -102,13 +105,14 @@ namespace Tests.Compiler
         [Test]
         public void Convert_ExpressionWithReturn_CorrectTokens()
         {
+            var lexer = new Lexer();
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var expression = @"
             a = 5;
             b = 3;
             return a + b;";
             var polisExpression = "a 5 = b 3 = a b + return $";
-            var tokens = Lexer.GetTokensFromExpression(expression);
+            var tokens = lexer.GetTokensFromExpression(expression);
             var expected = TestLexer.GetPolisTokensFromExpression(polisExpression);
 
             var actual = syntacticalAnalyzer.Convert(tokens);
