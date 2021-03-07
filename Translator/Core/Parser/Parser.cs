@@ -5,42 +5,42 @@ namespace Translator.Core.Parser
 {
     public class Parser
     {
-        private Stack<GrammarMistake> _mistakes;
-        private List<Token> _tokens;
-        private int _iteration;
+        private int Position;
+        private List<Token> Tokens;
+        private readonly Stack<GrammarMistake> Mistakes;
 
         public Parser()
         {
-            _mistakes = new Stack<GrammarMistake>();
+            Mistakes = new Stack<GrammarMistake>();
         }
 
         public ParserResults Check(List<Token> tokens)
         {
-            _tokens = tokens;
-            _iteration = 0;
-            _mistakes.Clear();
+            Tokens = tokens;
+            Position = 0;
+            Mistakes.Clear();
 
             if (!function() && !async_func())
             {
-                return new ParserResults(false, _mistakes);
+                return new ParserResults(false, Mistakes);
             }
 
-            while (_iteration < tokens.Count)
+            while (Position < tokens.Count)
             {
                 if (!function() && !async_func())
                 {
-                    return new ParserResults(false, _mistakes);
+                    return new ParserResults(false, Mistakes);
                 }
             }
 
-            return new ParserResults(true, _mistakes);
+            return new ParserResults(true, Mistakes);
         }
 
         #region Функции
         
         private bool function()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!func_type() || !spc() || !ef_name() || !spc() || !lb() || !spc() || !function_args() || !spc() ||
                 !rb() || !spc() || !lsb() || !spc())
@@ -63,7 +63,7 @@ namespace Translator.Core.Parser
         
         private bool async_func()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!async_kw() || !spc() || !function())
             {
@@ -102,7 +102,7 @@ namespace Translator.Core.Parser
 
         private bool expr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             spc();
 
@@ -117,7 +117,7 @@ namespace Translator.Core.Parser
 
         private bool assignExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!var() || !spc() || !assignOp() || !spc() || !valueExpr() || !spc() || !eol() || !spc())
             {
@@ -130,7 +130,7 @@ namespace Translator.Core.Parser
 
         private bool condition_expr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!if_kw() || !spc() || !lb() || !spc() || !logicExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
@@ -167,7 +167,7 @@ namespace Translator.Core.Parser
 
         private bool whileExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!while_kw() || !spc() || !lb() || !spc() || !logicExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
@@ -188,7 +188,7 @@ namespace Translator.Core.Parser
 
         private bool forExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!for_kw() || !spc() || !lb() || !spc() || !assignExpr() || !logicExpr() || !eol() || !spc() || !var() || !spc() || !assignOp() || !spc() || !valueExpr() || !spc() || !rb() || !spc() || !lsb() || !spc())
             {
@@ -209,7 +209,7 @@ namespace Translator.Core.Parser
 
         private bool lang_func()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!out_func())
             {
@@ -222,7 +222,7 @@ namespace Translator.Core.Parser
         
         private bool return_expr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!return_kw() || !spc())
             {
@@ -250,7 +250,7 @@ namespace Translator.Core.Parser
         
         private bool inl_ext_func()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
             
             if (!ext_func() || !spc() || !eol() || !spc())
             {
@@ -267,7 +267,7 @@ namespace Translator.Core.Parser
 
         private bool htExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (htInit() || htInsert() || htDelete() || htDisplay())
             {
@@ -280,7 +280,7 @@ namespace Translator.Core.Parser
 
         private bool htInit()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (ht_kw() && space_kw() && spc() && var() && spc() && eol() && spc())
             {
@@ -293,7 +293,7 @@ namespace Translator.Core.Parser
 
         private bool htInsert()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && insert_kw() && lb() && spc() && valueExpr() && spc() && comma() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
             {
@@ -306,7 +306,7 @@ namespace Translator.Core.Parser
 
         private bool htDelete()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && delete_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
             {
@@ -319,7 +319,7 @@ namespace Translator.Core.Parser
 
         private bool htSearch()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && search_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
             {
@@ -332,7 +332,7 @@ namespace Translator.Core.Parser
 
         private bool htDisplay()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && display_kw() && lb() && spc() && rb() && spc() && eol() && spc())
             {
@@ -349,7 +349,7 @@ namespace Translator.Core.Parser
 
         private bool listExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (listInit() || listInsert() || listDelete() || listSimpleFunc())
             {
@@ -362,7 +362,7 @@ namespace Translator.Core.Parser
 
         private bool listInit()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (list_kw() && space_kw() && spc() && var() && spc() && eol() && spc())
             {
@@ -375,7 +375,7 @@ namespace Translator.Core.Parser
 
         private bool listInsert()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && insert_kw() && lb() && spc() && valueExpr() && spc() && comma() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
             {
@@ -388,7 +388,7 @@ namespace Translator.Core.Parser
 
         private bool listGet()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (listGetValue() || listGetIndex() || listSize())
             {
@@ -401,7 +401,7 @@ namespace Translator.Core.Parser
 
         private bool listGetValue()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && get_value_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
             {
@@ -414,7 +414,7 @@ namespace Translator.Core.Parser
 
         private bool listGetIndex()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && get_index_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc())
             {
@@ -427,7 +427,7 @@ namespace Translator.Core.Parser
 
         private bool listDelete()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && delete_kw() && lb() && spc() && valueExpr() && spc() && rb() && spc() && eol() && spc())
             {
@@ -440,7 +440,7 @@ namespace Translator.Core.Parser
 
         private bool listSize()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && size_kw() && lb() && spc() && rb() && spc())
             {
@@ -453,7 +453,7 @@ namespace Translator.Core.Parser
 
         private bool listSimpleFunc()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (var() && point() && funcName() && lb() && spc() && rb() && spc() && eol() && spc())
             {
@@ -466,7 +466,7 @@ namespace Translator.Core.Parser
 
         private bool funcName()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (clear_kw() || display_kw())
             {
@@ -483,7 +483,7 @@ namespace Translator.Core.Parser
 
         private bool out_func()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!out_kw() || !lb() || !spc() || !valueExpr() || !spc() || !rb() || !spc() || !eol() || !spc())
             {
@@ -496,7 +496,7 @@ namespace Translator.Core.Parser
 
         private bool valueExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!value() || !spc())
             {
@@ -516,7 +516,7 @@ namespace Translator.Core.Parser
 
         private bool value()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (ext_func() || htSearch() || listGet() || var() || digit() || bracketExpr())
             {
@@ -529,7 +529,7 @@ namespace Translator.Core.Parser
 
         private bool bracketExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!lb() || !spc() || !valueExpr() || !spc() || !rb() || !spc())
             {
@@ -542,7 +542,7 @@ namespace Translator.Core.Parser
 
         private bool logicExpr()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!valueExpr() || !spc() || !comp_op() || !spc() || !valueExpr() || !spc())
             {
@@ -565,7 +565,7 @@ namespace Translator.Core.Parser
         
         private bool ext_func()
         {
-            int currentIteration = _iteration;
+            int currentIteration = Position;
 
             if (!ef_name() || !spc() || !lb() || !spc() || !ext_func_args() || !spc() || !rb() || !spc())
             {
@@ -765,24 +765,24 @@ namespace Translator.Core.Parser
         
         private bool match(Lexem requiredLexem)
         {
-            if (_iteration >= _tokens.Count)
+            if (Position >= Tokens.Count)
             {
                 return false;
             }
 
-            if (_tokens[_iteration].Lexem == requiredLexem)
+            if (Tokens[Position].Lexem == requiredLexem)
             {
-                _iteration++;
+                Position++;
                 return true;
             }
 
-            _mistakes.Push(new GrammarMistake(_iteration, _tokens[_iteration], requiredLexem));
+            Mistakes.Push(new GrammarMistake(Position, Tokens[Position], requiredLexem));
             return false;
         }
 
         private void reset(int currentIteration)
         {
-            _iteration = currentIteration;
+            Position = currentIteration;
         }
         
         #endregion
