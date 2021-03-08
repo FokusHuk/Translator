@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Translator.Core.Lexer;
 
 namespace Tests.Infrastracture
 {
     class TestProgramBuilder
     {
         private TestProgram Program;
+
+        public TestProgramBuilder()
+        {
+            
+        }
 
         private TestProgramBuilder(TestProgram program)
         {
@@ -73,7 +79,29 @@ namespace Tests.Infrastracture
                 @"
                 a = 2;
                 b = 1;
-                c = a + b - 2 / 2;"),
+                c = a + b - 2 / 2;",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token("/", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.If,
@@ -84,7 +112,31 @@ namespace Tests.Infrastracture
                 if (a < 10)
                 {
                 b = 2;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
 
             new TestProgram(
                 key: TestSourceKey.IfElse,
@@ -98,7 +150,34 @@ namespace Tests.Infrastracture
                 else
                 {
                 b = 3;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">=", Lexem.COMP_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("3", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
 
             new TestProgram(
                 key: TestSourceKey.NestedConditions,
@@ -120,7 +199,57 @@ namespace Tests.Infrastracture
                 {
                     b = 1;
                 }
-                c = a + b;"),
+                c = a + b;",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">", Lexem.COMP_OP),
+                    new Token("3", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("8", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("/", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("b", Lexem.VAR),
+                    new Token(";", Lexem.EOL)
+                }),
 
             new TestProgram(
                 key: TestSourceKey.CycleWhile,
@@ -132,7 +261,41 @@ namespace Tests.Infrastracture
                 {
                     b = b + a * 2;
                     a = a - 1;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("6", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("while", Lexem.WHILE_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">=", Lexem.COMP_OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("*", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.CycleWhileWithConditions,
@@ -156,7 +319,76 @@ namespace Tests.Infrastracture
                 if(b >= 5)
                 {
                     a = b / 2;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("while", Lexem.WHILE_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("3", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("7", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("}", Lexem.RSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("/", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("b", Lexem.VAR),
+                    new Token(">=", Lexem.COMP_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("/", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.CycleWhileInCondition,
@@ -175,7 +407,56 @@ namespace Tests.Infrastracture
                 else
                 {
                     b = 0;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("7", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">", Lexem.COMP_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("while", Lexem.WHILE_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("60", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("*", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("b", Lexem.VAR),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.CycleFor,
@@ -185,7 +466,39 @@ namespace Tests.Infrastracture
                 for (i = 0; i < 5; i = i + 1)
                 {
                     a = a + 10;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("for", Lexem.FOR_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("i", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.CycleForWithCondition,
@@ -205,7 +518,70 @@ namespace Tests.Infrastracture
                     {
                         c = c - 1;
                     }
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("for", Lexem.FOR_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("i", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">", Lexem.COMP_OP),
+                    new Token("40", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("c", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.CycleForInCondition,
@@ -222,7 +598,54 @@ namespace Tests.Infrastracture
                 else
                 {
                     a = 0;
-                }"),
+                }",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<=", Lexem.COMP_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("for", Lexem.FOR_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("<=", Lexem.COMP_OP),
+                    new Token("3", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("i", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("}", Lexem.RSB),
+                    new Token("else", Lexem.ELSE_KW),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.Out,
@@ -233,7 +656,40 @@ namespace Tests.Infrastracture
                 c = a + b;
                 out (a);
                 out (b);
-                out (c);"),
+                out (c);",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("4", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("b", Lexem.VAR),
+                    new Token(";", Lexem.EOL),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("b", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("c", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.OutInCycles,
@@ -252,7 +708,80 @@ namespace Tests.Infrastracture
                     a = a - 20;
                     out(b);
                 }
-                out(a);"),
+                out(a);",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("for", Lexem.FOR_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("i", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("i", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("1", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("10", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("while", Lexem.WHILE_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">", Lexem.COMP_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("b", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("*", Lexem.OP),
+                    new Token("2", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("-", Lexem.OP),
+                    new Token("20", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("b", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("out", Lexem.OUT_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(")", Lexem.RB),
+                    new Token(";", Lexem.EOL)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.Return,
@@ -261,7 +790,28 @@ namespace Tests.Infrastracture
                 a = 5;
                 b = 4;
                 c = a + b;
-                return c;"),
+                return c;",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("b", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("4", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("c", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("a", Lexem.VAR),
+                    new Token("+", Lexem.OP),
+                    new Token("b", Lexem.VAR),
+                    new Token(";", Lexem.EOL),
+                    new Token("return", Lexem.RETURN_KW),
+                    new Token("c", Lexem.VAR),
+                    new Token(";", Lexem.EOL)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.SeveralReturnsWithFirstWorking,
@@ -272,7 +822,29 @@ namespace Tests.Infrastracture
                 {
                     return a;
                 }
-                return 0;"),
+                return 0;",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token(">", Lexem.COMP_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("return", Lexem.RETURN_KW),
+                    new Token("a", Lexem.VAR),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("return", Lexem.RETURN_KW),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL)
+                }),
             
             new TestProgram(
                 key: TestSourceKey.SeveralReturnsWithSecondWorking,
@@ -283,7 +855,29 @@ namespace Tests.Infrastracture
                 {
                     return a;
                 }
-                return 0;")
+                return 0;",
+                tokens:
+                new List<Token>()
+                {
+                    new Token("a", Lexem.VAR),
+                    new Token("=", Lexem.ASSIGN_OP),
+                    new Token("5", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL),
+                    new Token("if", Lexem.IF_KW),
+                    new Token("(", Lexem.LB),
+                    new Token("a", Lexem.VAR),
+                    new Token("<", Lexem.COMP_OP),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(")", Lexem.RB),
+                    new Token("{", Lexem.LSB),
+                    new Token("return", Lexem.RETURN_KW),
+                    new Token("a", Lexem.VAR),
+                    new Token(";", Lexem.EOL),
+                    new Token("}", Lexem.RSB),
+                    new Token("return", Lexem.RETURN_KW),
+                    new Token("0", Lexem.DIGIT),
+                    new Token(";", Lexem.EOL)
+                })
         };
     }
 }

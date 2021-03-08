@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Translator.Exceptions;
 
@@ -100,7 +101,7 @@ namespace Translator.Core.Lexer
                 }
             }
 
-            return Tokens;
+            return Tokens.Where(t => t.Lexem != Lexem.SPC).ToList();
         }
     }
 }
