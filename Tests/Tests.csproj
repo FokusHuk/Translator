@@ -51,7 +51,6 @@
         <Compile Include="Compiler\LexerTests.cs" />
         <Compile Include="Compiler\ParserTests.cs" />
         <Compile Include="Compiler\SyntacticalAnalyzerTests.cs" />
-        <Compile Include="Compiler\TestLexer.cs" />
         <Compile Include="ComplexTests\ComplexTests.cs" />
         <Compile Include="Infrastructure\TestGrammarMistakeType.cs" />
         <Compile Include="Infrastructure\TestProgram.cs" />
