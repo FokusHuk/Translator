@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Tests.Infrastracture;
 using Translator.Core.Lexer;
 
 namespace Tests.Compiler
@@ -10,167 +10,183 @@ namespace Tests.Compiler
         public void GetTokensFromExpression_ArithmeticExpression_CorrectTokens()
         {
             var lexer = new Lexer();
-            var expression = "a + b - 2 / 2";
-
-            var expected = new List<Token>()
-            {
-                new Token("a", Lexem.VAR),
-                new Token(" ", Lexem.SPC),
-                new Token("+", Lexem.OP),
-                new Token(" ", Lexem.SPC),
-                new Token("b", Lexem.VAR),
-                new Token(" ", Lexem.SPC),
-                new Token("-", Lexem.OP),
-                new Token(" ", Lexem.SPC),
-                new Token("2", Lexem.DIGIT),
-                new Token(" ", Lexem.SPC),
-                new Token("/", Lexem.OP),
-                new Token(" ", Lexem.SPC),
-                new Token("2", Lexem.DIGIT)
-            };
-
-            var actual = lexer.GetTokensFromExpression(expression);
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Simple)
+                .Build();
             
-            Assert.AreEqual(expected, actual);
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
         }
         
         [Test]
-        public void GetTokensFromExpression_ExpressionWithConditions_CorrectTokens()
+        public void GetTokensFromExpression_ExpressionWithConditionOnlyIf_CorrectTokens()
         {
             var lexer = new Lexer();
-            var expression = "if(a>5){b=2}else{b=0}";
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.If)
+                .Build();
             
-            var expected = new List<Token>()
-            {
-                new Token("if", Lexem.IF_KW),
-                new Token("(", Lexem.LB),
-                new Token("a", Lexem.VAR),
-                new Token(">", Lexem.COMP_OP),
-                new Token("5", Lexem.DIGIT),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("b", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("2", Lexem.DIGIT),
-                new Token("}", Lexem.RSB),
-                new Token("else", Lexem.ELSE_KW),
-                new Token("{", Lexem.LSB),
-                new Token("b", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("0", Lexem.DIGIT),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(program.Source);
             
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(program.Tokens, actual);
         }
         
         
         [Test]
-        public void GetTokensFromExpression_ExpressionWithFunction_CorrectTokens()
+        public void GetTokensFromExpression_ExpressionWithConditionIfElse_CorrectTokens()
         {
             var lexer = new Lexer();
-            var expression = "async void function(){return a;}";
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.IfElse)
+                .Build();
             
-            var expected = new List<Token>()
-            {
-                new Token("async", Lexem.ASYNC_KW),
-                new Token(" ", Lexem.SPC),
-                new Token("void", Lexem.VOID_T),
-                new Token(" ", Lexem.SPC),
-                new Token("function", Lexem.EF_NAME),
-                new Token("(", Lexem.LB),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("return", Lexem.RETURN_KW),
-                new Token(" ", Lexem.SPC),
-                new Token("a", Lexem.VAR),
-                new Token(";", Lexem.EOL),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(program.Source);
             
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithNestedConditions_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.NestedConditions)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
         }
         
         [Test]
         public void GetTokensFromExpression_ExpressionWithCycleWhile_CorrectTokens()
         {
             var lexer = new Lexer();
-            var expression = "for(i=1;i<5;i=i+1)while(a>0){}";
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .Build();
             
-            var expected = new List<Token>()
-            {
-                new Token("for", Lexem.FOR_KW),
-                new Token("(", Lexem.LB),
-                new Token("i", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("1", Lexem.DIGIT),
-                new Token(";", Lexem.EOL),
-                new Token("i", Lexem.VAR),
-                new Token("<", Lexem.COMP_OP),
-                new Token("5", Lexem.DIGIT),
-                new Token(";", Lexem.EOL),
-                new Token("i", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("i", Lexem.VAR),
-                new Token("+", Lexem.OP),
-                new Token("1", Lexem.DIGIT),
-                new Token(")", Lexem.RB),
-                new Token("while", Lexem.WHILE_KW),
-                new Token("(", Lexem.LB),
-                new Token("a", Lexem.VAR),
-                new Token(">", Lexem.COMP_OP),
-                new Token("0", Lexem.DIGIT),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(program.Source);
             
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithCycleWhileAndConditions_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhileWithConditions)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithCycleWhileInCondition_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhileInCondition)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
         }
         
         [Test]
         public void GetTokensFromExpression_ExpressionWithCycleFor_CorrectTokens()
         {
             var lexer = new Lexer();
-            var expression = "for(i=1;i<5;i=i+1)while(a>0){}";
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleFor)
+                .Build();
             
-            var expected = new List<Token>()
-            {
-                new Token("for", Lexem.FOR_KW),
-                new Token("(", Lexem.LB),
-                new Token("i", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("1", Lexem.DIGIT),
-                new Token(";", Lexem.EOL),
-                new Token("i", Lexem.VAR),
-                new Token("<", Lexem.COMP_OP),
-                new Token("5", Lexem.DIGIT),
-                new Token(";", Lexem.EOL),
-                new Token("i", Lexem.VAR),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token("i", Lexem.VAR),
-                new Token("+", Lexem.OP),
-                new Token("1", Lexem.DIGIT),
-                new Token(")", Lexem.RB),
-                new Token("while", Lexem.WHILE_KW),
-                new Token("(", Lexem.LB),
-                new Token("a", Lexem.VAR),
-                new Token(">", Lexem.COMP_OP),
-                new Token("0", Lexem.DIGIT),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = lexer.GetTokensFromExpression(expression);
+            var actual = lexer.GetTokensFromExpression(program.Source);
             
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithCycleForAndCondition_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleForWithCondition)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithCycleForInCondition_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleForInCondition)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithOutFunction_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Out)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithOutFunctionInCycles_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.OutInCycles)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithReturn_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Return)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
+        }
+        
+        [Test]
+        public void GetTokensFromExpression_ExpressionWithTwoReturns_CorrectTokens()
+        {
+            var lexer = new Lexer();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .Build();
+            
+            var actual = lexer.GetTokensFromExpression(program.Source);
+            
+            Assert.AreEqual(program.Tokens, actual);
         }
     }
 }
