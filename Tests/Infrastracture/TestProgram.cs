@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Translator.Core.Lexer;
 
 namespace Tests.Infrastracture
@@ -16,6 +17,13 @@ namespace Tests.Infrastracture
             Key = key;
             Source = source;
             Tokens = tokens;
+        }
+
+        public TestProgram Copy()
+        {
+            var tokens = Tokens.Select(token => new Token(token.Value, token.Lexem)).ToList();
+
+            return new TestProgram(Key, Source, tokens);
         }
     }
 }
