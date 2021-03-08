@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Tests.Infrastracture;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
 
@@ -11,115 +12,54 @@ namespace Tests.Compiler
         public void Check_ArithmeticExpression_Valid()
         {
             var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Simple)
+                .WithMainFunction()
+                .Build();
             
-            // expression: void main(){a = 2 + 2; out(a);}
-            var tokens = new List<Token>()
-            {
-                new Token("void", Lexem.VOID_T),
-                new Token(" ", Lexem.SPC),
-                new Token("main", Lexem.EF_NAME),
-                new Token("(", Lexem.LB),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("a", Lexem.VAR),
-                new Token(" ", Lexem.SPC),
-                new Token("=", Lexem.ASSIGN_OP),
-                new Token(" ", Lexem.SPC),
-                new Token("2", Lexem.DIGIT),
-                new Token(" ", Lexem.SPC),
-                new Token("+", Lexem.OP),
-                new Token(" ", Lexem.SPC),
-                new Token("2", Lexem.DIGIT),
-                new Token(";", Lexem.EOL),
-                new Token(" ", Lexem.SPC),
-                new Token("out", Lexem.OUT_KW),
-                new Token("(", Lexem.LB),
-                new Token("a", Lexem.VAR),
-                new Token(")", Lexem.RB),
-                new Token(";", Lexem.EOL),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = parser.Check(tokens);
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
         
         [Test]
-        public void Check_TwoFunctions_Valid()
+        public void Check_ExpressionWithConditionOnlyIf_Valid()
         {
             var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.If)
+                .WithMainFunction()
+                .Build();
             
-            // expression: void main(){} func test(){}}
-            var tokens = new List<Token>()
-            {
-                new Token("void", Lexem.VOID_T),
-                new Token(" ", Lexem.SPC),
-                new Token("main", Lexem.EF_NAME),
-                new Token("(", Lexem.LB),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("}", Lexem.RSB),
-                new Token(" ", Lexem.SPC),
-                new Token("func", Lexem.FUNC_T),
-                new Token(" ", Lexem.SPC),
-                new Token("test", Lexem.EF_NAME),
-                new Token("(", Lexem.LB),
-                new Token(")", Lexem.RB),
-                new Token("{", Lexem.LSB),
-                new Token("}", Lexem.RSB)
-            };
-
-            var actual = parser.Check(tokens);
-            
-            Assert.IsTrue(actual.IsValid);
-        }
-
-        [Test]
-        public void Check_ArithmeticExpressionWithConditions_Valid()
-        {
-            var lexer = new Lexer();
-            var parser = new Parser();
-            var expression = "void main(){ a = 5; if(a > 3){ if(a < 8){b = a / 2;} }c = a + b;}";
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
         
         [Test]
-        public void Check_ExpressionWithCycleAndConditions_Valid()
+        public void Check_ExpressionWithConditionIfElse_Valid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main() {
-            a = 0;
-            while(a < 10)
-            {
-                a = a + 3;
-                if(a < 7)
-                {
-                    b = 4;
-                }
-                else
-                {
-                    b = 10;
-                } 
-            } 
-            b = b / 2;
-            if(b >= 5)
-            {
-                a = b / 2;
-            }
-            out(a);
-            out(b);
-            }";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.IfElse)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithConditionNestedConditions_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.NestedConditions)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
@@ -127,146 +67,236 @@ namespace Tests.Compiler
         [Test]
         public void Check_ExpressionWithCycleWhile_Valid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main(){
-            a = 7;
-            if(a > 5)
-            {
-                b = a - 2;
-                while(a < 60)
-                {
-                    a = a * 2;
-                }
-                a = a - b;
-            }}";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
         
+        [Test]
+        public void Check_ExpressionWithCycleWhileAndConditions_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhileWithConditions)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+
+        [Test]
+        public void Check_ExpressionWithCycleWhileInCondition_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhileInCondition)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+
         [Test]
         public void Check_ExpressionWithCycleFor_Valid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main(){
-            a = 5;
-
-            for (i = 0; i < 5; i = i + 1)
-            {
-                out(a);
-                a = a + 1;
-            }
-            }";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleFor)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
         
+        [Test]
+        public void Check_ExpressionWithCycleForWithCondition_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleForWithCondition)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithCycleForInCondition_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleForInCondition)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithOutFunction_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Out)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithOutFunctionInCycles_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.OutInCycles)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithReturn_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.Return)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ExpressionWithSeveralReturns_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithMainFunction()
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+
+        [Test]
+        public void Check_TwoFunctions_Valid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithMainFunction()
+                .WithAnotherFunction(new TestProgramBuilder()
+                    .WithSource(TestSourceKey.Simple)
+                    .WithFunction("func", "test", new [] {"a", "b"}))
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsTrue(actual.IsValid);
+        }
+
         [Test]
         public void Check_ThreeFunctionsTwoAreAsync_Valid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main()
-            {
-                first();
-                second();
-                
-                a = 9999999;
-                out(a);
-            }
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithMainFunction()
+                .WithAnotherFunction(new TestProgramBuilder()
+                    .WithSource(TestSourceKey.Simple)
+                    .WithFunction("func", "first", new [] {"a", "b"}, true))
+                .WithAnotherFunction(new TestProgramBuilder()
+                    .WithSource(TestSourceKey.Simple)
+                    .WithFunction("func", "second", new [] {"d"}, true))
+                .Build();
             
-            async func first()
-            {
-                for (i = 0; i < 100; i = i + 1)
-                {
-                    out(i);
-                }
-            }
-            
-            async func second()
-            {
-                for (i = 101; i < 200; i = i + 1)
-                {
-                    out(i);
-                }
-            }";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsTrue(actual.IsValid);
         }
         
         [Test]
-        public void Check_ProgramCodeWithGrammarMistake_NoSemicolon_Invalid()
+        public void Check_ProgramCodeWithGrammarMistake_NoBracket_Invalid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main()
-            {
-                first();
-                second();
-                
-                a = 9999999;
-                out(a);
-            }
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .WithMainFunction()
+                .WithGrammarMistake(TestGrammarMistakeType.NoBracket)
+                .Build();
             
-            async func first()
-            {
-                for (i = 0; i < 100; i = i + 1)
-                {
-                    out(i)
-                }
-            }
-            
-            async func second()
-            {
-                for (i = 101; i < 200; i = i + 1)
-                {
-                    out(i);
-                }
-            }";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsFalse(actual.IsValid);
         }
         
         [Test]
-        public void Check_ProgramCodeWithGrammarMistake_NoSquareBracket_Invalid()
+        public void Check_ProgramCodeWithGrammarMistake_NoEol_Invalid()
         {
-            var lexer = new Lexer();
             var parser = new Parser();
-            var expression = @"
-            void main(){
-            a = 5;
-
-            for (i = 0; i < 5; i = i + 1)
-            {
-                out(a);
-                a = a + 1;
-            }
-            ";
-
-            var tokens = lexer.GetTokensFromExpression(expression);
-
-            var actual = parser.Check(tokens);
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .WithMainFunction()
+                .WithGrammarMistake(TestGrammarMistakeType.NoEol)
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsFalse(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ProgramCodeWithGrammarMistake_NoAssign_Invalid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .WithMainFunction()
+                .WithGrammarMistake(TestGrammarMistakeType.NoAssign)
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
+            
+            Assert.IsFalse(actual.IsValid);
+        }
+        
+        [Test]
+        public void Check_ProgramCodeWithGrammarMistake_NoOperation_Invalid()
+        {
+            var parser = new Parser();
+            var program = new TestProgramBuilder()
+                .WithSource(TestSourceKey.CycleWhile)
+                .WithMainFunction()
+                .WithGrammarMistake(TestGrammarMistakeType.NoOperation)
+                .Build();
+            
+            var actual = parser.Check(program.Tokens);
             
             Assert.IsFalse(actual.IsValid);
         }
