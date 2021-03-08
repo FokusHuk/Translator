@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Translator.Core.Lexer;
 
-namespace Tests.Infrastracture
+namespace Tests.Infrastructure
 {
     class TestProgramBuilder
     {

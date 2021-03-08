@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-using Tests.Infrastracture;
-using Translator.Core.Lexer;
+﻿using NUnit.Framework;
+using Tests.Infrastructure;
 using Translator.Core.Parser;
 
 namespace Tests.Compiler

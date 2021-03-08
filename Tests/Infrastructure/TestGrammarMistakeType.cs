@@ -1,4 +1,4 @@
-﻿namespace Tests.Infrastracture
+﻿namespace Tests.Infrastructure
 {
     public enum TestGrammarMistakeType
     {

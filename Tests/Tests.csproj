@@ -53,11 +53,11 @@
         <Compile Include="Compiler\SyntacticalAnalyzerTests.cs" />
         <Compile Include="Compiler\TestLexer.cs" />
         <Compile Include="ComplexTests\ComplexTests.cs" />
-        <Compile Include="Infrastracture\TestGrammarMistakeType.cs" />
-        <Compile Include="Infrastracture\TestProgram.cs" />
-        <Compile Include="Infrastracture\TestProgramBuilder.cs" />
-        <Compile Include="Infrastracture\TestProgramsRepository.cs" />
-        <Compile Include="Infrastracture\TestSourceKey.cs" />
+        <Compile Include="Infrastructure\TestGrammarMistakeType.cs" />
+        <Compile Include="Infrastructure\TestProgram.cs" />
+        <Compile Include="Infrastructure\TestProgramBuilder.cs" />
+        <Compile Include="Infrastructure\TestProgramsRepository.cs" />
+        <Compile Include="Infrastructure\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Linq;
 using Translator.Core.Lexer;
 
-namespace Tests.Infrastracture
+namespace Tests.Infrastructure
 {
     class TestProgram
     {
@@ -25,9 +25,9 @@ namespace Tests.Infrastracture
         public TestProgram Copy()
         {
             var tokens = Tokens.Select(token => new Token(token.Value, token.Lexem)).ToList();
-            //var polis = Polis.Select(token => new Token(token.Value, token.Lexem)).ToList();
+            var polis = Polis.Select(token => new Token(token.Value, token.Lexem)).ToList();
 
-            return new TestProgram(Key, Source, tokens);
+            return new TestProgram(Key, Source, tokens, polis);
         }
     }
 }

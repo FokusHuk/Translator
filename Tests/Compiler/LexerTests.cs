@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Tests.Infrastracture;
+using Tests.Infrastructure;
 using Translator.Core.Lexer;
 
 namespace Tests.Compiler
