@@ -29,6 +29,7 @@ namespace Tests.Infrastructure
         public TestProgramBuilder WithPolis(TestSourceKey sourceKey)
         {
             Program.Polis = TestProgramsGenerator.GetPolis(sourceKey);
+            Program.PolisConditionIndexes = TestProgramsGenerator.GetPolisConditionIndexes(sourceKey);
             return this;
         }
 

@@ -33,6 +33,8 @@ namespace Translator.Core.Analyzer
             pointer = 0;
 
             expression();
+            
+            PolisConditionsIndexes.RemoveRange(POLIS.Count, PolisConditionsIndexes.Count - POLIS.Count);
 
             return POLIS;
         }
