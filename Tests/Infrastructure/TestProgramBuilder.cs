@@ -21,7 +21,7 @@ namespace Tests.Infrastructure
 
         public TestProgramBuilder WithSource(TestSourceKey sourceKey)
         {
-            Program = TestProgramsRepository.GetProgramByKey(sourceKey);
+            Program = TestProgramsGenerator.GetProgramByKey(sourceKey);
 
             return new TestProgramBuilder(Program);
         }

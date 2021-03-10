@@ -55,7 +55,7 @@
         <Compile Include="Infrastructure\TestGrammarMistakeType.cs" />
         <Compile Include="Infrastructure\TestProgram.cs" />
         <Compile Include="Infrastructure\TestProgramBuilder.cs" />
-        <Compile Include="Infrastructure\TestProgramsRepository.cs" />
+        <Compile Include="Infrastructure\TestProgramsGenerator.cs" />
         <Compile Include="Infrastructure\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
