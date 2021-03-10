@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Translator.Core.Lexer;
+using Translator.Core.TriadsRepresentation.Entities;
 
 namespace Tests.Infrastructure
 {
@@ -12,10 +13,7 @@ namespace Tests.Infrastructure
         public List<Token> Polis { get; set; }
 
         public List<bool> PolisConditionIndexes { get; set; }
-
-        public TestProgram()
-        {
-            
-        }
+        
+        public List<Triad> Triads { get; set; }
     }
 }
