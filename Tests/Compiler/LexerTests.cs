@@ -12,6 +12,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.Simple)
+                .WithTokens(TestSourceKey.Simple)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -25,6 +26,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.If)
+                .WithTokens(TestSourceKey.If)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -39,6 +41,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.IfElse)
+                .WithTokens(TestSourceKey.IfElse)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -52,6 +55,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.NestedConditions)
+                .WithTokens(TestSourceKey.NestedConditions)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -65,6 +69,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -78,6 +83,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleWhileWithConditions)
+                .WithTokens(TestSourceKey.CycleWhileWithConditions)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -91,6 +97,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleWhileInCondition)
+                .WithTokens(TestSourceKey.CycleWhileInCondition)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -104,6 +111,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleFor)
+                .WithTokens(TestSourceKey.CycleFor)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -117,6 +125,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleForWithCondition)
+                .WithTokens(TestSourceKey.CycleForWithCondition)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -130,6 +139,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.CycleForInCondition)
+                .WithTokens(TestSourceKey.CycleForInCondition)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -143,6 +153,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.Out)
+                .WithTokens(TestSourceKey.Out)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -156,6 +167,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.OutInCycles)
+                .WithTokens(TestSourceKey.OutInCycles)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -169,6 +181,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.Return)
+                .WithTokens(TestSourceKey.Return)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);
@@ -182,6 +195,7 @@ namespace Tests.Compiler
             var lexer = new Lexer();
             var program = new TestProgramBuilder()
                 .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithTokens(TestSourceKey.SeveralReturnsWithFirstWorking)
                 .Build();
             
             var actual = lexer.GetTokensFromExpression(program.Source);

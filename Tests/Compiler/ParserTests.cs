@@ -11,7 +11,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Simple)
+                .WithTokens(TestSourceKey.Simple)
                 .WithMainFunction()
                 .Build();
             
@@ -25,7 +25,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.If)
+                .WithTokens(TestSourceKey.If)
                 .WithMainFunction()
                 .Build();
             
@@ -39,7 +39,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.IfElse)
+                .WithTokens(TestSourceKey.IfElse)
                 .WithMainFunction()
                 .Build();
             
@@ -53,7 +53,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.NestedConditions)
+                .WithTokens(TestSourceKey.NestedConditions)
                 .WithMainFunction()
                 .Build();
             
@@ -67,7 +67,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .WithMainFunction()
                 .Build();
             
@@ -81,7 +81,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhileWithConditions)
+                .WithTokens(TestSourceKey.CycleWhileWithConditions)
                 .WithMainFunction()
                 .Build();
             
@@ -95,7 +95,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhileInCondition)
+                .WithTokens(TestSourceKey.CycleWhileInCondition)
                 .WithMainFunction()
                 .Build();
             
@@ -109,7 +109,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleFor)
+                .WithTokens(TestSourceKey.CycleFor)
                 .WithMainFunction()
                 .Build();
             
@@ -123,7 +123,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleForWithCondition)
+                .WithTokens(TestSourceKey.CycleForWithCondition)
                 .WithMainFunction()
                 .Build();
             
@@ -137,7 +137,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleForInCondition)
+                .WithTokens(TestSourceKey.CycleForInCondition)
                 .WithMainFunction()
                 .Build();
             
@@ -151,7 +151,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Out)
+                .WithTokens(TestSourceKey.Out)
                 .WithMainFunction()
                 .Build();
             
@@ -165,7 +165,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.OutInCycles)
+                .WithTokens(TestSourceKey.OutInCycles)
                 .WithMainFunction()
                 .Build();
             
@@ -179,7 +179,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Return)
+                .WithTokens(TestSourceKey.Return)
                 .WithMainFunction()
                 .Build();
             
@@ -193,7 +193,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithTokens(TestSourceKey.SeveralReturnsWithFirstWorking)
                 .WithMainFunction()
                 .Build();
             
@@ -207,10 +207,10 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithTokens(TestSourceKey.SeveralReturnsWithFirstWorking)
                 .WithMainFunction()
                 .WithAnotherFunction(new TestProgramBuilder()
-                    .WithSource(TestSourceKey.Simple)
+                    .WithTokens(TestSourceKey.Simple)
                     .WithFunction("func", "test", new [] {"a", "b"}))
                 .Build();
             
@@ -224,13 +224,13 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithTokens(TestSourceKey.SeveralReturnsWithFirstWorking)
                 .WithMainFunction()
                 .WithAnotherFunction(new TestProgramBuilder()
-                    .WithSource(TestSourceKey.Simple)
+                    .WithTokens(TestSourceKey.Simple)
                     .WithFunction("func", "first", new [] {"a", "b"}, true))
                 .WithAnotherFunction(new TestProgramBuilder()
-                    .WithSource(TestSourceKey.Simple)
+                    .WithTokens(TestSourceKey.Simple)
                     .WithFunction("func", "second", new [] {"d"}, true))
                 .Build();
             
@@ -244,7 +244,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .WithMainFunction()
                 .WithGrammarMistake(TestGrammarMistakeType.NoBracket)
                 .Build();
@@ -259,7 +259,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .WithMainFunction()
                 .WithGrammarMistake(TestGrammarMistakeType.NoEol)
                 .Build();
@@ -274,7 +274,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .WithMainFunction()
                 .WithGrammarMistake(TestGrammarMistakeType.NoAssign)
                 .Build();
@@ -289,7 +289,7 @@ namespace Tests.Compiler
         {
             var parser = new Parser();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
                 .WithMainFunction()
                 .WithGrammarMistake(TestGrammarMistakeType.NoOperation)
                 .Build();

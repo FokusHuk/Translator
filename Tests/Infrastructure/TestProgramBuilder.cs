@@ -7,28 +7,36 @@ namespace Tests.Infrastructure
 {
     class TestProgramBuilder
     {
-        private TestProgram Program;
+        private readonly TestProgram Program;
 
         public TestProgramBuilder()
         {
-            
-        }
-
-        private TestProgramBuilder(TestProgram program)
-        {
-            Program = program;
+            Program = new TestProgram();
         }
 
         public TestProgramBuilder WithSource(TestSourceKey sourceKey)
         {
-            Program = TestProgramsGenerator.GetProgramByKey(sourceKey);
-
-            return new TestProgramBuilder(Program);
+            Program.Source = TestProgramsGenerator.GetSource(sourceKey);
+            return this;
+        }
+        
+        public TestProgramBuilder WithTokens(TestSourceKey sourceKey)
+        {
+            Program.Tokens = TestProgramsGenerator.GetTokens(sourceKey);
+            return this;
+        }
+        
+        public TestProgramBuilder WithPolis(TestSourceKey sourceKey)
+        {
+            Program.Polis = TestProgramsGenerator.GetPolis(sourceKey);
+            return this;
         }
 
         public TestProgramBuilder WithMainFunction()
         {
-            Program.Source = $"void main ()" + "{" + Program.Source + "}";
+            if (Program.Source != null)
+                Program.Source = $"void main ()" + "{" + Program.Source + "}";
+            
             Program.Tokens.Insert(0, new Token("{", Lexem.LSB));
             Program.Tokens.Insert(0, new Token(")", Lexem.RB));
             Program.Tokens.Insert(0, new Token("(", Lexem.LB));
@@ -36,7 +44,7 @@ namespace Tests.Infrastructure
             Program.Tokens.Insert(0, new Token("void", Lexem.VOID_T));
             Program.Tokens.Add(new Token("}", Lexem.RSB));
             
-            return new TestProgramBuilder(Program);
+            return this;
         }
 
         public TestProgramBuilder WithFunction(string type, string name, string[] parameters = null, bool isAsync = false)
@@ -81,7 +89,7 @@ namespace Tests.Infrastructure
             Program.Tokens.Add(new Token("}", Lexem.RSB));
             Program.Source = $"{asyncParameter}{type} {name} ({parametersForSource})" + "{" + Program.Source + "}";
 
-            return new TestProgramBuilder(Program);
+            return this;
         }
         
         public TestProgramBuilder WithGrammarMistake(TestGrammarMistakeType type)
@@ -89,25 +97,25 @@ namespace Tests.Infrastructure
             switch (type)
             {
                 case TestGrammarMistakeType.NoBracket:
-                    Program.Source = Program.Source.Remove(
+                    Program.Source = Program.Source?.Remove(
                         Program.Source.IndexOf(
                             Program.Source.First(c => c == '(' || c == '{')), 1);
                     Program.Tokens.Remove(Program.Tokens.First(t => t.Lexem == Lexem.LB || t.Lexem == Lexem.LSB));
                     break;
                 case TestGrammarMistakeType.NoEol:
-                    Program.Source = Program.Source.Remove(
+                    Program.Source = Program.Source?.Remove(
                         Program.Source.IndexOf(
                             Program.Source.First(c => c == ';')), 1);
                     Program.Tokens.Remove(Program.Tokens.First(t => t.Lexem == Lexem.EOL));
                     break;
                 case TestGrammarMistakeType.NoAssign:
-                    Program.Source = Program.Source.Remove(
+                    Program.Source = Program.Source?.Remove(
                         Program.Source.IndexOf(
                             Program.Source.First(c => c == '=')), 1);
                     Program.Tokens.Remove(Program.Tokens.First(t => t.Lexem == Lexem.ASSIGN_OP));
                     break;
                 case TestGrammarMistakeType.NoOperation:
-                    Program.Source = Program.Source.Remove(
+                    Program.Source = Program.Source?.Remove(
                         Program.Source.IndexOf(
                             Program.Source.First(c => c == '+' || c == '-' || c == '*' || c == '/')), 1);
                     Program.Tokens.Remove(Program.Tokens.First(t => t.Lexem == Lexem.OP));
@@ -116,7 +124,7 @@ namespace Tests.Infrastructure
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
 
-            return new TestProgramBuilder(Program);
+            return this;
         }
 
         public TestProgramBuilder WithAnotherFunction(TestProgramBuilder builder)
@@ -124,7 +132,7 @@ namespace Tests.Infrastructure
             Program.Source += "\n" + builder.Program.Source;
             Program.Tokens.AddRange(builder.Program.Tokens);
 
-            return new TestProgramBuilder(Program);
+            return this;
         }
 
         public TestProgram Build()

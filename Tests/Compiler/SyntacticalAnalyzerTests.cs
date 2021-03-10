@@ -11,7 +11,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Simple)
+                .WithTokens(TestSourceKey.Simple)
+                .WithPolis(TestSourceKey.Simple)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -24,7 +25,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.If)
+                .WithTokens(TestSourceKey.If)
+                .WithPolis(TestSourceKey.If)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -37,7 +39,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.IfElse)
+                .WithTokens(TestSourceKey.IfElse)
+                .WithPolis(TestSourceKey.IfElse)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -50,7 +53,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.NestedConditions)
+                .WithTokens(TestSourceKey.NestedConditions)
+                .WithPolis(TestSourceKey.NestedConditions)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -63,7 +67,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhile)
+                .WithTokens(TestSourceKey.CycleWhile)
+                .WithPolis(TestSourceKey.CycleWhile)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -76,7 +81,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhileWithConditions)
+                .WithTokens(TestSourceKey.CycleWhileWithConditions)
+                .WithPolis(TestSourceKey.CycleWhileWithConditions)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -89,7 +95,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleWhileInCondition)
+                .WithTokens(TestSourceKey.CycleWhileInCondition)
+                .WithPolis(TestSourceKey.CycleWhileInCondition)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -102,7 +109,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleFor)
+                .WithTokens(TestSourceKey.CycleFor)
+                .WithPolis(TestSourceKey.CycleFor)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -115,7 +123,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleForWithCondition)
+                .WithTokens(TestSourceKey.CycleForWithCondition)
+                .WithPolis(TestSourceKey.CycleForWithCondition)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -128,7 +137,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.CycleForInCondition)
+                .WithTokens(TestSourceKey.CycleForInCondition)
+                .WithPolis(TestSourceKey.CycleForInCondition)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -141,7 +151,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Out)
+                .WithTokens(TestSourceKey.Out)
+                .WithPolis(TestSourceKey.Out)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -154,7 +165,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.OutInCycles)
+                .WithTokens(TestSourceKey.OutInCycles)
+                .WithPolis(TestSourceKey.OutInCycles)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -167,7 +179,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.Return)
+                .WithTokens(TestSourceKey.Return)
+                .WithPolis(TestSourceKey.Return)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
@@ -180,7 +193,8 @@ namespace Tests.Compiler
         {
             var syntacticalAnalyzer = new SyntacticalAnalyzer();
             var program = new TestProgramBuilder()
-                .WithSource(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithTokens(TestSourceKey.SeveralReturnsWithFirstWorking)
+                .WithPolis(TestSourceKey.SeveralReturnsWithFirstWorking)
                 .Build();
 
             var actual = syntacticalAnalyzer.Convert(program.Tokens);
