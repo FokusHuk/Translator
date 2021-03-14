@@ -58,6 +58,7 @@
         <Compile Include="Infrastructure\TestProgramsGenerator.cs" />
         <Compile Include="Infrastructure\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Triads\TriadsConverterTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Translator\Translator.csproj">
