@@ -23,10 +23,7 @@
 
             var token = (Token) obj;
 
-            if (token.Value == Value && token.Lexem == Lexem)
-                return true;
-
-            return false;
+            return token.Value == Value && token.Lexem == Lexem;
         }
 
         public override int GetHashCode()

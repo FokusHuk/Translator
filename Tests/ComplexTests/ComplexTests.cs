@@ -36,41 +36,7 @@ namespace Tests.ComplexTests
             Assert.AreEqual("c", variables[2].Name);
             Assert.AreEqual("7,5", variables[2].Value);
         }
-        
-        [Test]
-        public void Complex_ExpressionWithCycleAndConditions_CorrectResult()
-        {
-            var programCode = @"
-            void main() {
-                a = 0;
-                while(a < 10)
-                {
-                    a = a + 3;
-                    if(a < 7)
-                    {
-                        b = 4;
-                    }
-                    else
-                    {
-                        b = 10;
-                    } 
-                } 
-                b = b / 2;
-                if(b >= 5)
-                {
-                    a = b / 2;
-                }
-            }";
-            
-            var result = Execute(programCode);
-            var variables = result[0].ExecutingContext.Variables;
-            
-            Assert.AreEqual("a", variables[0].Name);
-            Assert.AreEqual("2,5", variables[0].Value);
-            Assert.AreEqual("b", variables[1].Name);
-            Assert.AreEqual("5", variables[1].Value);
-        }
-        
+
         [Test]
         public void Complex_ExpressionWithManyVariables_CorrectResult()
         {

@@ -1414,7 +1414,7 @@ namespace Tests.Infrastructure
 
         #endregion
         
-        #region PolisConditionIndexes
+        #region Triads
 
         public static List<Triad> GetTriads(TestSourceKey key) =>
             key switch

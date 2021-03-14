@@ -7,8 +7,6 @@ namespace Translator.Core.TriadsRepresentation.Entities
         public TriadOperand LeftOperand { get; set; }
         public TriadOperand RightOperand { get; set; }
         public Token Operation { get; }
-        public int? Previous { get; set; }
-        public int? Next { get; set; }
         public TriadType Type { get; }
 
         public Triad(TriadOperand leftOperand, TriadOperand rightOperand, Token operation, TriadType type)
@@ -16,16 +14,6 @@ namespace Translator.Core.TriadsRepresentation.Entities
             LeftOperand = leftOperand;
             RightOperand = rightOperand;
             Operation = operation;
-            Type = type;
-        }
-
-        public Triad(TriadOperand leftOperand, TriadOperand rightOperand, Token operation, int previous, int next, TriadType type)
-        {
-            LeftOperand = leftOperand;
-            RightOperand = rightOperand;
-            Operation = operation;
-            Previous = previous;
-            Next = next;
             Type = type;
         }
 
@@ -44,5 +32,30 @@ namespace Translator.Core.TriadsRepresentation.Entities
             new TriadOperand(new Token("", Lexem.VAR), false),
             new Token("", Lexem.OP),
             TriadType.Process);
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Triad))
+                return false;
+
+            var triad = (Triad) obj;
+
+            return Equals(triad.LeftOperand, LeftOperand) &&
+                   Equals(triad.RightOperand, RightOperand) &&
+                   Equals(triad.Operation, Operation) &&
+                   Equals(triad.Type, Type);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (LeftOperand != null ? LeftOperand.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RightOperand != null ? RightOperand.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Operation != null ? Operation.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) Type;
+                return hashCode;
+            }
+        }
     }
 }

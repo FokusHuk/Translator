@@ -32,6 +32,12 @@ namespace Tests.Infrastructure
             Program.PolisConditionIndexes = TestProgramsGenerator.GetPolisConditionIndexes(sourceKey);
             return this;
         }
+        
+        public TestProgramBuilder WithTriads(TestSourceKey sourceKey)
+        {
+            Program.Triads = TestProgramsGenerator.GetTriads(sourceKey);
+            return this;
+        }
 
         public TestProgramBuilder WithMainFunction()
         {

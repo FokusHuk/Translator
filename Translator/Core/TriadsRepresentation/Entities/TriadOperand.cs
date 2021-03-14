@@ -17,5 +17,15 @@ namespace Translator.Core.TriadsRepresentation.Entities
         {
             return new TriadOperand(new Token(Token.Value, Token.Lexem), IsLinkToAnotherTriad);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is TriadOperand))
+                return false;
+
+            var operand = (TriadOperand) obj;
+
+            return Equals(operand.Token, Token) && operand.IsLinkToAnotherTriad == IsLinkToAnotherTriad;
+        }
     }
 }
