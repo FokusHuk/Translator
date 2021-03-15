@@ -40,6 +40,7 @@ namespace Translator.Core.TriadsRepresentation
         private List<Token> Polis;
         private Stack<TriadOperand> Stack;
         private List<FunctionDescription> ProgramFucntions;
+        private int PolisIndex;
         private int LastTriadIndex => Triads.Count - 1;
 
         private List<bool> PolisConditionIndexes;
@@ -64,12 +65,14 @@ namespace Translator.Core.TriadsRepresentation
             this.ProgramFucntions = ProgramFucntions;
             Initialize();
 
-            foreach (var token in Polis)
+            for (PolisIndex = 0; PolisIndex < Polis.Count; PolisIndex++)
             {
-                ProcessPolisToken(token);
+                ProcessPolisToken();
             }
 
             PatchUnprocessedLabels();
+            
+            TriadsConditionIndexes.RemoveRange(Triads.Count, TriadsConditionIndexes.Count - Triads.Count);
 
             return Triads;
         }
@@ -89,8 +92,10 @@ namespace Translator.Core.TriadsRepresentation
             }
         }
 
-        private void ProcessPolisToken(Token token)
+        private void ProcessPolisToken()
         {
+            var token = Polis[PolisIndex];
+            
             if (token.Lexem == Lexem.VAR || token.Lexem == Lexem.DIGIT || token.Lexem == Lexem.TRANS_LBL)
             {
                 Stack.Push(new TriadOperand(token, false));
@@ -170,9 +175,9 @@ namespace Translator.Core.TriadsRepresentation
             return ret;
         }
 
-        private void CheckCurrentTokenIndexForConditionIndexes(int tokenIndex)
+        private void CheckCurrentTokenIndexForConditionIndexes()
         {
-            if (PolisConditionIndexes[tokenIndex])
+            if (PolisConditionIndexes[PolisIndex])
                 TriadsConditionIndexes[Triads.Count - 1] = true;
         }
 
@@ -180,28 +185,25 @@ namespace Translator.Core.TriadsRepresentation
         {
             var newTriad = CreateTriadByOperandsCount(operandsCount, token);
             Triads.Add(newTriad);
-            TriadsIndexesInPolis.Add(new TriadWithPolisIndex(LastTriadIndex, GetPolisIndexByToken(token)));
-            CheckCurrentTokenIndexForConditionIndexes(GetPolisIndexByToken(token));
+            TriadsIndexesInPolis.Add(new TriadWithPolisIndex(LastTriadIndex, PolisIndex));
+            CheckCurrentTokenIndexForConditionIndexes();
         }
 
         private Triad CreateTriadByOperandsCount(int operandsCount, Token token)
         {
-            var polisIndex = GetPolisIndexByToken(token);
             switch (operandsCount)
             {
                 case 2:
                     var rightOperand = Stack.Pop();
                     var leftOperand = Stack.Pop();
-                    return new Triad(leftOperand, rightOperand, token, GetTriadType(polisIndex));
+                    return new Triad(leftOperand, rightOperand, token, GetTriadType(PolisIndex));
                 case 1:
                     var operand = Stack.Pop();
-                    return new Triad(null, operand, token, GetTriadType(polisIndex));
+                    return new Triad(null, operand, token, GetTriadType(PolisIndex));
                 default:
-                    return new Triad(null, null, token, GetTriadType(polisIndex));
+                    return new Triad(null, null, token, GetTriadType(PolisIndex));
             }
         }
-
-        private int GetPolisIndexByToken(Token token) => Polis.IndexOf(token);
 
         private TriadType GetTriadType(int polisIndex)
         {
