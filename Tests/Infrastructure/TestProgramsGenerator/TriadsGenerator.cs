@@ -85,7 +85,7 @@ namespace Tests.Infrastructure
                             new Token(">=", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("6", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("5", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("b", Lexem.VAR), false),
@@ -118,7 +118,7 @@ namespace Tests.Infrastructure
                             new Token(">", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("11", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("10", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -126,7 +126,7 @@ namespace Tests.Infrastructure
                             new Token("<", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("3", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("11", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("8", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -138,7 +138,7 @@ namespace Tests.Infrastructure
                             new Token("=", Lexem.ASSIGN_OP), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("11", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("9", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("b", Lexem.VAR), false),
@@ -260,7 +260,7 @@ namespace Tests.Infrastructure
                             new Token("=", Lexem.ASSIGN_OP), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("14", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("13", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("b", Lexem.VAR), false),
@@ -317,7 +317,7 @@ namespace Tests.Infrastructure
                             new Token(">", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("14", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("13", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -333,7 +333,7 @@ namespace Tests.Infrastructure
                             new Token("<", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("5", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("14", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("10", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -390,7 +390,7 @@ namespace Tests.Infrastructure
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("11", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("8", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("i", Lexem.VAR), false),
@@ -451,7 +451,7 @@ namespace Tests.Infrastructure
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("12", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("10", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("i", Lexem.VAR), false),
@@ -491,7 +491,7 @@ namespace Tests.Infrastructure
                             new Token("=", Lexem.ASSIGN_OP), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("20", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("19", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("c", Lexem.VAR), false),
@@ -524,7 +524,7 @@ namespace Tests.Infrastructure
                             new Token("<=", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("15", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("14", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("i", Lexem.VAR), false),
@@ -536,11 +536,11 @@ namespace Tests.Infrastructure
                             new Token("<=", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("4", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("15", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("13", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("15", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("10", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("i", Lexem.VAR), false),
@@ -552,7 +552,7 @@ namespace Tests.Infrastructure
                             new Token("=", Lexem.ASSIGN_OP), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("6", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("4", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -634,11 +634,11 @@ namespace Tests.Infrastructure
                             new Token("<", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("2", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("13", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("12", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,
-                            new TriadOperand(new Token("10", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("8", Lexem.TRANS_LBL), false),
                             new Token("!", Lexem.UNC_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("i", Lexem.VAR), false),
@@ -678,7 +678,7 @@ namespace Tests.Infrastructure
                             new Token(">", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("13", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("23", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("22", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("a", Lexem.VAR), false),
@@ -760,7 +760,7 @@ namespace Tests.Infrastructure
                             new Token(">", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("5", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("4", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,
@@ -789,7 +789,7 @@ namespace Tests.Infrastructure
                             new Token("<", Lexem.COMP_OP), TriadType.Process),
                         new Triad(
                             new TriadOperand(new Token("1", Lexem.DIGIT), true),
-                            new TriadOperand(new Token("5", Lexem.TRANS_LBL), false),
+                            new TriadOperand(new Token("4", Lexem.TRANS_LBL), false),
                             new Token("!F", Lexem.F_TRANS), TriadType.Process),
                         new Triad(
                             null,

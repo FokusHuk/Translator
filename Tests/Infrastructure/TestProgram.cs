@@ -15,5 +15,7 @@ namespace Tests.Infrastructure
         public List<bool> PolisConditionIndexes { get; set; }
         
         public List<Triad> Triads { get; set; }
+        
+        public List<bool> TriadsConditionIndexes { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -32,6 +33,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -46,6 +48,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -60,6 +63,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -74,6 +78,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -88,6 +93,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -102,6 +108,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -116,6 +123,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -130,6 +138,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -144,6 +153,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -158,6 +168,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -172,6 +183,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -186,6 +198,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
         
         [Test]
@@ -200,6 +213,7 @@ namespace Tests.Triads
             var actual = triadsConverter.GetTriadsFromPolis(program.Polis, program.PolisConditionIndexes, null);
             
             Assert.AreEqual(program.Triads, actual);
+            Assert.AreEqual(program.TriadsConditionIndexes, triadsConverter.TriadsConditionIndexes);
         }
     }
 }

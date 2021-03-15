@@ -36,6 +36,7 @@ namespace Tests.Infrastructure
         public TestProgramBuilder WithTriads(TestSourceKey sourceKey)
         {
             Program.Triads = TestProgramsGenerator.GetTriads(sourceKey);
+            Program.TriadsConditionIndexes = TestProgramsGenerator.GetTriadsConditionIndexes(sourceKey);
             return this;
         }
 

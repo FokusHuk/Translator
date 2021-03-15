@@ -59,6 +59,7 @@
         <Compile Include="Infrastructure\TestProgramsGenerator\PolisGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\SourceGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\TokensGenerator.cs" />
+        <Compile Include="Infrastructure\TestProgramsGenerator\TriadsConditionIndexesGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\TriadsGenerator.cs" />
         <Compile Include="Infrastructure\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
