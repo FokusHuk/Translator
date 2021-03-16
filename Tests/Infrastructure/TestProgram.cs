@@ -17,5 +17,7 @@ namespace Tests.Infrastructure
         public List<Triad> Triads { get; set; }
         
         public List<bool> TriadsConditionIndexes { get; set; }
+        
+        public List<Triad> OptimizedTriads { get; set; }
     }
 }

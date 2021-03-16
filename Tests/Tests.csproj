@@ -55,6 +55,7 @@
         <Compile Include="Infrastructure\TestGrammarMistakeType.cs" />
         <Compile Include="Infrastructure\TestProgram.cs" />
         <Compile Include="Infrastructure\TestProgramBuilder.cs" />
+        <Compile Include="Infrastructure\TestProgramsGenerator\OptimizedTriadsGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\PolisConditionIndexesGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\PolisGenerator.cs" />
         <Compile Include="Infrastructure\TestProgramsGenerator\SourceGenerator.cs" />
@@ -64,6 +65,7 @@
         <Compile Include="Infrastructure\TestSourceKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Triads\TriadsConverterTests.cs" />
+        <Compile Include="Triads\TriadsOptimizerTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Translator\Translator.csproj">

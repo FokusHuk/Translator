@@ -39,6 +39,12 @@ namespace Tests.Infrastructure
             Program.TriadsConditionIndexes = TestProgramsGenerator.GetTriadsConditionIndexes(sourceKey);
             return this;
         }
+        
+        public TestProgramBuilder WithOptimizedTriads(TestSourceKey sourceKey)
+        {
+            Program.OptimizedTriads = TestProgramsGenerator.GetOptimizedTriads(sourceKey);
+            return this;
+        }
 
         public TestProgramBuilder WithMainFunction()
         {
