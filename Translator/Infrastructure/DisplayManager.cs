@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Translator.Core;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
 using Translator.Core.TriadsRepresentation.Entities;

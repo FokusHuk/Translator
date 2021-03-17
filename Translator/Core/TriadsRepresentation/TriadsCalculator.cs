@@ -8,40 +8,14 @@ using Translator.Core.TriadsRepresentation.Entities;
 
 namespace Translator.Core.TriadsRepresentation
 {
-    public class TriadsStackMachine
+    public class TriadsCalculator
     {
-        public class TriadWithResult
-        {
-            public int TriadIndex { get; }
-            public string Value { get; set; }
-
-            public TriadWithResult(int triadIndex, string value)
-            {
-                TriadIndex = triadIndex;
-                Value = value;
-            }
-        }
-
-        public class Variable
-        {
-            public string Name { get; }
-            public string Value { get; set; }
-
-            public Variable(string name, string value)
-            {
-                Name = name;
-                Value = value;
-            }
-        }
-        
+        private int CurrentIndex;
         private List<Triad> Triads;
         private List<TriadWithResult> TriadResults;
 
-        private int CurrentIndex;
-
         public List<Variable> Variables { get; private set; }
         public string ReturnResult { get; private set; }
-        public string Output { get; private set; }
 
         public ExecutingFunctionContext Calculate(FunctionContext context)
         {
@@ -238,7 +212,6 @@ namespace Translator.Core.TriadsRepresentation
         private void Initialize(FunctionContext context)
         {
             CurrentIndex = context.ExecutingContext.CurrentIndex;
-            Output = String.Empty;
             TriadResults = context.ExecutingContext.TriadResults;
             Variables = context.ExecutingContext.Variables;
         }

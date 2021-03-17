@@ -1,13 +1,8 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Security.Policy;
-using Translator.Core.FunctionResultParameters;
+﻿using System.Collections.Generic;
 using Translator.Core.Lexer;
-using Translator.Core.ProgramContext;
 using Translator.Core.TriadsRepresentation.Entities;
 
-namespace Translator.Core
+namespace Translator.Core.ProgramContext
 {
     public class FunctionContext
     {

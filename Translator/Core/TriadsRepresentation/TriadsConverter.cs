@@ -8,7 +8,7 @@ namespace Translator.Core.TriadsRepresentation
 {
     public class TriadsConverter
     {
-        private readonly struct TriadWithUnprocessedLabel
+        private class TriadWithUnprocessedLabel
         {
             public int TriadIndex { get; }
             public bool IsLeftOperandWithLabel { get; }
@@ -22,7 +22,7 @@ namespace Translator.Core.TriadsRepresentation
             }
         }
 
-        private readonly struct TriadWithPolisIndex
+        private class TriadWithPolisIndex
         {
             public int TriadIndex { get; }
             public int PolisIndex { get; }

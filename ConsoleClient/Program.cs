@@ -9,7 +9,9 @@ using Translator.Core;
 using Translator.Core.FunctionResultParameters;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
+using Translator.Core.ProgramContext;
 using Translator.Core.TriadsRepresentation;
+using Translator.Core.TriadsRepresentation.Entities;
 using Translator.Infrastructure;
 
 namespace ConsoleClient
@@ -25,7 +27,7 @@ namespace ConsoleClient
             var lexer = new Lexer();
             var parser = new Parser();
             var compiler = new Compiler();
-            var triadStackMachine = new TriadsStackMachine();
+            var triadStackMachine = new TriadsCalculator();
 
             var tokens = lexer.GetTokensFromExpression(source);
             DisplayManager.DisplayLexerResults(tokens);
@@ -67,7 +69,7 @@ namespace ConsoleClient
                         var threadFunctionContext = functionContext
                             .GetNewFunctionContext(functionContext.ExecutingContext);
 
-                        var threadStackMachine = new TriadsStackMachine();
+                        var threadStackMachine = new TriadsCalculator();
 
                         var thread = new Thread(() => threadStackMachine.Calculate(threadFunctionContext));
                         thread.Start();
@@ -95,7 +97,7 @@ namespace ConsoleClient
                         for (int i = 0; i < funcDescription.ArgsCount; i++)
                         {
                             currentFunctionContext.ExecutingContext.Variables
-                                .Add(new TriadsStackMachine.Variable(currentFunctionContext.Arguments[i],
+                                .Add(new Variable(currentFunctionContext.Arguments[i],
                                     functionArgs[i]));
                         }
                     }
@@ -114,7 +116,7 @@ namespace ConsoleClient
                         var triadResult = previousContext.ExecutingContext.TriadResults
                             .FirstOrDefault(tr => tr.TriadIndex == previousContext.ExecutingContext.CurrentIndex);
                         if (triadResult == null)
-                            previousContext.ExecutingContext.TriadResults.Add(new TriadsStackMachine.TriadWithResult(
+                            previousContext.ExecutingContext.TriadResults.Add(new TriadWithResult(
                             previousContext.ExecutingContext.CurrentIndex, executingContext.Parameters.Value));
                         else
                         {

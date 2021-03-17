@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Translator.Core.Analyzer;
+using Translator.Core.ProgramContext;
 using Translator.Core.TriadsRepresentation;
 using Translator.Infrastructure;
 

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Windows.Controls;
 using Translator;
 using Translator.Core;
 using Translator.Core.FunctionResultParameters;
 using Translator.Core.Lexer;
 using Translator.Core.Parser;
-using Translator.Core.TriadsRepresentation;
+using Translator.Core.ProgramContext;
+using Translator.Core.TriadsRepresentation.Entities;
 using Translator.Infrastructure;
+using TriadsCalculator = Translator.Core.TriadsRepresentation.TriadsCalculator;
 
 namespace IDE
 {
@@ -27,13 +26,13 @@ namespace IDE
             Lexer = new Lexer();
             Parser = new Parser();
             Compiler = new Compiler();
-            TriadsStackMachine = new TriadsStackMachine();
+            TriadsCalculator = new TriadsCalculator();
         }
 
         private Lexer Lexer;
         private Parser Parser;
         private Compiler Compiler;
-        private TriadsStackMachine TriadsStackMachine;
+        private TriadsCalculator TriadsCalculator;
 
         private void Run_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -79,7 +78,7 @@ namespace IDE
 
             while (true)
             {
-                var executingContext = TriadsStackMachine.Calculate(currentFunctionContext);
+                var executingContext = TriadsCalculator.Calculate(currentFunctionContext);
 
                 if (executingContext.Parameters.ResultType == ResultType.Complete)
                 {
@@ -95,7 +94,7 @@ namespace IDE
                         var threadFunctionContext = functionContext
                             .GetNewFunctionContext(functionContext.ExecutingContext);
 
-                        var threadStackMachine = new TriadsStackMachine();
+                        var threadStackMachine = new TriadsCalculator();
 
                         var thread = new Thread(() => threadStackMachine.Calculate(threadFunctionContext));
                         thread.Start();
@@ -123,7 +122,7 @@ namespace IDE
                         for (int i = 0; i < funcDescription.ArgsCount; i++)
                         {
                             currentFunctionContext.ExecutingContext.Variables
-                                .Add(new TriadsStackMachine.Variable(currentFunctionContext.Arguments[i],
+                                .Add(new Variable(currentFunctionContext.Arguments[i],
                                     functionArgs[i]));
                         }
                     }
@@ -143,7 +142,7 @@ namespace IDE
                         var triadResult = previousContext.ExecutingContext.TriadResults
                             .FirstOrDefault(tr => tr.TriadIndex == previousContext.ExecutingContext.CurrentIndex);
                         if (triadResult == null)
-                            previousContext.ExecutingContext.TriadResults.Add(new TriadsStackMachine.TriadWithResult(
+                            previousContext.ExecutingContext.TriadResults.Add(new TriadWithResult(
                                 previousContext.ExecutingContext.CurrentIndex, executingContext.Parameters.Value));
                         else
                         {

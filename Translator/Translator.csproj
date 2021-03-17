@@ -68,9 +68,11 @@
     <Compile Include="Core\TriadsRepresentation\Entities\Triad.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\TriadOperand.cs" />
     <Compile Include="Core\TriadsRepresentation\Entities\TriadType.cs" />
+    <Compile Include="Core\TriadsRepresentation\Entities\TriadWithResult.cs" />
+    <Compile Include="Core\TriadsRepresentation\Entities\Variable.cs" />
+    <Compile Include="Core\TriadsRepresentation\TriadsCalculator.cs" />
     <Compile Include="Core\TriadsRepresentation\TriadsConverter.cs" />
     <Compile Include="Core\TriadsRepresentation\TriadsOptimizer.cs" />
-    <Compile Include="Core\TriadsRepresentation\TriadsStackMachine.cs" />
     <Compile Include="DataStructures\DLLNode.cs" />
     <Compile Include="DataStructures\DoublyLinkedList.cs" />
     <Compile Include="DataStructures\HashTable.cs" />

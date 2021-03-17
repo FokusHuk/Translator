@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Translator.Core
+﻿namespace Translator.Core
 {
     public class FunctionDescription
     {

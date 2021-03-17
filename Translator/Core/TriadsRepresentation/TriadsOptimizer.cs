@@ -8,34 +8,22 @@ namespace Translator.Core.TriadsRepresentation
 {
     public class TriadsOptimizer
     {
-        private class Variable
+        private class OptimizedVariable
         {
             public string Name { get; }
             public string Value { get; set; }
             public bool IsSafe { get; set; }
 
-            public Variable(string name, string value)
+            public OptimizedVariable(string name, string value)
             {
                 Name = name;
                 Value = value;
                 IsSafe = true;
             }
         }
-        
-        private class TriadWithResult
-        {
-            public int TriadIndex { get; }
-            public string Value { get; set; }
 
-            public TriadWithResult(int triadIndex, string value)
-            {
-                TriadIndex = triadIndex;
-                Value = value;
-            }
-        }
-        
         private List<Triad> OptimizedTriads;
-        private List<Variable> Variables;
+        private List<OptimizedVariable> Variables;
         private List<TriadWithResult> CalculatedTriads;
 
         public List<Triad> Optimize(List<Triad> triads, List<bool> triadsConditionIndexes)
@@ -195,7 +183,7 @@ namespace Translator.Core.TriadsRepresentation
             if (variable != null)
                 variable.Value = value;
             else
-                Variables.Add(new Variable(name, value));
+                Variables.Add(new OptimizedVariable(name, value));
         }
 
         private bool CheckTriadSafity(Triad triad)
@@ -275,7 +263,7 @@ namespace Translator.Core.TriadsRepresentation
         private void Initialize()
         {
             OptimizedTriads = new List<Triad>();
-            Variables = new List<Variable>();
+            Variables = new List<OptimizedVariable>();
             CalculatedTriads = new List<TriadWithResult>();
         }
     }
